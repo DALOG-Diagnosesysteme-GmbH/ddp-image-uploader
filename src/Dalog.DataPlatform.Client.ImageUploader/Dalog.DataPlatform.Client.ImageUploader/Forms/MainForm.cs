@@ -1,4 +1,7 @@
 using Dalog.DataPlatform.Client.ImageUploader.Schema;
+using System.Diagnostics;
+using System.Security.Policy;
+using static System.Net.WebRequestMethods;
 
 namespace Dalog.DataPlatform.Client.ImageUploader.Forms
 {
@@ -6,12 +9,14 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Forms
     {
         private const string PingUrl = "/files/v1/ping";
         private readonly Settings _settings;
+        private readonly Dictionary<Control, bool> _controlStates;
 
         public MainForm()
         {
             InitializeComponent();
 
             _settings = new Settings();
+            _controlStates = new Dictionary<Control, bool>();
         }
 
         private void MainForm_Load(object sender, EventArgs e)
@@ -30,6 +35,8 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Forms
 
             comboBoxImageType.DataSource = Enum.GetValues(typeof(ImageType));
             comboBoxImageType.DataBindings.Add(new Binding(nameof(comboBoxImageType.SelectedItem), _settings, nameof(_settings.ImageType)));
+
+            numericUpDownTimeout.DataBindings.Add(new Binding(nameof(numericUpDownTimeout.Value), _settings, nameof(_settings.Timeout)));
 
             _settings.Initialize();
         }
@@ -87,6 +94,7 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Forms
         {
             try
             {
+                StartWaitAnimation();
                 var client = _settings.GetHttpClient();
                 var response = await client.GetAsync(PingUrl).ConfigureAwait(true);
                 if (response.IsSuccessStatusCode)
@@ -103,6 +111,162 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Forms
             {
                 MessageBox.Show(this, ex.Message, Text, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+            finally
+            {
+                StopWaitAnimation();
+            }
+        }
+
+        private void StartWaitAnimation()
+        {
+            _controlStates.Clear();
+            StoreAndDisableControls(this);
+            progressBar.Style = ProgressBarStyle.Marquee;
+        }
+
+        private void StopWaitAnimation()
+        {
+            RestoreControls(this);
+            _controlStates.Clear();
+            progressBar.Style = ProgressBarStyle.Blocks;
+        }
+
+        private void StoreAndDisableControls(Control control)
+        {
+            foreach (Control c in control.Controls)
+            {
+                if (c == progressBar) continue;
+                if (c is TextBox || c is Button || c is ComboBox || c is NumericUpDown || c is CheckBox)
+                {
+                    _controlStates.Add(c, c.Enabled);
+                    c.Enabled = false;
+                }
+
+                StoreAndDisableControls(c);
+            }
+        }
+
+        private void RestoreControls(Control control)
+        {
+            foreach (Control c in control.Controls)
+            {
+                if (c == progressBar) continue;
+
+                if (_controlStates.TryGetValue(c, out bool enabled))
+                {
+                    c.Enabled = enabled;
+                }
+                RestoreControls(c);
+            }
+        }
+
+        private void ButtonUpload_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(_settings.BaseUrl))
+            {
+                MessageBox.Show(this, "Base URL is required", Text, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            if (!Uri.TryCreate(_settings.BaseUrl, UriKind.Absolute, out var _))
+            {
+                MessageBox.Show(this, "Base URL is not a valid URL", Text, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+                
+
+            if (string.IsNullOrWhiteSpace(_settings.ApiKey))
+            {
+                MessageBox.Show(this, "API Key is required", Text, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+               
+
+            var isMachineIdOrDalogIdRequired = IsMachineIdOrDalogIdRequired(_settings.ImageType);
+            if (isMachineIdOrDalogIdRequired)
+            {
+                if (string.IsNullOrWhiteSpace(_settings.MachineId) && string.IsNullOrWhiteSpace(_settings.DalogId))
+                {
+                    MessageBox.Show(this, "Either Machine Id or DALOG Id are required", Text, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                if (!string.IsNullOrWhiteSpace(_settings.MachineId) && !Guid.TryParse(_settings.MachineId, out var _))
+                {
+                    MessageBox.Show(this, "Machine Id is not valid", Text, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+                    
+
+                if (!string.IsNullOrWhiteSpace(_settings.DalogId) && !new DalogIdAttribute().IsValid(_settings.DalogId))
+                {
+                    MessageBox.Show(this, "DALOG Id is not valid", Text, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+                    
+            }
+
+            if (string.IsNullOrWhiteSpace(_settings.Folder))
+            {
+                MessageBox.Show(this, "Folder is required", Text, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            if (!Directory.Exists(_settings.Folder))
+            {
+                MessageBox.Show(this, "Folder does not exist", Text, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            if (_settings.UseProxy)
+            {
+                if (string.IsNullOrWhiteSpace(_settings.ProxyAddress))
+                {
+                    MessageBox.Show(this, "Proxy Adress is required", Text, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                if (!_settings.ProxyUseDefaultCredentials)
+                {
+                    if (string.IsNullOrWhiteSpace(_settings.ProxyCredentialsUsername))
+                    {
+                        MessageBox.Show(this, "Proxy Username is required", Text, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
+                }
+            }
+
+            using var copyForm = new CopyForm(_settings);
+            copyForm.ShowDialog(this);
+        }
+
+        private Uri GetRequesUri() => new Uri($"{_settings.BaseUrl}{GetPathFromImageType(_settings.ImageType)}");
+
+        private static string GetPathFromImageType(ImageType type) => type switch
+        {
+            ImageType.Default => "/files/v1/images",
+            ImageType.BusyBee => "/files/v1/images/busybee",
+            ImageType.Fls => "/files/v1/images/fls",
+            ImageType.Gzip => "/files/v1/images/gzip",
+            ImageType.Wireless => "/files/v1/images/wireless",
+            ImageType.Zip => "/files/v1/images/zip",
+            _ => throw new NotImplementedException(),
+        };
+
+        private static bool IsMachineIdOrDalogIdRequired(ImageType type) => type switch
+        {
+            ImageType.Default => true,
+            ImageType.BusyBee => true,
+            ImageType.Fls => false,
+            ImageType.Gzip => true,
+            ImageType.Wireless => false,
+            ImageType.Zip => true,
+            _ => throw new NotImplementedException(),
+        };
+
+        private void MainForm_HelpButtonClicked(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            Process.Start("CMD.exe", $"/C start msedge \"https://github.com/DALOG-Diagnosesysteme-GmbH/ddp-image-uploader\"");
         }
     }
 }

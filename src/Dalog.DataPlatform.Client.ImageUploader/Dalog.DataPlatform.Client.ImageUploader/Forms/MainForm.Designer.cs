@@ -46,6 +46,8 @@
             labelMachineId = new Label();
             textBoxMachineId = new TextBox();
             groupBoxNetwork = new GroupBox();
+            labelTimeout = new Label();
+            numericUpDownTimeout = new NumericUpDown();
             checkBoxDisableSslChecks = new CheckBox();
             groupBoxProxySettings = new GroupBox();
             labelProxyCredentialsPassword = new Label();
@@ -58,12 +60,16 @@
             checkBoxUseProxy = new CheckBox();
             buttonResetSettings = new Button();
             groupBoxLog = new GroupBox();
+            progressBar = new ProgressBar();
             groupBoxControls = new GroupBox();
+            buttonUpload = new Button();
             groupBoxSettings.SuspendLayout();
             groupBoxLocal.SuspendLayout();
             groupBoxDdp.SuspendLayout();
             groupBoxNetwork.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numericUpDownTimeout).BeginInit();
             groupBoxProxySettings.SuspendLayout();
+            groupBoxLog.SuspendLayout();
             groupBoxControls.SuspendLayout();
             SuspendLayout();
             // 
@@ -124,9 +130,10 @@
             groupBoxSettings.Controls.Add(groupBoxLocal);
             groupBoxSettings.Controls.Add(groupBoxDdp);
             groupBoxSettings.Controls.Add(groupBoxNetwork);
+            groupBoxSettings.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             groupBoxSettings.Location = new Point(12, 12);
             groupBoxSettings.Name = "groupBoxSettings";
-            groupBoxSettings.Size = new Size(760, 500);
+            groupBoxSettings.Size = new Size(760, 536);
             groupBoxSettings.TabIndex = 5;
             groupBoxSettings.TabStop = false;
             groupBoxSettings.Text = "Settings";
@@ -259,21 +266,45 @@
             // groupBoxNetwork
             // 
             groupBoxNetwork.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            groupBoxNetwork.Controls.Add(labelTimeout);
+            groupBoxNetwork.Controls.Add(numericUpDownTimeout);
             groupBoxNetwork.Controls.Add(checkBoxDisableSslChecks);
             groupBoxNetwork.Controls.Add(groupBoxProxySettings);
             groupBoxNetwork.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             groupBoxNetwork.Location = new Point(6, 264);
             groupBoxNetwork.Name = "groupBoxNetwork";
-            groupBoxNetwork.Size = new Size(748, 230);
+            groupBoxNetwork.Size = new Size(748, 266);
             groupBoxNetwork.TabIndex = 16;
             groupBoxNetwork.TabStop = false;
             groupBoxNetwork.Text = "Network (Advanced)";
+            // 
+            // labelTimeout
+            // 
+            labelTimeout.AutoSize = true;
+            labelTimeout.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            labelTimeout.Location = new Point(6, 53);
+            labelTimeout.Name = "labelTimeout";
+            labelTimeout.Size = new Size(105, 15);
+            labelTimeout.TabIndex = 20;
+            labelTimeout.Text = "Timeout (seconds)";
+            // 
+            // numericUpDownTimeout
+            // 
+            numericUpDownTimeout.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            numericUpDownTimeout.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            numericUpDownTimeout.Location = new Point(203, 51);
+            numericUpDownTimeout.Maximum = new decimal(new int[] { 600, 0, 0, 0 });
+            numericUpDownTimeout.Name = "numericUpDownTimeout";
+            numericUpDownTimeout.Size = new Size(539, 23);
+            numericUpDownTimeout.TabIndex = 19;
+            numericUpDownTimeout.TextAlign = HorizontalAlignment.Center;
+            numericUpDownTimeout.Value = new decimal(new int[] { 60, 0, 0, 0 });
             // 
             // checkBoxDisableSslChecks
             // 
             checkBoxDisableSslChecks.AutoSize = true;
             checkBoxDisableSslChecks.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            checkBoxDisableSslChecks.Location = new Point(6, 22);
+            checkBoxDisableSslChecks.Location = new Point(6, 24);
             checkBoxDisableSslChecks.Name = "checkBoxDisableSslChecks";
             checkBoxDisableSslChecks.Size = new Size(126, 19);
             checkBoxDisableSslChecks.TabIndex = 11;
@@ -292,7 +323,7 @@
             groupBoxProxySettings.Controls.Add(labelProxyAddress);
             groupBoxProxySettings.Controls.Add(checkBoxUseProxy);
             groupBoxProxySettings.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            groupBoxProxySettings.Location = new Point(6, 47);
+            groupBoxProxySettings.Location = new Point(6, 80);
             groupBoxProxySettings.Name = "groupBoxProxySettings";
             groupBoxProxySettings.Size = new Size(736, 175);
             groupBoxProxySettings.TabIndex = 15;
@@ -395,39 +426,68 @@
             // 
             // groupBoxLog
             // 
-            groupBoxLog.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            groupBoxLog.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            groupBoxLog.Controls.Add(progressBar);
             groupBoxLog.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            groupBoxLog.Location = new Point(12, 518);
+            groupBoxLog.Location = new Point(12, 554);
             groupBoxLog.Name = "groupBoxLog";
-            groupBoxLog.Size = new Size(760, 125);
+            groupBoxLog.Size = new Size(760, 55);
             groupBoxLog.TabIndex = 7;
             groupBoxLog.TabStop = false;
             groupBoxLog.Text = "Log";
             // 
+            // progressBar
+            // 
+            progressBar.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            progressBar.Location = new Point(6, 22);
+            progressBar.Name = "progressBar";
+            progressBar.Size = new Size(748, 23);
+            progressBar.TabIndex = 0;
+            // 
             // groupBoxControls
             // 
-            groupBoxControls.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            groupBoxControls.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            groupBoxControls.Controls.Add(buttonUpload);
             groupBoxControls.Controls.Add(buttonTestConnection);
             groupBoxControls.Controls.Add(buttonResetSettings);
             groupBoxControls.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            groupBoxControls.Location = new Point(12, 649);
+            groupBoxControls.Location = new Point(12, 615);
             groupBoxControls.Name = "groupBoxControls";
             groupBoxControls.Size = new Size(760, 50);
             groupBoxControls.TabIndex = 8;
             groupBoxControls.TabStop = false;
             groupBoxControls.Text = "Controls";
             // 
+            // buttonUpload
+            // 
+            buttonUpload.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            buttonUpload.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            buttonUpload.Location = new Point(529, 21);
+            buttonUpload.Name = "buttonUpload";
+            buttonUpload.Size = new Size(225, 23);
+            buttonUpload.TabIndex = 7;
+            buttonUpload.Text = "Upload Images";
+            buttonUpload.UseVisualStyleBackColor = true;
+            buttonUpload.Click += ButtonUpload_Click;
+            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(784, 711);
+            ClientSize = new Size(784, 676);
             Controls.Add(groupBoxControls);
             Controls.Add(groupBoxLog);
             Controls.Add(groupBoxSettings);
-            MinimumSize = new Size(800, 600);
+            FormBorderStyle = FormBorderStyle.FixedDialog;
+            HelpButton = true;
+            MaximizeBox = false;
+            MaximumSize = new Size(800, 715);
+            MinimizeBox = false;
+            MinimumSize = new Size(800, 715);
             Name = "MainForm";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "DALOG Image Uploader";
+            HelpButtonClicked += MainForm_HelpButtonClicked;
             Load += MainForm_Load;
             groupBoxSettings.ResumeLayout(false);
             groupBoxLocal.ResumeLayout(false);
@@ -436,8 +496,10 @@
             groupBoxDdp.PerformLayout();
             groupBoxNetwork.ResumeLayout(false);
             groupBoxNetwork.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)numericUpDownTimeout).EndInit();
             groupBoxProxySettings.ResumeLayout(false);
             groupBoxProxySettings.PerformLayout();
+            groupBoxLog.ResumeLayout(false);
             groupBoxControls.ResumeLayout(false);
             ResumeLayout(false);
         }
@@ -464,7 +526,6 @@
         private ComboBox comboBoxImageType;
         private GroupBox groupBoxProxySettings;
         private Label labelProxyAddress;
-        private ComboBox comboBox1;
         private TextBox textBoxProxyAddress;
         private TextBox textBoxProxyCredentialsPassword;
         private CheckBox checkBoxProxyUseDefaultCredentials;
@@ -476,5 +537,9 @@
         private GroupBox groupBoxDdp;
         private GroupBox groupBoxLog;
         private GroupBox groupBoxControls;
+        private Label labelTimeout;
+        private NumericUpDown numericUpDownTimeout;
+        private ProgressBar progressBar;
+        private Button buttonUpload;
     }
 }

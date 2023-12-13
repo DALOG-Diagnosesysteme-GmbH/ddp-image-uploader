@@ -23,6 +23,7 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Schema
         private bool _proxyUseDefaultCredentials;
         private string? _proxyCredentialsUsername;
         private string? _proxyCredentialsPassword;
+        private int _timeout;
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
@@ -170,6 +171,18 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Schema
             }
         }
 
+        public int Timeout
+        {
+            get { return _timeout; }
+            set
+            {
+                _timeout = value;
+                Forms.UserSettings.Default.Timeout = value;
+                Forms.UserSettings.Default.Save();
+                InvokePropertyChanged(new PropertyChangedEventArgs(nameof(Timeout)));
+            }
+        }
+
         public void Initialize()
         {
             BaseUrl = Forms.UserSettings.Default.BaseUrl;
@@ -184,6 +197,7 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Schema
             ProxyUseDefaultCredentials = Forms.UserSettings.Default.ProxyUseDefaultCredentials;
             ProxyCredentialsUsername = Forms.UserSettings.Default.ProxyCredentialsUsername;
             ProxyCredentialsPassword = Forms.UserSettings.Default.ProxyCredentialsPassword;
+            Timeout = Forms.UserSettings.Default.Timeout;
         }
 
         public void Reset()
@@ -200,6 +214,7 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Schema
             ProxyUseDefaultCredentials = true;
             ProxyCredentialsUsername = string.Empty;
             ProxyCredentialsPassword = string.Empty;
+            Timeout = 30;
         }
 
         public HttpClient GetHttpClient()
@@ -224,6 +239,7 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Schema
             var result = new HttpClient(handler);
             result.BaseAddress = new Uri(SanitizeBaseUrl(BaseUrl ?? string.Empty));
             result.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", ApiKey);
+            result.Timeout = TimeSpan.FromSeconds(Timeout);
 
             return result;
         }

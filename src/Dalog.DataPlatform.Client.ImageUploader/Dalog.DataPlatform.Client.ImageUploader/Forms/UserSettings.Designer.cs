@@ -166,5 +166,17 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Forms {
                 this["ProxyCredentialsPassword"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("30")]
+        public int Timeout {
+            get {
+                return ((int)(this["Timeout"]));
+            }
+            set {
+                this["Timeout"] = value;
+            }
+        }
     }
 }
