@@ -1,7 +1,5 @@
 using Dalog.DataPlatform.Client.ImageUploader.Schema;
 using System.Diagnostics;
-using System.Security.Policy;
-using static System.Net.WebRequestMethods;
 
 namespace Dalog.DataPlatform.Client.ImageUploader.Forms
 {
@@ -26,17 +24,9 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Forms
             textBoxLocalFolder.DataBindings.Add(new Binding(nameof(textBoxLocalFolder.Text), _settings, nameof(_settings.Folder)));
             textBoxMachineId.DataBindings.Add(new Binding(nameof(textBoxMachineId.Text), _settings, nameof(_settings.MachineId)));
             textBoxDalogId.DataBindings.Add(new Binding(nameof(textBoxDalogId.Text), _settings, nameof(_settings.DalogId)));
-            checkBoxDisableSslChecks.DataBindings.Add(new Binding(nameof(checkBoxDisableSslChecks.Checked), _settings, nameof(_settings.DisableSslChecks)));
-            checkBoxUseProxy.DataBindings.Add(new Binding(nameof(checkBoxUseProxy.Checked), _settings, nameof(_settings.UseProxy)));
-            checkBoxProxyUseDefaultCredentials.DataBindings.Add(new Binding(nameof(checkBoxProxyUseDefaultCredentials.Checked), _settings, nameof(_settings.ProxyUseDefaultCredentials)));
-            textBoxProxyCredentialsUsername.DataBindings.Add(new Binding(nameof(textBoxProxyCredentialsUsername.Text), _settings, nameof(_settings.ProxyCredentialsUsername)));
-            textBoxProxyCredentialsPassword.DataBindings.Add(new Binding(nameof(textBoxProxyCredentialsPassword.Text), _settings, nameof(_settings.ProxyCredentialsPassword)));
-            textBoxProxyAddress.DataBindings.Add(new Binding(nameof(textBoxProxyAddress.Text), _settings, nameof(_settings.ProxyAddress)));
-
+            
             comboBoxImageType.DataSource = Enum.GetValues(typeof(ImageType));
             comboBoxImageType.DataBindings.Add(new Binding(nameof(comboBoxImageType.SelectedItem), _settings, nameof(_settings.ImageType)));
-
-            numericUpDownTimeout.DataBindings.Add(new Binding(nameof(numericUpDownTimeout.Value), _settings, nameof(_settings.Timeout)));
 
             _settings.Initialize();
         }
@@ -55,38 +45,6 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Forms
             if (MessageBox.Show(this, "Do you really want to reset all settings to their default value?", Text, MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
                 _settings.Reset();
-            }
-        }
-
-        private void CheckBoxUseProxy_CheckedChanged(object sender, EventArgs e)
-        {
-            if (checkBoxUseProxy.Checked)
-            {
-                textBoxProxyAddress.Enabled = true;
-                checkBoxProxyUseDefaultCredentials.Enabled = true;
-                textBoxProxyCredentialsUsername.Enabled = !checkBoxProxyUseDefaultCredentials.Checked;
-                textBoxProxyCredentialsPassword.Enabled = !checkBoxProxyUseDefaultCredentials.Checked;
-            }
-            else
-            {
-                textBoxProxyAddress.Enabled = false;
-                checkBoxProxyUseDefaultCredentials.Enabled = false;
-                textBoxProxyCredentialsUsername.Enabled = false;
-                textBoxProxyCredentialsPassword.Enabled = false;
-            }
-        }
-
-        private void CheckBoxProxyUseDefaultCredentials_CheckedChanged(object sender, EventArgs e)
-        {
-            if (checkBoxProxyUseDefaultCredentials.Checked)
-            {
-                textBoxProxyCredentialsUsername.Enabled = false;
-                textBoxProxyCredentialsPassword.Enabled = false;
-            }
-            else
-            {
-                textBoxProxyCredentialsUsername.Enabled = true;
-                textBoxProxyCredentialsPassword.Enabled = true;
             }
         }
 
@@ -173,16 +131,16 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Forms
                 MessageBox.Show(this, "Base URL is not a valid URL", Text, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-                
+
 
             if (string.IsNullOrWhiteSpace(_settings.ApiKey))
             {
                 MessageBox.Show(this, "API Key is required", Text, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-               
 
-            var isMachineIdOrDalogIdRequired = IsMachineIdOrDalogIdRequired(_settings.ImageType);
+
+            var isMachineIdOrDalogIdRequired = Settings.IsMachineIdOrDalogIdRequired(_settings.ImageType);
             if (isMachineIdOrDalogIdRequired)
             {
                 if (string.IsNullOrWhiteSpace(_settings.MachineId) && string.IsNullOrWhiteSpace(_settings.DalogId))
@@ -196,14 +154,14 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Forms
                     MessageBox.Show(this, "Machine Id is not valid", Text, MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
-                    
+
 
                 if (!string.IsNullOrWhiteSpace(_settings.DalogId) && !new DalogIdAttribute().IsValid(_settings.DalogId))
                 {
                     MessageBox.Show(this, "DALOG Id is not valid", Text, MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
-                    
+
             }
 
             if (string.IsNullOrWhiteSpace(_settings.Folder))
@@ -240,33 +198,15 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Forms
             copyForm.ShowDialog(this);
         }
 
-        private Uri GetRequesUri() => new Uri($"{_settings.BaseUrl}{GetPathFromImageType(_settings.ImageType)}");
-
-        private static string GetPathFromImageType(ImageType type) => type switch
-        {
-            ImageType.Default => "/files/v1/images",
-            ImageType.BusyBee => "/files/v1/images/busybee",
-            ImageType.Fls => "/files/v1/images/fls",
-            ImageType.Gzip => "/files/v1/images/gzip",
-            ImageType.Wireless => "/files/v1/images/wireless",
-            ImageType.Zip => "/files/v1/images/zip",
-            _ => throw new NotImplementedException(),
-        };
-
-        private static bool IsMachineIdOrDalogIdRequired(ImageType type) => type switch
-        {
-            ImageType.Default => true,
-            ImageType.BusyBee => true,
-            ImageType.Fls => false,
-            ImageType.Gzip => true,
-            ImageType.Wireless => false,
-            ImageType.Zip => true,
-            _ => throw new NotImplementedException(),
-        };
-
         private void MainForm_HelpButtonClicked(object sender, System.ComponentModel.CancelEventArgs e)
         {
             Process.Start("CMD.exe", $"/C start msedge \"https://github.com/DALOG-Diagnosesysteme-GmbH/ddp-image-uploader\"");
+        }
+
+        private void ButtonNetworkSettings_Click(object sender, EventArgs e)
+        {
+            using var networkForm = new NetworkForm(_settings);
+            networkForm.ShowDialog(this);
         }
     }
 }

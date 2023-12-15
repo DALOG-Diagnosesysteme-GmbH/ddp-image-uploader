@@ -249,6 +249,28 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Schema
             if (PropertyChanged is not null) PropertyChanged(this, e);
         }
 
+        internal static string GetPathFromImageType(ImageType type) => type switch
+        {
+            ImageType.Default => "/files/v1/images",
+            ImageType.BusyBee => "/files/v1/images/busybee",
+            ImageType.Fls => "/files/v1/images/fls",
+            ImageType.Gzip => "/files/v1/images/gzip",
+            ImageType.Wireless => "/files/v1/images/wireless",
+            ImageType.Zip => "/files/v1/images/zip",
+            _ => throw new NotImplementedException(),
+        };
+
+        internal static bool IsMachineIdOrDalogIdRequired(ImageType type) => type switch
+        {
+            ImageType.Default => true,
+            ImageType.BusyBee => true,
+            ImageType.Fls => false,
+            ImageType.Gzip => true,
+            ImageType.Wireless => false,
+            ImageType.Zip => true,
+            _ => throw new NotImplementedException(),
+        };
+
         private static string SanitizeBaseUrl(string baseUrl)
         {
             if (baseUrl.EndsWith("/")) { return baseUrl.Substring(0, baseUrl.Length - 1); };
