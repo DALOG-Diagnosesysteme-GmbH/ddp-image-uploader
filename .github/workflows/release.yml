@@ -63,13 +63,13 @@ jobs:
       run: |
         iscc.exe ./setup.iss
 
-    - name: Release
+    - name: Create GitHub Release
       uses: softprops/action-gh-release@v1
       if: github.ref == 'refs/heads/main'
       with:
         draft: false
         prerelease: false
-        tag_name: ${{ env.TAG }}
+        tag_name: $env:TAG
         generate_release_notes: true
         token: ${{ secrets.PAT }}
         files: |

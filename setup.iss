@@ -1,6 +1,7 @@
 [Setup]
 AppName=DALOG Image Uploader
 AppVersion=x.x.x
+WizardStyle=modern
 DefaultDirName={autopf}\dalog-image-uploader
 DefaultGroupName=DALOG
 OutputDir=.\Output
