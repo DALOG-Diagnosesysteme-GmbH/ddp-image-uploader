@@ -69,7 +69,7 @@ jobs:
       with:
         draft: false
         prerelease: false
-        tag_name: "$env:TAG"
+        tag_name: ${{ env.TAG }}
         generate_release_notes: true
         token: ${{ secrets.PAT }}
         files: |
