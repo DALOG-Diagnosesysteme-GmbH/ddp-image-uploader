@@ -12,26 +12,11 @@ jobs:
   build-and-deploy:
     name: Build and Deploy
     runs-on: windows-latest
+    env:
+      VERSION: "0.0.${{ github.run_number }}"
     steps:
     - uses: actions/checkout@v4
       name: "Checkout repository"
-
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v4
-      with:
-        dotnet-version: 8.0.x
-
-    - name: Prepare version number
-      run: |
-        $majorVersion='0'
-        $minorVersion='0'
-        $patchVersion=${{ github.run_number }}
-        $fullVersion="$majorVersion.$minorVersion.$patchVersion"
-        $tag="v$fullVersion"
-        echo "VERSION=$fullVersion" >> $GITHUB_ENV
-        echo "TAG=$tag" >> $GITHUB_ENV
-        echo $fullVersion
-        echo $tag
 
     - name: Increment version
       run: |
@@ -54,7 +39,11 @@ jobs:
         $issContent = Get-Content $issPath
         $content = $content -replace "x.x.x", $env:VERSION
         Set-Content $issPath $issContent
-  
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 8.0.x
 
     - name: Publish dotnet
       run: dotnet publish "./src/Dalog.DataPlatform.Client.ImageUploader/Dalog.DataPlatform.Client.ImageUploader/Dalog.DataPlatform.Client.ImageUploader.csproj" -c Release -r win-x64 --self-contained -o "./output"
@@ -69,7 +58,7 @@ jobs:
       with:
         draft: false
         prerelease: false
-        tag_name: $env:TAG
+        tag_name: "v${{ env.VERSION }}"
         generate_release_notes: true
         token: ${{ secrets.PAT }}
         files: |
