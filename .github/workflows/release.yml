@@ -58,25 +58,25 @@ jobs:
       run: |
         iscc.exe ./setup.iss
 
-    # - name: Create Release
-      # if: github.ref == 'refs/heads/main'
-      # id: create_release
-      # uses: actions/create-release@v1
-      # env:
-        # GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      # with:
-        # tag_name: ${{ env.NEW_VERSION }}
-        # release_name: Release ${{ env.NEW_VERSION }}
-        # draft: false
-        # prerelease: false
+    - name: Create Release
+      if: github.ref == 'refs/heads/main'
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: $env:VERSION
+        release_name: Release $env:VERSION
+        draft: false
+        prerelease: false
 
-    # - name: Upload Release Asset
-      # if: github.ref == 'refs/heads/main'
-      # uses: actions/upload-release-asset@v1
-      # env:
-        # GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      # with:
-        # upload_url: ${{ steps.create_release.outputs.upload_url }}
-        # asset_path: ./path/to/your/output/setup.exe
-        # asset_name: Setup.exe
-        # asset_content_type: application/octet-stream
+    - name: Upload Release Asset
+      if: github.ref == 'refs/heads/main'
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./Output/Dalog.DataPlatform.Client.ImageUploader_Setup.exe
+        asset_name: Setup.exe
+        asset_content_type: application/octet-stream
