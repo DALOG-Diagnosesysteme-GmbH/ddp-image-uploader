@@ -26,6 +26,7 @@ jobs:
         $patchVersion=${{ github.run_number }}
         $fullVersion="$majorVersion.$minorVersion.$patchVersion"
         echo "VERSION=$fullVersion" >> $GITHUB_ENV
+        echo $fullVersion
 
     - name: Increment version
       run: |
@@ -46,7 +47,7 @@ jobs:
     
         # Update .iss file
         $issContent = Get-Content $issPath
-        $issContent = $issContent -replace "AppVersion=.*", "AppVersion=$env:VERSION"
+        $issContent = $issContent[2] = "AppVersion=$env:VERSION"
         Set-Content $issPath $issContent
   
 
