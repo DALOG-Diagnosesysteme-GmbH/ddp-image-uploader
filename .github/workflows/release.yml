@@ -27,9 +27,9 @@ jobs:
         # Function to increment version
         function Increment-Version($version) {
             $versionNumbers = $version.Split('.')
-            $revision = [int]$versionNumbers[3]
+            $revision = [int]$versionNumbers[2]
             $revision++
-            $versionNumbers[3] = $revision.ToString()
+            $versionNumbers[2] = $revision.ToString()
             return $versionNumbers -join '.'
         }
     
