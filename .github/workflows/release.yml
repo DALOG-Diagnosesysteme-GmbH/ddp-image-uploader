@@ -1,0 +1,90 @@
+name: Release
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches: 
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 8.0.x
+
+    - name: Increment version
+      run: |
+        $csprojPath = "path/to/your/Project.csproj" # Update with the actual path to your .csproj file
+        $issPath = "path/to/your/setup.iss" # Update with the actual path to your Inno Setup script
+    
+        # Function to increment version
+        function Increment-Version($version) {
+            $versionNumbers = $version.Split('.')
+            $revision = [int]$versionNumbers[3]
+            $revision++
+            $versionNumbers[3] = $revision.ToString()
+            return $versionNumbers -join '.'
+        }
+    
+        # Update .csproj file
+        $csproj = [xml](Get-Content $csprojPath)
+        $namespace = @{ns = "http://schemas.microsoft.com/developer/msbuild/2003"}
+        $versionNode = $csproj.SelectSingleNode("//ns:Project/ns:PropertyGroup/ns:Version", $namespace)
+        if ($versionNode -eq $null) {
+            Write-Error "Version node not found in .csproj file"
+            exit 1
+        }
+        $newVersion = Increment-Version $versionNode.InnerText
+        $versionNode.InnerText = $newVersion
+        $csproj.Save($csprojPath)
+    
+        # Update .iss file
+        $issContent = Get-Content $issPath
+        $issContent = $issContent -replace "AppVersion=.*", "AppVersion=$newVersion"
+        Set-Content $issPath $issContent
+    
+        # Output new version
+        echo "New version: $newVersion"
+        echo "NEW_VERSION=$newVersion" >> $GITHUB_ENV
+
+
+    - name: Build with dotnet
+      run: dotnet publish -c Release -r win-x64 --self-contained true
+
+    - name: Setup Inno Setup
+      uses: crazy-max/ghaction-inno-setup@v3
+
+    - name: Run Inno Setup
+      run: |
+        # Path to your .iss file
+        iscc.exe ./setup.iss
+
+    # - name: Create Release
+      # if: github.ref == 'refs/heads/main'
+      # id: create_release
+      # uses: actions/create-release@v1
+      # env:
+        # GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      # with:
+        # tag_name: ${{ env.NEW_VERSION }}
+        # release_name: Release ${{ env.NEW_VERSION }}
+        # draft: false
+        # prerelease: false
+
+    # - name: Upload Release Asset
+      # if: github.ref == 'refs/heads/main'
+      # uses: actions/upload-release-asset@v1
+      # env:
+        # GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      # with:
+        # upload_url: ${{ steps.create_release.outputs.upload_url }}
+        # asset_path: ./path/to/your/output/setup.exe
+        # asset_name: Setup.exe
+        # asset_content_type: application/octet-stream
