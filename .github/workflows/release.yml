@@ -21,8 +21,8 @@ jobs:
 
     - name: Increment version
       run: |
-        $csprojPath = "path/to/your/Project.csproj" # Update with the actual path to your .csproj file
-        $issPath = "path/to/your/setup.iss" # Update with the actual path to your Inno Setup script
+        $csprojPath = "./src/Dalog.DataPlatform.Client.ImageUploader/Dalog.DataPlatform.Client.ImageUploader/Dalog.DataPlatform.Client.ImageUploader.csproj"
+        $issPath = "./setup.iss"
     
         # Function to increment version
         function Increment-Version($version) {

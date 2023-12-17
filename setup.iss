@@ -11,10 +11,10 @@ ArchitecturesAllowed=x64
 ArchitecturesInstallIn64BitMode=x64
 
 [Files]
-Source: "path\to\your\build\output\*"; DestDir: "{app}"; Flags: recursesubdirs ignoreversion
+Source: "output\*"; DestDir: "{app}"; Flags: recursesubdirs ignoreversion
 
 [Icons]
-Name: "{group}\YourAppName"; Filename: "{app}\YourAppName.exe"
+Name: "{group}\DALOG Image Uploader"; Filename: "{app}\Dalog.DataPlatform.Client.ImageUploader.exe"
 
 [Run]
-Filename: "{app}\YourAppName.exe"; Description: "Launch YourAppName"; Flags: nowait postinstall skipifsilent
+Filename: "{app}\Dalog.DataPlatform.Client.ImageUploader.exe"; Description: "Launch DALOG Image Uploader"; Flags: nowait postinstall skipifsilent

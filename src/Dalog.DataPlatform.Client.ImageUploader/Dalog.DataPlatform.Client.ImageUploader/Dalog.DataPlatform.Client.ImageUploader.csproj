@@ -8,6 +8,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <StartupObject>Dalog.DataPlatform.Client.ImageUploader.Program</StartupObject>
     <ApplicationIcon>logo.ico</ApplicationIcon>
+    <Version>0.0.1</Version>
   </PropertyGroup>
 
   <ItemGroup>
