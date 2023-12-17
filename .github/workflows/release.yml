@@ -19,19 +19,18 @@ jobs:
       with:
         dotnet-version: 8.0.x
 
+    - name: Prepare version number
+      run: |
+        majorVersion='0'
+        minorVersion='0'
+        patchVersion=${{ github.run_number }}
+        fullVersion="$majorVersion.$minorVersion.$patchVersion"
+        echo "VERSION=$fullVersion" >> $GITHUB_ENV
+
     - name: Increment version
       run: |
         $csprojPath = "./src/Dalog.DataPlatform.Client.ImageUploader/Dalog.DataPlatform.Client.ImageUploader/Dalog.DataPlatform.Client.ImageUploader.csproj"
         $issPath = "./setup.iss"
-    
-        # Function to increment version
-        function Increment-Version($version) {
-            $versionNumbers = $version.Split('.')
-            $revision = [int]$versionNumbers[2]
-            $revision++
-            $versionNumbers[2] = $revision.ToString()
-            return $versionNumbers -join '.'
-        }
     
         # Update .csproj file
         $csproj = [xml](Get-Content $csprojPath)
@@ -42,22 +41,17 @@ jobs:
             Write-Error "Version node not found in .csproj file"
             exit 1
         }
-        $newVersion = Increment-Version $versionNode.InnerText
-        $versionNode.InnerText = $newVersion
+        $versionNode.InnerText = $env:VERSION
         $csproj.Save($csprojPath)
     
         # Update .iss file
         $issContent = Get-Content $issPath
-        $issContent = $issContent -replace "AppVersion=.*", "AppVersion=$newVersion"
+        $issContent = $issContent -replace "AppVersion=.*", "AppVersion=$env:VERSION"
         Set-Content $issPath $issContent
-    
-        # Output new version
-        echo "New version: $newVersion"
-        echo "NEW_VERSION=$newVersion" >> $GITHUB_ENV
-
+  
 
     - name: Build with dotnet
-      run: dotnet publish -c Release -r win-x64 --self-contained -o ./output
+      run: dotnet publish "./src/Dalog.DataPlatform.Client.ImageUploader/Dalog.DataPlatform.Client.ImageUploader/Dalog.DataPlatform.Client.ImageUploader.csproj" -c Release -r win-x64 --self-contained -o "./output"
 
     - name: Run Inno Setup
       run: |
