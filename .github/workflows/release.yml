@@ -56,14 +56,10 @@ jobs:
 
 
     - name: Build with dotnet
-      run: dotnet publish -c Release -r win-x64 --self-contained true
-
-    - name: Setup Inno Setup
-      uses: crazy-max/ghaction-inno-setup@v3
+      run: dotnet publish -c Release -r win-x64 --self-contained true -o ./output
 
     - name: Run Inno Setup
       run: |
-        # Path to your .iss file
         iscc.exe ./setup.iss
 
     # - name: Create Release
