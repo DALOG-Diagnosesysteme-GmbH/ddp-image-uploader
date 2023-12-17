@@ -21,10 +21,10 @@ jobs:
 
     - name: Prepare version number
       run: |
-        majorVersion='0'
-        minorVersion='0'
-        patchVersion=${{ github.run_number }}
-        fullVersion="$majorVersion.$minorVersion.$patchVersion"
+        $majorVersion='0'
+        $minorVersion='0'
+        $patchVersion=${{ github.run_number }}
+        $fullVersion="$majorVersion.$minorVersion.$patchVersion"
         echo "VERSION=$fullVersion" >> $GITHUB_ENV
 
     - name: Increment version
