@@ -47,7 +47,7 @@ jobs:
     
         # Update .iss file
         $issContent = Get-Content $issPath
-        $issContent = $issContent[2] = "AppVersion=$env:VERSION"
+        $content = $content -replace "x.x.x", $env:VERSION
         Set-Content $issPath $issContent
   
 
