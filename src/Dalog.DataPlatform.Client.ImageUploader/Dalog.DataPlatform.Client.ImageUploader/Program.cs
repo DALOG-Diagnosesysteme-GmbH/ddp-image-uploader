@@ -1,14 +1,12 @@
 using Dalog.DataPlatform.Client.ImageUploader.Forms;
 
-namespace Dalog.DataPlatform.Client.ImageUploader
+namespace Dalog.DataPlatform.Client.ImageUploader;
+internal static class Program
 {
-    internal static class Program
+    [STAThread]
+    static void Main()
     {
-        [STAThread]
-        static void Main()
-        {
-            ApplicationConfiguration.Initialize();
-            Application.Run(new MainForm());
-        }
+        ApplicationConfiguration.Initialize();
+        Application.Run(new MainForm());
     }
 }

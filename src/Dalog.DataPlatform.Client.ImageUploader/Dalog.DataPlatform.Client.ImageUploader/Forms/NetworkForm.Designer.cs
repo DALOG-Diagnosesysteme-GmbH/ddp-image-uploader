@@ -209,7 +209,6 @@
             Name = "NetworkForm";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "DALOG Image Uploader";
-            Load += NetworkForm_Load;
             groupBoxNetwork.ResumeLayout(false);
             groupBoxNetwork.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)numericUpDownTimeout).EndInit();

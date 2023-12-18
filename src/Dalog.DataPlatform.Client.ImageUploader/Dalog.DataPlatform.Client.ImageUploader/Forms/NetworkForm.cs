@@ -1,34 +1,33 @@
 ﻿using Dalog.DataPlatform.Client.ImageUploader.Schema;
 
-namespace Dalog.DataPlatform.Client.ImageUploader.Forms
+namespace Dalog.DataPlatform.Client.ImageUploader.Forms;
+
+public partial class NetworkForm : Form
 {
-    public partial class NetworkForm : Form
+
+    public NetworkForm()
     {
-        private readonly Settings _settings;
-
-        public NetworkForm()
-        {
-            InitializeComponent();
-
-            _settings = new Settings();
-        }
-
-        internal NetworkForm(Settings settings)
-        {
-            InitializeComponent();
-
-            _settings = settings;
-        }
-
-        private void NetworkForm_Load(object sender, EventArgs e)
-        {
-            checkBoxDisableSslChecks.DataBindings.Add(new Binding(nameof(checkBoxDisableSslChecks.Checked), _settings, nameof(_settings.DisableSslChecks)));
-            checkBoxUseProxy.DataBindings.Add(new Binding(nameof(checkBoxUseProxy.Checked), _settings, nameof(_settings.UseProxy)));
-            checkBoxProxyUseDefaultCredentials.DataBindings.Add(new Binding(nameof(checkBoxProxyUseDefaultCredentials.Checked), _settings, nameof(_settings.ProxyUseDefaultCredentials)));
-            textBoxProxyCredentialsUsername.DataBindings.Add(new Binding(nameof(textBoxProxyCredentialsUsername.Text), _settings, nameof(_settings.ProxyCredentialsUsername)));
-            textBoxProxyCredentialsPassword.DataBindings.Add(new Binding(nameof(textBoxProxyCredentialsPassword.Text), _settings, nameof(_settings.ProxyCredentialsPassword)));
-            textBoxProxyAddress.DataBindings.Add(new Binding(nameof(textBoxProxyAddress.Text), _settings, nameof(_settings.ProxyAddress)));
-            numericUpDownTimeout.DataBindings.Add(new Binding(nameof(numericUpDownTimeout.Value), _settings, nameof(_settings.Timeout)));
-        }
+        InitializeComponent();
     }
+
+    internal NetworkForm(Settings settings)
+    {
+        InitializeComponent();
+
+        checkBoxDisableSslChecks.Checked = settings.DisableSslChecks;
+        checkBoxUseProxy.Checked = settings.UseProxy;
+        checkBoxProxyUseDefaultCredentials.Checked = settings.ProxyUseDefaultCredentials;
+        textBoxProxyCredentialsUsername.Text = settings.ProxyCredentialsUsername;
+        textBoxProxyCredentialsPassword.Text = settings.ProxyCredentialsPassword;
+        textBoxProxyAddress.Text = settings.ProxyAddress;
+        numericUpDownTimeout.Value = settings.Timeout;
+    }
+
+    public bool DisableSslChecks => checkBoxDisableSslChecks.Checked;
+    public bool UseProxy => checkBoxUseProxy.Checked;
+    public bool ProxyUseDefaultCredentials => checkBoxProxyUseDefaultCredentials.Checked;
+    public string? ProxyCredentialsUsername => textBoxProxyCredentialsUsername.Text;
+    public string? ProxyCredentialsPassword => textBoxProxyCredentialsPassword.Text;
+    public string? ProxyAddress => textBoxProxyAddress.Text;
+    public int Timeout => Convert.ToInt32(numericUpDownTimeout.Value);
 }
