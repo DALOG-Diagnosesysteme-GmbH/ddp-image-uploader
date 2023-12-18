@@ -1,5 +1,4 @@
 using Dalog.DataPlatform.Client.ImageUploader.Schema;
-using System.Diagnostics;
 
 namespace Dalog.DataPlatform.Client.ImageUploader.Forms
 {

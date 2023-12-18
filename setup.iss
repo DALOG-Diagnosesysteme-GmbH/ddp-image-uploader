@@ -10,6 +10,7 @@ Compression=lzma
 SolidCompression=yes
 ArchitecturesAllowed=x64
 ArchitecturesInstallIn64BitMode=x64
+SetupIconFile=output\logo.ico
 
 [Files]
 Source: "output\*"; DestDir: "{app}"; Flags: recursesubdirs ignoreversion

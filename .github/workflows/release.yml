@@ -37,7 +37,7 @@ jobs:
     
         # Update .iss file
         $issContent = Get-Content $issPath
-        $content = $content -replace "x.x.x", ${{ env.VERSION }}
+        $issContent = $issContent -replace "x.x.x", ${{ env.VERSION }}
         Set-Content $issPath $issContent
 
     - name: Setup .NET

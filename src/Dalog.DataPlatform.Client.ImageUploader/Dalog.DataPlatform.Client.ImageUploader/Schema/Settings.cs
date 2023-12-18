@@ -1,13 +1,4 @@
-﻿using Dalog.DataPlatform.Client.ImageUploader.Properties;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Net;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Dalog.DataPlatform.Client.ImageUploader.Schema
+﻿namespace Dalog.DataPlatform.Client.ImageUploader.Schema
 {
     internal class Settings : INotifyPropertyChanged
     {

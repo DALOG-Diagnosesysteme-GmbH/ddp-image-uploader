@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Dalog.DataPlatform.Client.ImageUploader.Schema
+﻿namespace Dalog.DataPlatform.Client.ImageUploader.Schema
 {
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Parameter, AllowMultiple = false)]
     public class DalogIdAttribute : ValidationAttribute
