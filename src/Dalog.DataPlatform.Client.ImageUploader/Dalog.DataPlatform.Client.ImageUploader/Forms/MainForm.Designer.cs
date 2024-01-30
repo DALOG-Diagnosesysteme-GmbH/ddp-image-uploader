@@ -270,7 +270,7 @@
             groupBoxProgress.Size = new Size(760, 55);
             groupBoxProgress.TabIndex = 7;
             groupBoxProgress.TabStop = false;
-            groupBoxProgress.Text = "Progess";
+            groupBoxProgress.Text = "Progress";
             // 
             // progressBar
             // 

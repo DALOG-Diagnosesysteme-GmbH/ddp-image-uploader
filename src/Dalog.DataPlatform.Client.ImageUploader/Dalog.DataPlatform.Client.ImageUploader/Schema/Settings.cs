@@ -5,33 +5,21 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Schema;
 
 internal class Settings : INotifyPropertyChanged
 {
-    private string? _baseUrl;
     private string? _apiKey;
-    private string? _folder;
-    private string? _machineId;
+    private string? _baseUrl;
     private string? _dalogId;
     private bool _disableSslChecks;
+    private string? _folder;
     private ImageType _imageType;
-    private bool _useProxy;
+    private string? _machineId;
     private string? _proxyAddress;
-    private bool _proxyUseDefaultCredentials;
-    private string? _proxyCredentialsUsername;
     private string? _proxyCredentialsPassword;
+    private string? _proxyCredentialsUsername;
+    private bool _proxyUseDefaultCredentials;
     private int _timeout;
+    private bool _useProxy;
 
     public event PropertyChangedEventHandler? PropertyChanged;
-
-    public string? BaseUrl
-    { 
-        get { return _baseUrl; }
-        set 
-        { 
-            _baseUrl = value;
-            Forms.UserSettings.Default.BaseUrl = value;
-            Forms.UserSettings.Default.Save();
-            InvokePropertyChanged(new PropertyChangedEventArgs(nameof(BaseUrl)));
-        }
-    }
 
     public string? ApiKey
     {
@@ -45,27 +33,15 @@ internal class Settings : INotifyPropertyChanged
         }
     }
 
-    public string? Folder
+    public string? BaseUrl
     {
-        get { return _folder; }
+        get { return _baseUrl; }
         set
         {
-            _folder = value;
-            Forms.UserSettings.Default.Folder = value;
+            _baseUrl = value;
+            Forms.UserSettings.Default.BaseUrl = value;
             Forms.UserSettings.Default.Save();
-            InvokePropertyChanged(new PropertyChangedEventArgs(nameof(Folder)));
-        }
-    }
-
-    public string? MachineId
-    {
-        get { return _machineId; }
-        set
-        {
-            _machineId = value;
-            Forms.UserSettings.Default.MachineId = value;
-            Forms.UserSettings.Default.Save();
-            InvokePropertyChanged(new PropertyChangedEventArgs(nameof(MachineId)));
+            InvokePropertyChanged(new PropertyChangedEventArgs(nameof(BaseUrl)));
         }
     }
 
@@ -93,15 +69,15 @@ internal class Settings : INotifyPropertyChanged
         }
     }
 
-    public bool UseProxy
+    public string? Folder
     {
-        get { return _useProxy; }
+        get { return _folder; }
         set
         {
-            _useProxy = value;
-            Forms.UserSettings.Default.UseProxy = value;
+            _folder = value;
+            Forms.UserSettings.Default.Folder = value;
             Forms.UserSettings.Default.Save();
-            InvokePropertyChanged(new PropertyChangedEventArgs(nameof(UseProxy)));
+            InvokePropertyChanged(new PropertyChangedEventArgs(nameof(Folder)));
         }
     }
 
@@ -117,6 +93,18 @@ internal class Settings : INotifyPropertyChanged
         }
     }
 
+    public string? MachineId
+    {
+        get { return _machineId; }
+        set
+        {
+            _machineId = value;
+            Forms.UserSettings.Default.MachineId = value;
+            Forms.UserSettings.Default.Save();
+            InvokePropertyChanged(new PropertyChangedEventArgs(nameof(MachineId)));
+        }
+    }
+
     public string? ProxyAddress
     {
         get { return _proxyAddress; }
@@ -126,30 +114,6 @@ internal class Settings : INotifyPropertyChanged
             Forms.UserSettings.Default.ProxyAddress = value;
             Forms.UserSettings.Default.Save();
             InvokePropertyChanged(new PropertyChangedEventArgs(nameof(ProxyAddress)));
-        }
-    }
-
-    public bool ProxyUseDefaultCredentials
-    {
-        get { return _proxyUseDefaultCredentials; }
-        set
-        {
-            _proxyUseDefaultCredentials = value;
-            Forms.UserSettings.Default.ProxyUseDefaultCredentials = value;
-            Forms.UserSettings.Default.Save();
-            InvokePropertyChanged(new PropertyChangedEventArgs(nameof(ProxyUseDefaultCredentials)));
-        }
-    }
-
-    public string? ProxyCredentialsUsername
-    {
-        get { return _proxyCredentialsUsername; }
-        set
-        {
-            _proxyCredentialsUsername = value;
-            Forms.UserSettings.Default.ProxyCredentialsUsername = value;
-            Forms.UserSettings.Default.Save();
-            InvokePropertyChanged(new PropertyChangedEventArgs(nameof(ProxyCredentialsUsername)));
         }
     }
 
@@ -165,6 +129,30 @@ internal class Settings : INotifyPropertyChanged
         }
     }
 
+    public string? ProxyCredentialsUsername
+    {
+        get { return _proxyCredentialsUsername; }
+        set
+        {
+            _proxyCredentialsUsername = value;
+            Forms.UserSettings.Default.ProxyCredentialsUsername = value;
+            Forms.UserSettings.Default.Save();
+            InvokePropertyChanged(new PropertyChangedEventArgs(nameof(ProxyCredentialsUsername)));
+        }
+    }
+
+    public bool ProxyUseDefaultCredentials
+    {
+        get { return _proxyUseDefaultCredentials; }
+        set
+        {
+            _proxyUseDefaultCredentials = value;
+            Forms.UserSettings.Default.ProxyUseDefaultCredentials = value;
+            Forms.UserSettings.Default.Save();
+            InvokePropertyChanged(new PropertyChangedEventArgs(nameof(ProxyUseDefaultCredentials)));
+        }
+    }
+
     public int Timeout
     {
         get { return _timeout; }
@@ -175,6 +163,45 @@ internal class Settings : INotifyPropertyChanged
             Forms.UserSettings.Default.Save();
             InvokePropertyChanged(new PropertyChangedEventArgs(nameof(Timeout)));
         }
+    }
+
+    public bool UseProxy
+    {
+        get { return _useProxy; }
+        set
+        {
+            _useProxy = value;
+            Forms.UserSettings.Default.UseProxy = value;
+            Forms.UserSettings.Default.Save();
+            InvokePropertyChanged(new PropertyChangedEventArgs(nameof(UseProxy)));
+        }
+    }
+
+    public HttpClient GetHttpClient()
+    {
+        var handler = new HttpClientHandler();
+        if (DisableSslChecks)
+        {
+            handler.ClientCertificateOptions = ClientCertificateOption.Manual;
+            handler.ServerCertificateCustomValidationCallback = (_, _, _, _) => { return true; };
+        }
+        if (UseProxy)
+        {
+            handler.UseProxy = UseProxy;
+            handler.Proxy = new WebProxy
+            {
+                Address = new Uri(ProxyAddress ?? string.Empty),
+                UseDefaultCredentials = ProxyUseDefaultCredentials,
+                Credentials = new NetworkCredential(ProxyCredentialsUsername, ProxyCredentialsPassword)
+            };
+        }
+
+        var result = new HttpClient(handler);
+        result.BaseAddress = new Uri(SanitizeBaseUrl(BaseUrl ?? string.Empty));
+        result.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", ApiKey);
+        result.Timeout = TimeSpan.FromSeconds(Timeout);
+
+        return result;
     }
 
     public void Initialize()
@@ -211,38 +238,6 @@ internal class Settings : INotifyPropertyChanged
         Timeout = 30;
     }
 
-    public HttpClient GetHttpClient()
-    {
-        var handler = new HttpClientHandler();
-        if (DisableSslChecks)
-        {
-            handler.ClientCertificateOptions = ClientCertificateOption.Manual;
-            handler.ServerCertificateCustomValidationCallback = (_, _, _, _) => { return true; };
-        }
-        if (UseProxy)
-        {
-            handler.UseProxy = UseProxy;
-            handler.Proxy = new WebProxy
-            {
-                Address = new Uri(ProxyAddress ?? string.Empty),
-                UseDefaultCredentials = ProxyUseDefaultCredentials,
-                Credentials = new NetworkCredential(ProxyCredentialsUsername, ProxyCredentialsPassword)
-            };
-        }
-
-        var result = new HttpClient(handler);
-        result.BaseAddress = new Uri(SanitizeBaseUrl(BaseUrl ?? string.Empty));
-        result.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", ApiKey);
-        result.Timeout = TimeSpan.FromSeconds(Timeout);
-
-        return result;
-    }
-
-    protected void InvokePropertyChanged(PropertyChangedEventArgs e)
-    {
-        if (PropertyChanged is not null) PropertyChanged(this, e);
-    }
-
     internal static string GetPathFromImageType(ImageType type) => type switch
     {
         ImageType.Default => "/files/v1/images",
@@ -264,6 +259,11 @@ internal class Settings : INotifyPropertyChanged
         ImageType.Zip => true,
         _ => throw new NotImplementedException(),
     };
+
+    protected void InvokePropertyChanged(PropertyChangedEventArgs e)
+    {
+        if (PropertyChanged is not null) PropertyChanged(this, e);
+    }
 
     private static string SanitizeBaseUrl(string baseUrl)
     {

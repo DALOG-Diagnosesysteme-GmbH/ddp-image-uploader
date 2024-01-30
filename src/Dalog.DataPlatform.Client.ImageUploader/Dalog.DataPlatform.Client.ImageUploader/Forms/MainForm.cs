@@ -6,8 +6,8 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Forms;
 public partial class MainForm : Form
 {
     private const string PingUrl = "/files/v1/ping";
-    private readonly Settings _settings;
     private readonly Dictionary<Control, bool> _controlStates;
+    private readonly Settings _settings;
 
     public MainForm()
     {
@@ -17,20 +17,6 @@ public partial class MainForm : Form
         _controlStates = new Dictionary<Control, bool>();
     }
 
-    private void MainForm_Load(object sender, EventArgs e)
-    {
-        textBoxBaseUrl.DataBindings.Add(new Binding(nameof(textBoxBaseUrl.Text), _settings, nameof(_settings.BaseUrl)));
-        textBoxApiKey.DataBindings.Add(new Binding(nameof(textBoxApiKey.Text), _settings, nameof(_settings.ApiKey)));
-        textBoxLocalFolder.DataBindings.Add(new Binding(nameof(textBoxLocalFolder.Text), _settings, nameof(_settings.Folder)));
-        textBoxMachineId.DataBindings.Add(new Binding(nameof(textBoxMachineId.Text), _settings, nameof(_settings.MachineId)));
-        textBoxDalogId.DataBindings.Add(new Binding(nameof(textBoxDalogId.Text), _settings, nameof(_settings.DalogId)));
-        
-        comboBoxImageType.DataSource = Enum.GetValues(typeof(ImageType));
-        comboBoxImageType.DataBindings.Add(new Binding(nameof(comboBoxImageType.SelectedItem), _settings, nameof(_settings.ImageType)));
-
-        _settings.Initialize();
-    }
-
     private void ButtonFolderSelect_Click(object sender, EventArgs e)
     {
         using var dialog = new FolderBrowserDialog();
@@ -38,6 +24,19 @@ public partial class MainForm : Form
         {
             _settings.Folder = dialog.SelectedPath;
         }
+    }
+
+    private void ButtonNetworkSettings_Click(object sender, EventArgs e)
+    {
+        using var networkForm = new NetworkForm(_settings);
+        networkForm.ShowDialog(this);
+        _settings.DisableSslChecks = networkForm.DisableSslChecks;
+        _settings.Timeout = networkForm.Timeout;
+        _settings.UseProxy = networkForm.UseProxy;
+        _settings.ProxyAddress = networkForm.ProxyAddress;
+        _settings.ProxyUseDefaultCredentials = networkForm.ProxyUseDefaultCredentials;
+        _settings.ProxyCredentialsUsername = networkForm.ProxyCredentialsUsername;
+        _settings.ProxyCredentialsPassword = networkForm.ProxyCredentialsPassword;
     }
 
     private void ButtonResetSettings_Click(object sender, EventArgs e)
@@ -75,49 +74,6 @@ public partial class MainForm : Form
         }
     }
 
-    private void StartWaitAnimation()
-    {
-        _controlStates.Clear();
-        StoreAndDisableControls(this);
-        progressBar.Style = ProgressBarStyle.Marquee;
-    }
-
-    private void StopWaitAnimation()
-    {
-        RestoreControls(this);
-        _controlStates.Clear();
-        progressBar.Style = ProgressBarStyle.Blocks;
-    }
-
-    private void StoreAndDisableControls(Control control)
-    {
-        foreach (Control c in control.Controls)
-        {
-            if (c == progressBar) continue;
-            if (c is TextBox || c is Button || c is ComboBox || c is NumericUpDown || c is CheckBox)
-            {
-                _controlStates.Add(c, c.Enabled);
-                c.Enabled = false;
-            }
-
-            StoreAndDisableControls(c);
-        }
-    }
-
-    private void RestoreControls(Control control)
-    {
-        foreach (Control c in control.Controls)
-        {
-            if (c == progressBar) continue;
-
-            if (_controlStates.TryGetValue(c, out bool enabled))
-            {
-                c.Enabled = enabled;
-            }
-            RestoreControls(c);
-        }
-    }
-
     private void ButtonUpload_Click(object sender, EventArgs e)
     {
         if (string.IsNullOrWhiteSpace(_settings.BaseUrl))
@@ -132,13 +88,11 @@ public partial class MainForm : Form
             return;
         }
 
-
         if (string.IsNullOrWhiteSpace(_settings.ApiKey))
         {
             MessageBox.Show(this, "API Key is required", Text, MessageBoxButtons.OK, MessageBoxIcon.Error);
             return;
         }
-
 
         var isMachineIdOrDalogIdRequired = Settings.IsMachineIdOrDalogIdRequired(_settings.ImageType);
         if (isMachineIdOrDalogIdRequired)
@@ -155,13 +109,11 @@ public partial class MainForm : Form
                 return;
             }
 
-
             if (!string.IsNullOrWhiteSpace(_settings.DalogId) && !new DalogIdAttribute().IsValid(_settings.DalogId))
             {
                 MessageBox.Show(this, "DALOG Id is not valid", Text, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-
         }
 
         if (string.IsNullOrWhiteSpace(_settings.Folder))
@@ -203,16 +155,60 @@ public partial class MainForm : Form
         Process.Start("CMD.exe", $"/C start msedge \"https://github.com/DALOG-Diagnosesysteme-GmbH/ddp-image-uploader\"");
     }
 
-    private void ButtonNetworkSettings_Click(object sender, EventArgs e)
+    private void MainForm_Load(object sender, EventArgs e)
     {
-        using var networkForm = new NetworkForm(_settings);
-        networkForm.ShowDialog(this);
-        _settings.DisableSslChecks = networkForm.DisableSslChecks;
-        _settings.Timeout = networkForm.Timeout;
-        _settings.UseProxy = networkForm.UseProxy;
-        _settings.ProxyAddress = networkForm.ProxyAddress;
-        _settings.ProxyUseDefaultCredentials = networkForm.ProxyUseDefaultCredentials;
-        _settings.ProxyCredentialsUsername = networkForm.ProxyCredentialsUsername;
-        _settings.ProxyCredentialsPassword = networkForm.ProxyCredentialsPassword;
+        textBoxBaseUrl.DataBindings.Add(new Binding(nameof(textBoxBaseUrl.Text), _settings, nameof(_settings.BaseUrl)));
+        textBoxApiKey.DataBindings.Add(new Binding(nameof(textBoxApiKey.Text), _settings, nameof(_settings.ApiKey)));
+        textBoxLocalFolder.DataBindings.Add(new Binding(nameof(textBoxLocalFolder.Text), _settings, nameof(_settings.Folder)));
+        textBoxMachineId.DataBindings.Add(new Binding(nameof(textBoxMachineId.Text), _settings, nameof(_settings.MachineId)));
+        textBoxDalogId.DataBindings.Add(new Binding(nameof(textBoxDalogId.Text), _settings, nameof(_settings.DalogId)));
+
+        comboBoxImageType.DataSource = Enum.GetValues(typeof(ImageType));
+        comboBoxImageType.DataBindings.Add(new Binding(nameof(comboBoxImageType.SelectedItem), _settings, nameof(_settings.ImageType)));
+
+        _settings.Initialize();
+    }
+
+    private void RestoreControls(Control control)
+    {
+        foreach (Control c in control.Controls)
+        {
+            if (c == progressBar) continue;
+
+            if (_controlStates.TryGetValue(c, out bool enabled))
+            {
+                c.Enabled = enabled;
+            }
+            RestoreControls(c);
+        }
+    }
+
+    private void StartWaitAnimation()
+    {
+        _controlStates.Clear();
+        StoreAndDisableControls(this);
+        progressBar.Style = ProgressBarStyle.Marquee;
+    }
+
+    private void StopWaitAnimation()
+    {
+        RestoreControls(this);
+        _controlStates.Clear();
+        progressBar.Style = ProgressBarStyle.Blocks;
+    }
+
+    private void StoreAndDisableControls(Control control)
+    {
+        foreach (Control c in control.Controls)
+        {
+            if (c == progressBar) continue;
+            if (c is TextBox || c is Button || c is ComboBox || c is NumericUpDown || c is CheckBox)
+            {
+                _controlStates.Add(c, c.Enabled);
+                c.Enabled = false;
+            }
+
+            StoreAndDisableControls(c);
+        }
     }
 }
