@@ -68,7 +68,7 @@
             MaximizeBox = false;
             MinimizeBox = false;
             Name = "ProgressPanel";
-            StartPosition = FormStartPosition.CenterParent;
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "Loading...";
             ResumeLayout(false);
             PerformLayout();

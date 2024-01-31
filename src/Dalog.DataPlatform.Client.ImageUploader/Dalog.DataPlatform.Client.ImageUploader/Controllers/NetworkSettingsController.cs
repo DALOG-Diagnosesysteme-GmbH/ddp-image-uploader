@@ -24,7 +24,7 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Controllers
         /// Initializes a new instance of the <see cref="NetworkSettingsController"/> class.
         /// </summary>
         /// <param name="settings">The settings</param>
-        public NetworkSettingsController(Settings settings)
+        public NetworkSettingsController(HttpSettings settings)
         {
             this._view = new NetworkForm();
             this.SubscribeEvents();

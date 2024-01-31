@@ -20,6 +20,11 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Views
         }
 
         /// <summary>
+        /// Event triggered when the select folder button is clicked
+        /// </summary>
+        public event EventHandler<EventArgs>? OnSelectFolderButtonClick;
+
+        /// <summary>
         /// Gets the images folder text box.
         /// </summary>
         public TextBox ImagesFolder
@@ -39,6 +44,16 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Views
             {
                 return this.comboBoxImagesType;
             }
+        }
+
+        /// <summary>
+        /// Method called when the select folder button is clicked.
+        /// </summary>
+        /// <param name="sender">The sender object</param>
+        /// <param name="e">The event args.</param>
+        private void ButtonSelectFolder_Click(object sender, EventArgs e)
+        {
+            this.OnSelectFolderButtonClick?.Invoke(sender, e);
         }
     }
 }

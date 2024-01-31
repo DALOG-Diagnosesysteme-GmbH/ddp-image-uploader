@@ -28,8 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CopyForm));
             groupBoxProgress = new GroupBox();
             dataGridView = new DataGridView();
@@ -47,10 +45,10 @@
             groupBoxProgress.Controls.Add(progressBar);
             groupBoxProgress.Controls.Add(textBoxCurrentFile);
             groupBoxProgress.Controls.Add(labelCurrentFile);
-            groupBoxProgress.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            groupBoxProgress.Location = new Point(12, 12);
+            groupBoxProgress.Font = new Font("Segoe UI", 8.5F, FontStyle.Bold);
+            groupBoxProgress.Location = new Point(12, 14);
             groupBoxProgress.Name = "groupBoxProgress";
-            groupBoxProgress.Size = new Size(776, 426);
+            groupBoxProgress.Size = new Size(521, 374);
             groupBoxProgress.TabIndex = 0;
             groupBoxProgress.TabStop = false;
             groupBoxProgress.Text = "Progress";
@@ -60,68 +58,55 @@
             dataGridView.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             dataGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = SystemColors.Window;
-            dataGridViewCellStyle1.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            dataGridViewCellStyle1.ForeColor = SystemColors.ControlText;
-            dataGridViewCellStyle1.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.False;
-            dataGridView.DefaultCellStyle = dataGridViewCellStyle1;
             dataGridView.EditMode = DataGridViewEditMode.EditProgrammatically;
-            dataGridView.Location = new Point(6, 80);
+            dataGridView.Location = new Point(11, 91);
             dataGridView.Name = "dataGridView";
-            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = SystemColors.Control;
-            dataGridViewCellStyle2.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            dataGridViewCellStyle2.ForeColor = SystemColors.WindowText;
-            dataGridViewCellStyle2.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.True;
-            dataGridView.RowHeadersDefaultCellStyle = dataGridViewCellStyle2;
-            dataGridView.Size = new Size(764, 340);
+            dataGridView.Size = new Size(501, 272);
             dataGridView.TabIndex = 3;
             // 
             // progressBar
             // 
             progressBar.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            progressBar.Location = new Point(6, 51);
+            progressBar.Location = new Point(11, 58);
             progressBar.Name = "progressBar";
-            progressBar.Size = new Size(764, 23);
+            progressBar.Size = new Size(501, 26);
             progressBar.TabIndex = 2;
             // 
             // textBoxCurrentFile
             // 
             textBoxCurrentFile.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            textBoxCurrentFile.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            textBoxCurrentFile.Location = new Point(169, 22);
+            textBoxCurrentFile.Font = new Font("Segoe UI", 10F);
+            textBoxCurrentFile.Location = new Point(108, 25);
             textBoxCurrentFile.Name = "textBoxCurrentFile";
             textBoxCurrentFile.ReadOnly = true;
-            textBoxCurrentFile.Size = new Size(601, 23);
+            textBoxCurrentFile.Size = new Size(404, 25);
             textBoxCurrentFile.TabIndex = 1;
             // 
             // labelCurrentFile
             // 
             labelCurrentFile.AutoSize = true;
-            labelCurrentFile.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            labelCurrentFile.Location = new Point(6, 25);
+            labelCurrentFile.Font = new Font("Segoe UI", 10F);
+            labelCurrentFile.Location = new Point(11, 28);
             labelCurrentFile.Name = "labelCurrentFile";
-            labelCurrentFile.Size = new Size(69, 15);
+            labelCurrentFile.Size = new Size(80, 19);
             labelCurrentFile.TabIndex = 0;
             labelCurrentFile.Text = "Current file:";
             // 
             // CopyForm
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(7F, 17F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 450);
+            BackColor = Color.White;
+            ClientSize = new Size(545, 401);
             Controls.Add(groupBoxProgress);
+            Font = new Font("Segoe UI", 10F);
+            ForeColor = Color.FromArgb(43, 42, 41);
             FormBorderStyle = FormBorderStyle.FixedDialog;
             Icon = (Icon)resources.GetObject("$this.Icon");
             MaximizeBox = false;
             MinimizeBox = false;
             Name = "CopyForm";
-            StartPosition = FormStartPosition.CenterScreen;
+            StartPosition = FormStartPosition.CenterParent;
             Text = "DALOG Image Uploader";
             Load += CopyForm_Load;
             groupBoxProgress.ResumeLayout(false);

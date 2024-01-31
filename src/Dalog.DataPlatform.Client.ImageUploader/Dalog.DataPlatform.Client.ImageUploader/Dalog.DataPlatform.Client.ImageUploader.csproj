@@ -9,22 +9,13 @@
     <StartupObject>Dalog.DataPlatform.Client.ImageUploader.Program</StartupObject>
     <ApplicationIcon>logo.ico</ApplicationIcon>
     <Version>0.0.1</Version>
+    <UserSecretsId>56906005-30a3-465b-bda2-612b4938c5d0</UserSecretsId>
   </PropertyGroup>
-
-  <ItemGroup>
-    <None Remove="Resources\pulse.svg" />
-  </ItemGroup>
 
   <ItemGroup>
     <Content Include="logo.ico">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Include="Resources\pulse.svg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </EmbeddedResource>
   </ItemGroup>
 
   <ItemGroup>
@@ -70,6 +61,10 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>UserSettings.Designer.cs</LastGenOutput>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Resources\" />
   </ItemGroup>
 
 </Project>

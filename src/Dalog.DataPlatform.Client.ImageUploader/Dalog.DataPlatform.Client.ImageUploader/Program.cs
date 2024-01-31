@@ -1,5 +1,8 @@
 using Dalog.DataPlatform.Client.ImageUploader.Controllers;
 using Dalog.DataPlatform.Client.ImageUploader.Forms;
+using Dalog.DataPlatform.Client.ImageUploader.Repositories;
+using Dalog.DataPlatform.Client.ImageUploader.Schema;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
@@ -15,9 +18,15 @@ internal static class Program
     private static IHostBuilder CreateHostBuilder(string[] args)
     {
         var host = Host.CreateDefaultBuilder(args)
+            .ConfigureAppConfiguration((builder) =>
+            {
+                builder.AddUserSecrets<AppSettings>();
+            })
             .ConfigureServices((context, services) =>
             {
-                services.AddSingleton<IController<MainForm2>, MainController>();
+                services.Configure<AppSettings>(context.Configuration.GetSection(nameof(AppSettings)));
+                services.AddSingleton<HttpRepository>();
+                services.AddSingleton<IController<MainForm>, MainController>();
             });
 
         return host;
@@ -31,7 +40,7 @@ internal static class Program
         using var host = CreateHostBuilder([]).Build();
         host.RunAsync();
 
-        var mainController = host.Services.GetRequiredService<IController<MainForm2>>();
+        var mainController = host.Services.GetRequiredService<IController<MainForm>>();
         Application.Run(mainController.View);
     }
 }

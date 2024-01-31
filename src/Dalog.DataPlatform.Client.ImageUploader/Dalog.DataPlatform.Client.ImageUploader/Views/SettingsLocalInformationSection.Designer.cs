@@ -28,11 +28,13 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SettingsLocalInformationSection));
             labelImagesFolder = new Label();
             labelImagesType = new Label();
             textBoxImagesFolder = new TextBox();
             comboBoxImagesType = new ComboBox();
             groupBoxContainer = new GroupBox();
+            buttonSelectFolder = new Button();
             groupBoxContainer.SuspendLayout();
             SuspendLayout();
             // 
@@ -71,7 +73,7 @@
             textBoxImagesFolder.Margin = new Padding(2);
             textBoxImagesFolder.MaxLength = 9999;
             textBoxImagesFolder.Name = "textBoxImagesFolder";
-            textBoxImagesFolder.Size = new Size(242, 25);
+            textBoxImagesFolder.Size = new Size(212, 25);
             textBoxImagesFolder.TabIndex = 1;
             // 
             // comboBoxImagesType
@@ -88,6 +90,7 @@
             // 
             // groupBoxContainer
             // 
+            groupBoxContainer.Controls.Add(buttonSelectFolder);
             groupBoxContainer.Controls.Add(comboBoxImagesType);
             groupBoxContainer.Controls.Add(textBoxImagesFolder);
             groupBoxContainer.Controls.Add(labelImagesFolder);
@@ -100,6 +103,24 @@
             groupBoxContainer.TabIndex = 6;
             groupBoxContainer.TabStop = false;
             groupBoxContainer.Text = "Local Folder Information";
+            // 
+            // buttonSelectFolder
+            // 
+            buttonSelectFolder.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            buttonSelectFolder.BackColor = Color.White;
+            buttonSelectFolder.BackgroundImage = (Image)resources.GetObject("buttonSelectFolder.BackgroundImage");
+            buttonSelectFolder.BackgroundImageLayout = ImageLayout.Zoom;
+            buttonSelectFolder.FlatAppearance.BorderColor = Color.White;
+            buttonSelectFolder.FlatAppearance.BorderSize = 0;
+            buttonSelectFolder.FlatAppearance.MouseDownBackColor = Color.FromArgb(237, 235, 233);
+            buttonSelectFolder.FlatAppearance.MouseOverBackColor = Color.FromArgb(243, 242, 241);
+            buttonSelectFolder.FlatStyle = FlatStyle.Flat;
+            buttonSelectFolder.Location = new Point(347, 24);
+            buttonSelectFolder.Name = "buttonSelectFolder";
+            buttonSelectFolder.Size = new Size(25, 25);
+            buttonSelectFolder.TabIndex = 4;
+            buttonSelectFolder.UseVisualStyleBackColor = false;
+            buttonSelectFolder.Click += ButtonSelectFolder_Click;
             // 
             // SettingsLocalInformationSection
             // 
@@ -124,5 +145,6 @@
         private TextBox textBoxImagesFolder;
         private ComboBox comboBoxImagesType;
         private GroupBox groupBoxContainer;
+        private Button buttonSelectFolder;
     }
 }

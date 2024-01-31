@@ -2,7 +2,7 @@
 
 namespace Dalog.DataPlatform.Client.ImageUploader.Schema;
 
-internal enum ImageType
+public enum ImageType
 {
     Default,
     BusyBee,

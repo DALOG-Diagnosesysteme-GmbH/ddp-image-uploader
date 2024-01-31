@@ -24,7 +24,7 @@ public partial class NetworkForm : Form
     /// Initializes a new instance of the <see cref="NetworkForm"/> class.
     /// </summary>
     /// <param name="settings">The settings object</param>
-    internal NetworkForm(Settings settings)
+    internal NetworkForm(HttpSettings settings)
     {
         InitializeComponent();
 
