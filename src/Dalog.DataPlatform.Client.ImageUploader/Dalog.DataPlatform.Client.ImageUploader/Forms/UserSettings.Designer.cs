@@ -109,7 +109,7 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Forms {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Default")]
+        [global::System.Configuration.DefaultSettingValueAttribute("BusyBee")]
         public string ImageType {
             get {
                 return ((string)(this["ImageType"]));

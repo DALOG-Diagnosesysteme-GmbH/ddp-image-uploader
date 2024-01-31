@@ -50,6 +50,7 @@
             buttonSecondary.TabIndex = 1;
             buttonSecondary.Text = "button1";
             buttonSecondary.UseVisualStyleBackColor = false;
+            buttonSecondary.KeyUp += ButtonSecondary_KeyUp;
             buttonSecondary.MouseDown += ButtonSecondary_MouseDown;
             buttonSecondary.MouseEnter += ButtonSecondary_MouseEnter;
             buttonSecondary.MouseLeave += ButtonSecondary_MouseLeave;

@@ -1,11 +1,13 @@
-﻿namespace Dalog.DataPlatform.Client.ImageUploader.Schema;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Dalog.DataPlatform.Client.ImageUploader.Schema;
 
 internal enum ImageType
 {
     Default,
     BusyBee,
-    Fls,
-    Gzip,
+    FLS,
+    GZip,
     Wireless,
     Zip
 }

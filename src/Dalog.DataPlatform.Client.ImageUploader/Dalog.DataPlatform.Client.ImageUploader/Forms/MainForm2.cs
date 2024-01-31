@@ -19,32 +19,64 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Forms
         private readonly SettingsCommandBar _commandBar;
 
         /// <summary>
-        /// The DDP Information section view
-        /// </summary>
-        private readonly SettingsDdpInformationSection _ddpInformationSection;
-
-        /// <summary>
-        /// The local information section view.
-        /// </summary>
-        private readonly SettingsLocalInformationSection _localInformationSection;
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="MainForm2"/> class.
         /// </summary>
         public MainForm2()
         {
             InitializeComponent();
-            this._commandBar = new SettingsCommandBar();
-            this._ddpInformationSection = new SettingsDdpInformationSection();
-            this._localInformationSection = new SettingsLocalInformationSection();
+            this._commandBar = new SettingsCommandBar
+            {
+                TabIndex = 1
+            };
+            this.SectionLocalInformation = new SettingsLocalInformationSection
+            {
+                TabIndex = 2
+            };
+            this.SectionDdpInformation = new SettingsDdpInformationSection
+            {
+                TabIndex = 3
+            };
+
             this.CheckBoxMode_CheckedChanged(this, EventArgs.Empty);
+        }
+
+        /// <summary>
+        /// Gets the command bar
+        /// </summary>
+        internal SettingsCommandBar CommandBar
+        {
+            get
+            {
+                return this._commandBar;
+            }
+        }
+
+        /// <summary>
+        /// The DDP Information section view
+        /// </summary>
+        internal SettingsDdpInformationSection SectionDdpInformation { get; init; }
+
+        /// <summary>
+        /// The local information section view.
+        /// </summary>
+        internal SettingsLocalInformationSection SectionLocalInformation { get; init; }
+
+        /// <summary>
+        /// Gets the upload button.
+        /// </summary>
+        internal PrimaryButton UploadButton
+        {
+            get
+            {
+                return this.buttonUpload;
+            }
         }
 
         /// <summary>
         /// Appends a control to this form.
         /// </summary>
         /// <param name="control">The user control to append.</param>
-        private void AppendControl(UserControl control)
+        private void AppendSection(UserControl control)
         {
             if (this.Controls.Contains(control))
             {
@@ -69,10 +101,25 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Forms
         }
 
         /// <summary>
+        /// Method called when a key is up when the expert mode check box is focused.
+        /// </summary>
+        /// <param name="sender">The sender object</param>
+        /// <param name="e">The key event args</param>
+        private void CheckBoxMode_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode != Keys.Enter)
+            {
+                return;
+            }
+
+            this.checkBoxMode.Checked = !this.checkBoxMode.Checked;
+        }
+
+        /// <summary>
         /// Removes a control from this form
         /// </summary>
         /// <param name="control">The control to remove.</param>
-        private void RemoveControl(UserControl control)
+        private void RemoveSection(UserControl control)
         {
             if (!this.Controls.Contains(control))
             {
@@ -92,16 +139,16 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Forms
             this.SuspendLayout();
             if (!expertMode)
             {
-                this.RemoveControl(this._commandBar);
-                this.RemoveControl(this._ddpInformationSection);
-                this.AppendControl(this._localInformationSection);
+                this.RemoveSection(this._commandBar);
+                this.RemoveSection(this.SectionDdpInformation);
+                this.AppendSection(this.SectionLocalInformation);
             }
             else
             {
-                this.RemoveControl(this._localInformationSection);
-                this.AppendControl(this._commandBar);
-                this.AppendControl(this._localInformationSection);
-                this.AppendControl(this._ddpInformationSection);
+                this.RemoveSection(this.SectionLocalInformation);
+                this.AppendSection(this._commandBar);
+                this.AppendSection(this.SectionLocalInformation);
+                this.AppendSection(this.SectionDdpInformation);
             }
 
             this.ResumeLayout();

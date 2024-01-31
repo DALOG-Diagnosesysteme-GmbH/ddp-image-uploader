@@ -65,7 +65,6 @@
             // textBoxImagesFolder
             // 
             textBoxImagesFolder.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            textBoxImagesFolder.BorderStyle = BorderStyle.FixedSingle;
             textBoxImagesFolder.Font = new Font("Segoe UI", 10F);
             textBoxImagesFolder.ForeColor = Color.FromArgb(50, 49, 48);
             textBoxImagesFolder.Location = new Point(130, 24);
@@ -73,7 +72,7 @@
             textBoxImagesFolder.MaxLength = 9999;
             textBoxImagesFolder.Name = "textBoxImagesFolder";
             textBoxImagesFolder.Size = new Size(242, 25);
-            textBoxImagesFolder.TabIndex = 4;
+            textBoxImagesFolder.TabIndex = 1;
             // 
             // comboBoxImagesType
             // 
@@ -85,7 +84,7 @@
             comboBoxImagesType.Location = new Point(130, 56);
             comboBoxImagesType.Name = "comboBoxImagesType";
             comboBoxImagesType.Size = new Size(242, 25);
-            comboBoxImagesType.TabIndex = 5;
+            comboBoxImagesType.TabIndex = 2;
             // 
             // groupBoxContainer
             // 

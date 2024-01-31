@@ -15,7 +15,7 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Views
         /// <summary>
         /// Data field of the default fore color.
         /// </summary>
-        private Color _defaultForeColor;
+        private readonly Color _defaultForeColor;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SecondaryButton"/> class.
@@ -25,6 +25,11 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Views
             InitializeComponent();
             this._defaultForeColor = this.buttonSecondary.ForeColor;
         }
+
+        /// <summary>
+        /// The button click event handler.
+        /// </summary>
+        public event EventHandler<EventArgs>? OnButtonClick;
 
         /// <summary>
         /// Gets and sets the button text.
@@ -37,6 +42,21 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Views
         }
 
         /// <summary>
+        /// Method called when a key is up.
+        /// </summary>
+        /// <param name="sender">The sender object</param>
+        /// <param name="e">The key event args.</param>
+        private void ButtonSecondary_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode != Keys.Enter)
+            {
+                return;
+            }
+
+            this.buttonSecondary.PerformClick();
+        }
+
+        /// <summary>
         /// Method called when the mouse button is down.
         /// </summary>
         /// <param name="sender">The sender object.</param>
@@ -44,6 +64,7 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Views
         private void ButtonSecondary_MouseDown(object sender, MouseEventArgs e)
         {
             this.buttonSecondary.ForeColor = Color.FromArgb(235, 63, 61);
+            this.OnButtonClick?.Invoke(this, e);
         }
 
         /// <summary>

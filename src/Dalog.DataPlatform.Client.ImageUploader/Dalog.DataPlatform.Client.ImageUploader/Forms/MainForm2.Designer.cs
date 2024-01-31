@@ -45,24 +45,25 @@
             buttonUpload.BackColor = Color.Transparent;
             buttonUpload.ButtonText = "Upload Images";
             buttonUpload.Font = new Font("Segoe UI", 10F);
-            buttonUpload.Location = new Point(193, 5);
+            buttonUpload.Location = new Point(168, 5);
             buttonUpload.MinimumSize = new Size(92, 32);
             buttonUpload.Name = "buttonUpload";
             buttonUpload.Size = new Size(111, 32);
-            buttonUpload.TabIndex = 2;
+            buttonUpload.TabIndex = 4;
             // 
             // checkBoxMode
             // 
             checkBoxMode.Anchor = AnchorStyles.Right;
             checkBoxMode.CheckAlign = ContentAlignment.MiddleRight;
             checkBoxMode.Font = new Font("Segoe UI", 8F, FontStyle.Bold);
-            checkBoxMode.Location = new Point(373, 8);
+            checkBoxMode.Location = new Point(323, 8);
             checkBoxMode.Name = "checkBoxMode";
             checkBoxMode.Size = new Size(96, 25);
-            checkBoxMode.TabIndex = 4;
+            checkBoxMode.TabIndex = 0;
             checkBoxMode.Text = "Expert Mode:";
             checkBoxMode.UseVisualStyleBackColor = true;
             checkBoxMode.CheckedChanged += CheckBoxMode_CheckedChanged;
+            checkBoxMode.KeyUp += CheckBoxMode_KeyUp;
             // 
             // labelTitle
             // 
@@ -83,8 +84,8 @@
             panelHeader.Dock = DockStyle.Top;
             panelHeader.Location = new Point(0, 0);
             panelHeader.Name = "panelHeader";
-            panelHeader.Size = new Size(484, 40);
-            panelHeader.TabIndex = 6;
+            panelHeader.Size = new Size(434, 40);
+            panelHeader.TabIndex = 0;
             // 
             // panelFooter
             // 
@@ -92,20 +93,20 @@
             panelFooter.Dock = DockStyle.Bottom;
             panelFooter.Location = new Point(0, 39);
             panelFooter.Name = "panelFooter";
-            panelFooter.Size = new Size(484, 46);
-            panelFooter.TabIndex = 7;
+            panelFooter.Size = new Size(434, 46);
+            panelFooter.TabIndex = 4;
             // 
             // MainForm2
             // 
             AutoScaleDimensions = new SizeF(7F, 17F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.White;
-            ClientSize = new Size(484, 85);
+            ClientSize = new Size(434, 85);
             Controls.Add(panelFooter);
             Controls.Add(panelHeader);
-            DoubleBuffered = true;
             Font = new Font("Segoe UI", 10F);
             ForeColor = Color.FromArgb(50, 49, 48);
+            FormBorderStyle = FormBorderStyle.FixedSingle;
             Icon = (Icon)resources.GetObject("$this.Icon");
             MaximizeBox = false;
             Name = "MainForm2";

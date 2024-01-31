@@ -65,7 +65,6 @@
             // textBoxMachineId
             // 
             textBoxMachineId.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            textBoxMachineId.BorderStyle = BorderStyle.FixedSingle;
             textBoxMachineId.Font = new Font("Segoe UI", 10F);
             textBoxMachineId.ForeColor = Color.FromArgb(50, 49, 48);
             textBoxMachineId.Location = new Point(130, 24);
@@ -73,12 +72,11 @@
             textBoxMachineId.MaxLength = 32;
             textBoxMachineId.Name = "textBoxMachineId";
             textBoxMachineId.Size = new Size(242, 25);
-            textBoxMachineId.TabIndex = 2;
+            textBoxMachineId.TabIndex = 1;
             // 
             // textBoxMachineNumber
             // 
             textBoxMachineNumber.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            textBoxMachineNumber.BorderStyle = BorderStyle.FixedSingle;
             textBoxMachineNumber.Font = new Font("Segoe UI", 10F);
             textBoxMachineNumber.ForeColor = Color.FromArgb(50, 49, 48);
             textBoxMachineNumber.Location = new Point(130, 57);
@@ -86,7 +84,7 @@
             textBoxMachineNumber.MaxLength = 9;
             textBoxMachineNumber.Name = "textBoxMachineNumber";
             textBoxMachineNumber.Size = new Size(242, 25);
-            textBoxMachineNumber.TabIndex = 3;
+            textBoxMachineNumber.TabIndex = 2;
             // 
             // groupBoxContainer
             // 
@@ -99,7 +97,7 @@
             groupBoxContainer.Location = new Point(10, 5);
             groupBoxContainer.Name = "groupBoxContainer";
             groupBoxContainer.Size = new Size(384, 95);
-            groupBoxContainer.TabIndex = 4;
+            groupBoxContainer.TabIndex = 100;
             groupBoxContainer.TabStop = false;
             groupBoxContainer.Text = "Data Platform";
             // 

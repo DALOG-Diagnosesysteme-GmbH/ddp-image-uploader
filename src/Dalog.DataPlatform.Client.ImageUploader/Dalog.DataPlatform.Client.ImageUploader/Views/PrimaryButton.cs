@@ -25,11 +25,26 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Views
         /// <summary>
         /// Gets and sets the button text.
         /// </summary>
-        [Description("The button text"), Category("Appearance")]
+        [Description("The button displayed text."), Category("Appearance")]
         public string ButtonText
         {
             get { return this.buttonPrimary.Text; }
             set { this.buttonPrimary.Text = value; }
+        }
+
+        /// <summary>
+        /// Method called when a key is up
+        /// </summary>
+        /// <param name="sender">the object sender</param>
+        /// <param name="e">The key event args.</param>
+        private void ButtonPrimary_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode != Keys.Enter)
+            {
+                return;
+            }
+
+            this.buttonPrimary.PerformClick();
         }
 
         /// <summary>

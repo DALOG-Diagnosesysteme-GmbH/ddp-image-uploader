@@ -46,8 +46,8 @@
             buttonTestConnection.MinimumSize = new Size(92, 32);
             buttonTestConnection.Name = "buttonTestConnection";
             buttonTestConnection.Size = new Size(114, 32);
-            buttonTestConnection.TabIndex = 0;
-            buttonTestConnection.Click += ButtonTestConnection_Click;
+            buttonTestConnection.TabIndex = 3;
+            buttonTestConnection.OnButtonClick += ButtonTestConnection_Click;
             // 
             // buttonResetSettings
             // 
@@ -60,8 +60,8 @@
             buttonResetSettings.MinimumSize = new Size(92, 32);
             buttonResetSettings.Name = "buttonResetSettings";
             buttonResetSettings.Size = new Size(114, 32);
-            buttonResetSettings.TabIndex = 1;
-            buttonResetSettings.Click += ButtonResetSettings_Click;
+            buttonResetSettings.TabIndex = 2;
+            buttonResetSettings.OnButtonClick += ButtonResetSettings_Click;
             // 
             // buttonNetworkSettings
             // 
@@ -74,8 +74,8 @@
             buttonNetworkSettings.MinimumSize = new Size(92, 32);
             buttonNetworkSettings.Name = "buttonNetworkSettings";
             buttonNetworkSettings.Size = new Size(123, 32);
-            buttonNetworkSettings.TabIndex = 2;
-            buttonNetworkSettings.Click += ButtonNetworkSettings_Click;
+            buttonNetworkSettings.TabIndex = 1;
+            buttonNetworkSettings.OnButtonClick += ButtonNetworkSettings_Click;
             // 
             // commandBarContainer
             // 

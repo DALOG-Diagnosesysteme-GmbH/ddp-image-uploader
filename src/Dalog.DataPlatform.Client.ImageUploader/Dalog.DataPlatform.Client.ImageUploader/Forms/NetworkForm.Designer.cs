@@ -42,6 +42,8 @@
             textBoxProxyAddress = new TextBox();
             labelProxyAddress = new Label();
             checkBoxUseProxy = new CheckBox();
+            buttonDone = new Views.PrimaryButton();
+            labelTitle = new Label();
             groupBoxNetwork.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numericUpDownTimeout).BeginInit();
             groupBoxProxySettings.SuspendLayout();
@@ -53,45 +55,45 @@
             groupBoxNetwork.Controls.Add(labelTimeout);
             groupBoxNetwork.Controls.Add(numericUpDownTimeout);
             groupBoxNetwork.Controls.Add(checkBoxDisableSslChecks);
-            groupBoxNetwork.Controls.Add(groupBoxProxySettings);
-            groupBoxNetwork.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            groupBoxNetwork.Location = new Point(12, 12);
+            groupBoxNetwork.Font = new Font("Segoe UI", 8.5F, FontStyle.Bold);
+            groupBoxNetwork.Location = new Point(12, 45);
             groupBoxNetwork.Name = "groupBoxNetwork";
-            groupBoxNetwork.Size = new Size(760, 266);
-            groupBoxNetwork.TabIndex = 17;
+            groupBoxNetwork.Size = new Size(345, 98);
+            groupBoxNetwork.TabIndex = 1;
             groupBoxNetwork.TabStop = false;
             groupBoxNetwork.Text = "Network (Advanced)";
             // 
             // labelTimeout
             // 
             labelTimeout.AutoSize = true;
-            labelTimeout.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            labelTimeout.Location = new Point(6, 53);
+            labelTimeout.Font = new Font("Segoe UI", 10F);
+            labelTimeout.Location = new Point(13, 58);
             labelTimeout.Name = "labelTimeout";
-            labelTimeout.Size = new Size(105, 15);
+            labelTimeout.Size = new Size(120, 19);
             labelTimeout.TabIndex = 20;
             labelTimeout.Text = "Timeout (seconds)";
             // 
             // numericUpDownTimeout
             // 
             numericUpDownTimeout.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            numericUpDownTimeout.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            numericUpDownTimeout.Location = new Point(203, 51);
+            numericUpDownTimeout.Font = new Font("Segoe UI", 10F);
+            numericUpDownTimeout.Location = new Point(150, 56);
             numericUpDownTimeout.Maximum = new decimal(new int[] { 600, 0, 0, 0 });
             numericUpDownTimeout.Name = "numericUpDownTimeout";
-            numericUpDownTimeout.Size = new Size(551, 23);
-            numericUpDownTimeout.TabIndex = 19;
+            numericUpDownTimeout.Size = new Size(184, 25);
+            numericUpDownTimeout.TabIndex = 2;
             numericUpDownTimeout.TextAlign = HorizontalAlignment.Center;
             numericUpDownTimeout.Value = new decimal(new int[] { 60, 0, 0, 0 });
             // 
             // checkBoxDisableSslChecks
             // 
             checkBoxDisableSslChecks.AutoSize = true;
-            checkBoxDisableSslChecks.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            checkBoxDisableSslChecks.Location = new Point(6, 24);
+            checkBoxDisableSslChecks.Font = new Font("Segoe UI", 10F);
+            checkBoxDisableSslChecks.Location = new Point(13, 25);
             checkBoxDisableSslChecks.Name = "checkBoxDisableSslChecks";
-            checkBoxDisableSslChecks.Size = new Size(126, 19);
-            checkBoxDisableSslChecks.TabIndex = 11;
+            checkBoxDisableSslChecks.RightToLeft = RightToLeft.Yes;
+            checkBoxDisableSslChecks.Size = new Size(144, 23);
+            checkBoxDisableSslChecks.TabIndex = 1;
             checkBoxDisableSslChecks.Text = "Disable SSL Checks";
             checkBoxDisableSslChecks.UseVisualStyleBackColor = true;
             // 
@@ -106,115 +108,146 @@
             groupBoxProxySettings.Controls.Add(textBoxProxyAddress);
             groupBoxProxySettings.Controls.Add(labelProxyAddress);
             groupBoxProxySettings.Controls.Add(checkBoxUseProxy);
-            groupBoxProxySettings.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            groupBoxProxySettings.Location = new Point(6, 80);
+            groupBoxProxySettings.Font = new Font("Segoe UI", 8.5F, FontStyle.Bold);
+            groupBoxProxySettings.Location = new Point(12, 149);
             groupBoxProxySettings.Name = "groupBoxProxySettings";
-            groupBoxProxySettings.Size = new Size(748, 175);
-            groupBoxProxySettings.TabIndex = 15;
+            groupBoxProxySettings.Size = new Size(345, 194);
+            groupBoxProxySettings.TabIndex = 2;
             groupBoxProxySettings.TabStop = false;
             groupBoxProxySettings.Text = "Proxy Settings";
             // 
             // labelProxyCredentialsPassword
             // 
             labelProxyCredentialsPassword.AutoSize = true;
-            labelProxyCredentialsPassword.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            labelProxyCredentialsPassword.Location = new Point(6, 141);
+            labelProxyCredentialsPassword.Font = new Font("Segoe UI", 10F);
+            labelProxyCredentialsPassword.Location = new Point(13, 162);
             labelProxyCredentialsPassword.Name = "labelProxyCredentialsPassword";
-            labelProxyCredentialsPassword.Size = new Size(57, 15);
+            labelProxyCredentialsPassword.Size = new Size(67, 19);
             labelProxyCredentialsPassword.TabIndex = 22;
             labelProxyCredentialsPassword.Text = "Password";
             // 
             // labelProxyCredentialsUsername
             // 
             labelProxyCredentialsUsername.AutoSize = true;
-            labelProxyCredentialsUsername.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            labelProxyCredentialsUsername.Location = new Point(6, 112);
+            labelProxyCredentialsUsername.Font = new Font("Segoe UI", 10F);
+            labelProxyCredentialsUsername.Location = new Point(13, 126);
             labelProxyCredentialsUsername.Name = "labelProxyCredentialsUsername";
-            labelProxyCredentialsUsername.Size = new Size(60, 15);
+            labelProxyCredentialsUsername.Size = new Size(71, 19);
             labelProxyCredentialsUsername.TabIndex = 21;
             labelProxyCredentialsUsername.Text = "Username";
             // 
             // textBoxProxyCredentialsUsername
             // 
             textBoxProxyCredentialsUsername.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            textBoxProxyCredentialsUsername.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            textBoxProxyCredentialsUsername.Location = new Point(191, 109);
+            textBoxProxyCredentialsUsername.Font = new Font("Segoe UI", 10F);
+            textBoxProxyCredentialsUsername.Location = new Point(150, 123);
             textBoxProxyCredentialsUsername.Name = "textBoxProxyCredentialsUsername";
-            textBoxProxyCredentialsUsername.Size = new Size(551, 23);
-            textBoxProxyCredentialsUsername.TabIndex = 20;
+            textBoxProxyCredentialsUsername.Size = new Size(184, 25);
+            textBoxProxyCredentialsUsername.TabIndex = 4;
             // 
             // textBoxProxyCredentialsPassword
             // 
             textBoxProxyCredentialsPassword.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            textBoxProxyCredentialsPassword.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            textBoxProxyCredentialsPassword.Location = new Point(191, 138);
+            textBoxProxyCredentialsPassword.Font = new Font("Segoe UI", 10F);
+            textBoxProxyCredentialsPassword.Location = new Point(150, 159);
             textBoxProxyCredentialsPassword.Name = "textBoxProxyCredentialsPassword";
             textBoxProxyCredentialsPassword.PasswordChar = '*';
-            textBoxProxyCredentialsPassword.Size = new Size(551, 23);
-            textBoxProxyCredentialsPassword.TabIndex = 19;
+            textBoxProxyCredentialsPassword.Size = new Size(184, 25);
+            textBoxProxyCredentialsPassword.TabIndex = 5;
             // 
             // checkBoxProxyUseDefaultCredentials
             // 
             checkBoxProxyUseDefaultCredentials.AutoSize = true;
-            checkBoxProxyUseDefaultCredentials.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            checkBoxProxyUseDefaultCredentials.Location = new Point(6, 82);
+            checkBoxProxyUseDefaultCredentials.Font = new Font("Segoe UI", 10F);
+            checkBoxProxyUseDefaultCredentials.Location = new Point(13, 93);
             checkBoxProxyUseDefaultCredentials.Name = "checkBoxProxyUseDefaultCredentials";
-            checkBoxProxyUseDefaultCredentials.Size = new Size(148, 19);
-            checkBoxProxyUseDefaultCredentials.TabIndex = 18;
+            checkBoxProxyUseDefaultCredentials.RightToLeft = RightToLeft.Yes;
+            checkBoxProxyUseDefaultCredentials.Size = new Size(171, 23);
+            checkBoxProxyUseDefaultCredentials.TabIndex = 3;
             checkBoxProxyUseDefaultCredentials.Text = "Use Default Credentials";
             checkBoxProxyUseDefaultCredentials.UseVisualStyleBackColor = true;
             // 
             // textBoxProxyAddress
             // 
             textBoxProxyAddress.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            textBoxProxyAddress.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            textBoxProxyAddress.Location = new Point(191, 51);
+            textBoxProxyAddress.Font = new Font("Segoe UI", 10F);
+            textBoxProxyAddress.Location = new Point(150, 57);
             textBoxProxyAddress.Name = "textBoxProxyAddress";
-            textBoxProxyAddress.Size = new Size(551, 23);
-            textBoxProxyAddress.TabIndex = 17;
+            textBoxProxyAddress.Size = new Size(184, 25);
+            textBoxProxyAddress.TabIndex = 2;
             // 
             // labelProxyAddress
             // 
             labelProxyAddress.AutoSize = true;
-            labelProxyAddress.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            labelProxyAddress.Location = new Point(6, 54);
+            labelProxyAddress.Font = new Font("Segoe UI", 10F);
+            labelProxyAddress.Location = new Point(13, 60);
             labelProxyAddress.Name = "labelProxyAddress";
-            labelProxyAddress.Size = new Size(49, 15);
+            labelProxyAddress.Size = new Size(58, 19);
             labelProxyAddress.TabIndex = 16;
             labelProxyAddress.Text = "Address";
             // 
             // checkBoxUseProxy
             // 
             checkBoxUseProxy.AutoSize = true;
-            checkBoxUseProxy.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            checkBoxUseProxy.Location = new Point(6, 26);
+            checkBoxUseProxy.Font = new Font("Segoe UI", 10F);
+            checkBoxUseProxy.Location = new Point(13, 27);
             checkBoxUseProxy.Name = "checkBoxUseProxy";
-            checkBoxUseProxy.Size = new Size(78, 19);
-            checkBoxUseProxy.TabIndex = 12;
+            checkBoxUseProxy.RightToLeft = RightToLeft.Yes;
+            checkBoxUseProxy.Size = new Size(89, 23);
+            checkBoxUseProxy.TabIndex = 1;
             checkBoxUseProxy.Text = "Use Proxy";
             checkBoxUseProxy.UseVisualStyleBackColor = true;
             // 
+            // buttonDone
+            // 
+            buttonDone.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            buttonDone.AutoSize = true;
+            buttonDone.BackColor = Color.Transparent;
+            buttonDone.ButtonText = "Done";
+            buttonDone.Font = new Font("Segoe UI", 10F);
+            buttonDone.Location = new Point(265, 349);
+            buttonDone.MinimumSize = new Size(92, 32);
+            buttonDone.Name = "buttonDone";
+            buttonDone.Size = new Size(92, 32);
+            buttonDone.TabIndex = 3;
+            buttonDone.OnButtonClick += ButtonDone_Click;
+            // 
+            // labelTitle
+            // 
+            labelTitle.AutoSize = true;
+            labelTitle.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
+            labelTitle.Location = new Point(13, 8);
+            labelTitle.Name = "labelTitle";
+            labelTitle.Size = new Size(167, 25);
+            labelTitle.TabIndex = 5;
+            labelTitle.Text = "Network Settings";
+            // 
             // NetworkForm
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(7F, 17F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(784, 291);
+            BackColor = Color.White;
+            ClientSize = new Size(370, 389);
+            Controls.Add(labelTitle);
+            Controls.Add(buttonDone);
+            Controls.Add(groupBoxProxySettings);
             Controls.Add(groupBoxNetwork);
-            FormBorderStyle = FormBorderStyle.FixedDialog;
+            Font = new Font("Segoe UI", 10F);
+            ForeColor = Color.FromArgb(43, 42, 41);
+            FormBorderStyle = FormBorderStyle.FixedSingle;
             Icon = (Icon)resources.GetObject("$this.Icon");
             MaximizeBox = false;
-            MaximumSize = new Size(800, 330);
             MinimizeBox = false;
-            MinimumSize = new Size(800, 330);
             Name = "NetworkForm";
-            StartPosition = FormStartPosition.CenterScreen;
-            Text = "DALOG Image Uploader";
+            StartPosition = FormStartPosition.CenterParent;
+            Text = "Network Settings";
             groupBoxNetwork.ResumeLayout(false);
             groupBoxNetwork.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)numericUpDownTimeout).EndInit();
             groupBoxProxySettings.ResumeLayout(false);
             groupBoxProxySettings.PerformLayout();
             ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
@@ -232,5 +265,7 @@
         private TextBox textBoxProxyAddress;
         private Label labelProxyAddress;
         private CheckBox checkBoxUseProxy;
+        private Views.PrimaryButton buttonDone;
+        private Label labelTitle;
     }
 }

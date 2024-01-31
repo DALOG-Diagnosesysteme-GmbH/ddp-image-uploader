@@ -28,15 +28,15 @@ public partial class MainForm : Form
 
     private void ButtonNetworkSettings_Click(object sender, EventArgs e)
     {
-        using var networkForm = new NetworkForm(_settings);
-        networkForm.ShowDialog(this);
-        _settings.DisableSslChecks = networkForm.DisableSslChecks;
-        _settings.Timeout = networkForm.Timeout;
-        _settings.UseProxy = networkForm.UseProxy;
-        _settings.ProxyAddress = networkForm.ProxyAddress;
-        _settings.ProxyUseDefaultCredentials = networkForm.ProxyUseDefaultCredentials;
-        _settings.ProxyCredentialsUsername = networkForm.ProxyCredentialsUsername;
-        _settings.ProxyCredentialsPassword = networkForm.ProxyCredentialsPassword;
+        //using var networkForm = new NetworkForm(_settings);
+        //networkForm.ShowDialog(this);
+        //_settings.DisableSslChecks = networkForm.DisableSslChecks;
+        //_settings.Timeout = networkForm.Timeout;
+        //_settings.UseProxy = networkForm.UseProxy;
+        //_settings.ProxyAddress = networkForm.ProxyAddress;
+        //_settings.ProxyUseDefaultCredentials = networkForm.ProxyUseDefaultCredentials;
+        //_settings.ProxyCredentialsUsername = networkForm.ProxyCredentialsUsername;
+        //_settings.ProxyCredentialsPassword = networkForm.ProxyCredentialsPassword;
     }
 
     private void ButtonResetSettings_Click(object sender, EventArgs e)

@@ -51,6 +51,7 @@
             buttonPrimary.Text = "button1";
             buttonPrimary.UseVisualStyleBackColor = false;
             buttonPrimary.Click += ButtonPrimaryClick;
+            buttonPrimary.KeyUp += ButtonPrimary_KeyUp;
             // 
             // PrimaryButton
             // 

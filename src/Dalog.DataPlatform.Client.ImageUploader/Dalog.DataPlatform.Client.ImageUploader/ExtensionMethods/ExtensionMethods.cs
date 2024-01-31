@@ -4,12 +4,6 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace Dalog.DataPlatform.Client.ImageUploader.ExtensionMethods
 {
     /// <summary>
@@ -18,25 +12,67 @@ namespace Dalog.DataPlatform.Client.ImageUploader.ExtensionMethods
     internal static class ExtensionMethods
     {
         /// <summary>
-        /// Fits a form size to fit a determined user control
+        /// Adds a data binding to a text box.
         /// </summary>
-        /// <param name="input">The form</param>
-        /// <param name="content">The user control</param>
-        internal static void AddAndFitToUserControl(this Form input, UserControl content)
+        /// <typeparam name="T">The data source object</typeparam>
+        /// <param name="control">The text box.</param>
+        /// <param name="dataSource">The data source object</param>
+        /// <param name="dataMember">The data member</param>
+        internal static void AddDataBinding<T>(this TextBox control, T dataSource, string dataMember) where T : class
         {
-            if (content == null)
-            {
-                return;
-            }
+            var binding = new Binding(nameof(control.Text), dataSource, dataMember);
+            control.DataBindings.Add(binding);
+        }
 
-            input.SuspendLayout();
-            var menuSize = new Size(content.Width, content.Height);
-            input.ClientSize = menuSize;
-            input.AutoSize = true;
-            input.Controls.Add(content);
-            input.Controls.SetChildIndex(content, 0);
-            content.Dock = DockStyle.Top;
-            input.ResumeLayout();
+        /// <summary>
+        /// Adds a data binding to a combo box.
+        /// </summary>
+        /// <typeparam name="T">The data source object</typeparam>
+        /// <param name="control">The combo box.</param>
+        /// <param name="dataSource">The data source object</param>
+        /// <param name="dataMember">The data member</param>
+        internal static void AddDataBinding<T>(this ComboBox control, T dataSource, string dataMember) where T : class
+        {
+            var binding = new Binding(nameof(control.SelectedItem), dataSource, dataMember);
+            control.DataBindings.Add(binding);
+        }
+
+        /// <summary>
+        /// Adds a data binding to a check box.
+        /// </summary>
+        /// <typeparam name="T">The data source object</typeparam>
+        /// <param name="control">The check box.</param>
+        /// <param name="dataSource">The data source object</param>
+        /// <param name="dataMember">The data member</param>
+        internal static void AddDataBinding<T>(this CheckBox control, T dataSource, string dataMember) where T : class
+        {
+            var binding = new Binding(nameof(control.Checked), dataSource, dataMember);
+            control.DataBindings.Add(binding);
+        }
+
+        /// <summary>
+        /// Adds a data binding to a numeric up down.
+        /// </summary>
+        /// <typeparam name="T">The data source object</typeparam>
+        /// <param name="control">The numeric up down.</param>
+        /// <param name="dataSource">The data source object</param>
+        /// <param name="dataMember">The data member</param>
+        internal static void AddDataBinding<T>(this NumericUpDown control, T dataSource, string dataMember) where T : class
+        {
+            var binding = new Binding(nameof(control.Value), dataSource, dataMember);
+            control.DataBindings.Add(binding);
+        }
+
+        /// <summary>
+        /// Hides a form while performs an action
+        /// </summary>
+        /// <param name="form">The form</param>
+        /// <param name="action">The action to perform</param>
+        internal static void HideFormWhile(this Form form, Action action)
+        {
+            form.Opacity = 0f;
+            action?.Invoke();
+            form.Opacity = 1f;
         }
     }
 }

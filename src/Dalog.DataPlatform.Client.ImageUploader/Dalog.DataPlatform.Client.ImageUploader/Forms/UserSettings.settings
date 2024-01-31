@@ -24,7 +24,7 @@
       <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="ImageType" Type="System.String" Scope="User">
-      <Value Profile="(Default)">Default</Value>
+      <Value Profile="(Default)">BusyBee</Value>
     </Setting>
     <Setting Name="ProxyAddress" Type="System.String" Scope="User">
       <Value Profile="(Default)" />

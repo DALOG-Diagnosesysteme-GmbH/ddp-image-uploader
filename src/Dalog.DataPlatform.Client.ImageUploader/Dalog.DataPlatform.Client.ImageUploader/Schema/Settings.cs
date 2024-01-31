@@ -230,7 +230,7 @@ internal class Settings : INotifyPropertyChanged
         DalogId = string.Empty;
         DisableSslChecks = false;
         UseProxy = false;
-        ImageType = ImageType.Default;
+        ImageType = ImageType.BusyBee;
         ProxyAddress = string.Empty;
         ProxyUseDefaultCredentials = true;
         ProxyCredentialsUsername = string.Empty;
@@ -242,8 +242,8 @@ internal class Settings : INotifyPropertyChanged
     {
         ImageType.Default => "/files/v1/images",
         ImageType.BusyBee => "/files/v1/images/busybee",
-        ImageType.Fls => "/files/v1/images/fls",
-        ImageType.Gzip => "/files/v1/images/gzip",
+        ImageType.FLS => "/files/v1/images/fls",
+        ImageType.GZip => "/files/v1/images/gzip",
         ImageType.Wireless => "/files/v1/images/wireless",
         ImageType.Zip => "/files/v1/images/zip",
         _ => throw new NotImplementedException(),
@@ -253,8 +253,8 @@ internal class Settings : INotifyPropertyChanged
     {
         ImageType.Default => true,
         ImageType.BusyBee => true,
-        ImageType.Fls => false,
-        ImageType.Gzip => true,
+        ImageType.FLS => false,
+        ImageType.GZip => true,
         ImageType.Wireless => false,
         ImageType.Zip => true,
         _ => throw new NotImplementedException(),
