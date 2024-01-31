@@ -9,8 +9,8 @@ internal static class Program
     /// <summary>
     /// The Host builder
     /// </summary>
-    /// <param name="args">The arg</param>
-    /// <returns></returns>
+    /// <param name="args">The args.</param>
+    /// <returns>The </returns>
     static IHostBuilder CreateHostBuilder(string[] args)
     {
         var host = Host.CreateDefaultBuilder(args)

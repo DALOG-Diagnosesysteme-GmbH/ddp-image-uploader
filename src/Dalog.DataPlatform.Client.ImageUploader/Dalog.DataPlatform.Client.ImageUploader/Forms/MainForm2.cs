@@ -1,25 +1,36 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using Dalog.DataPlatform.Client.ImageUploader.ExtensionMethods;
+﻿// -----------------------------------------------------------------------
+// <copyright file="MainForm2.cs" company="DALOG Diagnosesysteme GmbH">
+//  Copyright (c) DALOG(r) Diagnosesysteme GmbH. All rights reserved.
+// </copyright>
+// -----------------------------------------------------------------------
+
 using Dalog.DataPlatform.Client.ImageUploader.Views;
 
 namespace Dalog.DataPlatform.Client.ImageUploader.Forms
 {
+    /// <summary>
+    /// The main form.
+    /// </summary>
     public partial class MainForm2 : Form
     {
+        /// <summary>
+        /// The command bar view
+        /// </summary>
         private readonly SettingsCommandBar _commandBar;
 
+        /// <summary>
+        /// The DDP Information section view
+        /// </summary>
         private readonly SettingsDdpInformationSection _ddpInformationSection;
 
+        /// <summary>
+        /// The local information section view.
+        /// </summary>
         private readonly SettingsLocalInformationSection _localInformationSection;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MainForm2"/> class.
+        /// </summary>
         public MainForm2()
         {
             InitializeComponent();
@@ -29,7 +40,11 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Forms
             this.CheckBoxMode_CheckedChanged(this, EventArgs.Empty);
         }
 
-        private void AppendItem(UserControl control)
+        /// <summary>
+        /// Appends a control to this form.
+        /// </summary>
+        /// <param name="control">The user control to append.</param>
+        private void AppendControl(UserControl control)
         {
             if (this.Controls.Contains(control))
             {
@@ -43,12 +58,21 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Forms
             this.Height += control.Height;
         }
 
+        /// <summary>
+        /// Method called when the Expert Mode checked state has changed
+        /// </summary>
+        /// <param name="sender">The sender object</param>
+        /// <param name="e">The event args.</param>
         private void CheckBoxMode_CheckedChanged(object sender, EventArgs e)
         {
             this.UpdateView(this.checkBoxMode.Checked);
         }
 
-        private void RemoveItem(UserControl control)
+        /// <summary>
+        /// Removes a control from this form
+        /// </summary>
+        /// <param name="control">The control to remove.</param>
+        private void RemoveControl(UserControl control)
         {
             if (!this.Controls.Contains(control))
             {
@@ -59,21 +83,25 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Forms
             this.Height -= control.Height;
         }
 
+        /// <summary>
+        /// Updates the form's view.
+        /// </summary>
+        /// <param name="expertMode">Value determining whether the mode is expert or not</param>
         private void UpdateView(bool expertMode)
         {
             this.SuspendLayout();
             if (!expertMode)
             {
-                this.RemoveItem(this._commandBar);
-                this.RemoveItem(this._ddpInformationSection);
-                this.AppendItem(this._localInformationSection);
+                this.RemoveControl(this._commandBar);
+                this.RemoveControl(this._ddpInformationSection);
+                this.AppendControl(this._localInformationSection);
             }
             else
             {
-                this.RemoveItem(this._localInformationSection);
-                this.AppendItem(this._commandBar);
-                this.AppendItem(this._localInformationSection);
-                this.AppendItem(this._ddpInformationSection);
+                this.RemoveControl(this._localInformationSection);
+                this.AppendControl(this._commandBar);
+                this.AppendControl(this._localInformationSection);
+                this.AppendControl(this._ddpInformationSection);
             }
 
             this.ResumeLayout();
