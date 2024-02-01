@@ -3,8 +3,6 @@
 //  Copyright (c) DALOG(r) Diagnosesysteme GmbH. All rights reserved.
 // </copyright>
 // -----------------------------------------------------------------------
-using Dalog.DataPlatform.Client.ImageUploader.Schema;
-
 namespace Dalog.DataPlatform.Client.ImageUploader.Forms;
 
 /// <summary>
@@ -18,23 +16,7 @@ public partial class NetworkForm : Form
     public NetworkForm()
     {
         InitializeComponent();
-    }
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="NetworkForm"/> class.
-    /// </summary>
-    /// <param name="settings">The settings object</param>
-    internal NetworkForm(HttpSettings settings)
-    {
-        InitializeComponent();
-
-        checkBoxDisableSslChecks.Checked = settings.DisableSslChecks;
-        checkBoxUseProxy.Checked = settings.UseProxy;
-        checkBoxProxyUseDefaultCredentials.Checked = settings.ProxyUseDefaultCredentials;
-        textBoxProxyCredentialsUsername.Text = settings.ProxyCredentialsUsername;
-        textBoxProxyCredentialsPassword.Text = settings.ProxyCredentialsPassword;
-        textBoxProxyAddress.Text = settings.ProxyAddress;
-        numericUpDownTimeout.Value = settings.Timeout;
+        this.CheckBoxUseProxy_CheckedChanged(this, EventArgs.Empty);
     }
 
     /// <summary>
@@ -122,5 +104,32 @@ public partial class NetworkForm : Form
     private void ButtonDone_Click(object sender, EventArgs e)
     {
         this.Close();
+    }
+
+    /// <summary>
+    /// Method called when the use default credentials check box is changed.
+    /// </summary>
+    /// <param name="sender">The sender object</param>
+    /// <param name="e">The event args.</param>
+    private void CheckBoxProxyUseDefaultCredentials_CheckedChanged(object sender, EventArgs e)
+    {
+        var enable = this.checkBoxUseProxy.Checked && !this.checkBoxProxyUseDefaultCredentials.Checked;
+        this.labelProxyCredentialsUsername.Enabled = enable;
+        this.textBoxProxyCredentialsUsername.Enabled = enable;
+        this.labelProxyCredentialsPassword.Enabled = enable;
+        this.textBoxProxyCredentialsPassword.Enabled = enable;
+    }
+
+    /// <summary>
+    /// Method called when the use proxy check box is changed.
+    /// </summary>
+    /// <param name="sender">The sender object</param>
+    /// <param name="e">The event args.</param>
+    private void CheckBoxUseProxy_CheckedChanged(object sender, EventArgs e)
+    {
+        this.labelProxyAddress.Enabled = this.checkBoxUseProxy.Checked;
+        this.textBoxProxyAddress.Enabled = this.checkBoxUseProxy.Checked;
+        this.checkBoxProxyUseDefaultCredentials.Enabled = this.checkBoxUseProxy.Checked;
+        this.CheckBoxProxyUseDefaultCredentials_CheckedChanged(sender, e);
     }
 }

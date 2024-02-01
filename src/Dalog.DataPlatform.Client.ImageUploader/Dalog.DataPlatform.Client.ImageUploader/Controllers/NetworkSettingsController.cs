@@ -16,6 +16,11 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Controllers
     internal sealed class NetworkSettingsController : IController<NetworkForm>
     {
         /// <summary>
+        /// The HTTP settings.
+        /// </summary>
+        private readonly UploadSettings _uploadSettings;
+
+        /// <summary>
         /// The network form view.
         /// </summary>
         private readonly NetworkForm _view;
@@ -24,7 +29,7 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Controllers
         /// Initializes a new instance of the <see cref="NetworkSettingsController"/> class.
         /// </summary>
         /// <param name="settings">The settings</param>
-        public NetworkSettingsController(HttpSettings settings)
+        public NetworkSettingsController(UploadSettings settings)
         {
             this._view = new NetworkForm();
             this.SubscribeEvents();
@@ -34,8 +39,10 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Controllers
             this._view.Timeout.AddDataBinding(settings, nameof(settings.Timeout));
             this._view.UseProxy.AddDataBinding(settings, nameof(settings.UseProxy));
             this._view.ProxyAddress.AddDataBinding(settings, nameof(settings.ProxyAddress));
+            this._view.ProxyUseDefaultCredentials.AddDataBinding(settings, nameof(settings.ProxyUseDefaultCredentials));
             this._view.ProxyUserName.AddDataBinding(settings, nameof(settings.ProxyCredentialsUsername));
             this._view.ProxyUserPassword.AddDataBinding(settings, nameof(settings.ProxyCredentialsPassword));
+            this._uploadSettings = settings;
         }
 
         /// <summary>
@@ -57,7 +64,7 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Controllers
         /// </summary>
         public void SubscribeEvents()
         {
-            // Nothing
+            this._view.FormClosing += FormClosing;
         }
 
         /// <summary>
@@ -65,7 +72,24 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Controllers
         /// </summary>
         public void UnsubscribeEvents()
         {
-            // Nothing
+            this._view.FormClosing -= FormClosing;
+        }
+
+        /// <summary>
+        /// Method called when the view is being closed.
+        /// </summary>
+        /// <param name="sender">The sender object.</param>
+        /// <param name="e">The form closing event args</param>
+        private void FormClosing(object? sender, FormClosingEventArgs e)
+        {
+            if (this._uploadSettings.NetworkSettingsAreValid(out var errors))
+            {
+                this.Dispose();
+                return;
+            }
+
+            MessageBox.Show(this._view, errors, this._view.Text, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            e.Cancel = true;
         }
     }
 }

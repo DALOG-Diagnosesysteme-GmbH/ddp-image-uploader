@@ -4,6 +4,8 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using System.Runtime.CompilerServices;
+
 namespace Dalog.DataPlatform.Client.ImageUploader.ExtensionMethods
 {
     /// <summary>
@@ -70,9 +72,9 @@ namespace Dalog.DataPlatform.Client.ImageUploader.ExtensionMethods
         /// <param name="action">The action to perform</param>
         internal static void HideFormWhile(this Form form, Action action)
         {
-            form.Opacity = 0f;
+            form.Visible = false;
             action?.Invoke();
-            form.Opacity = 1f;
+            form.Visible = true;
         }
     }
 }

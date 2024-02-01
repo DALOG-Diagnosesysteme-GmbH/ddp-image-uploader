@@ -2,9 +2,6 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Dalog.DataPlatform.Client.ImageUploader.Forms" GeneratedClassName="UserSettings">
   <Profiles />
   <Settings>
-    <Setting Name="BaseUrl" Type="System.String" Scope="User">
-      <Value Profile="(Default)">https://api.dalog.net</Value>
-    </Setting>
     <Setting Name="ApiKey" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>

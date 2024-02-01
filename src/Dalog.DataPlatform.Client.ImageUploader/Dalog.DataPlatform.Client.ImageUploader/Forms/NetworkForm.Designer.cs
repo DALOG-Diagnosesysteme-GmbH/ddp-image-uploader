@@ -166,6 +166,7 @@
             checkBoxProxyUseDefaultCredentials.TabIndex = 3;
             checkBoxProxyUseDefaultCredentials.Text = "Use Default Credentials";
             checkBoxProxyUseDefaultCredentials.UseVisualStyleBackColor = true;
+            checkBoxProxyUseDefaultCredentials.CheckedChanged += CheckBoxProxyUseDefaultCredentials_CheckedChanged;
             // 
             // textBoxProxyAddress
             // 
@@ -179,6 +180,7 @@
             // labelProxyAddress
             // 
             labelProxyAddress.AutoSize = true;
+            labelProxyAddress.Enabled = false;
             labelProxyAddress.Font = new Font("Segoe UI", 10F);
             labelProxyAddress.Location = new Point(13, 60);
             labelProxyAddress.Name = "labelProxyAddress";
@@ -197,6 +199,7 @@
             checkBoxUseProxy.TabIndex = 1;
             checkBoxUseProxy.Text = "Use Proxy";
             checkBoxUseProxy.UseVisualStyleBackColor = true;
+            checkBoxUseProxy.CheckedChanged += CheckBoxUseProxy_CheckedChanged;
             // 
             // buttonDone
             // 
@@ -234,7 +237,7 @@
             Controls.Add(groupBoxNetwork);
             Font = new Font("Segoe UI", 10F);
             ForeColor = Color.FromArgb(43, 42, 41);
-            FormBorderStyle = FormBorderStyle.FixedSingle;
+            FormBorderStyle = FormBorderStyle.FixedDialog;
             Icon = (Icon)resources.GetObject("$this.Icon");
             MaximizeBox = false;
             MinimizeBox = false;

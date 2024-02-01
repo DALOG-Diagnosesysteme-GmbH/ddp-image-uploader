@@ -1,35 +1,87 @@
 ﻿// -----------------------------------------------------------------------
-// <copyright file="HttpSettings.cs" company="DALOG Diagnosesysteme GmbH">
+// <copyright file="UploadSettings.cs" company="DALOG Diagnosesysteme GmbH">
 //  Copyright (c) DALOG(r) Diagnosesysteme GmbH. All rights reserved.
 // </copyright>
 // -----------------------------------------------------------------------
 
 using System.ComponentModel;
-using System.Net;
+using System.Text;
 
 namespace Dalog.DataPlatform.Client.ImageUploader.Schema
 {
     /// <summary>
-    /// The HTTP settings class.
+    /// The upload settings class.
     /// </summary>
-    public class HttpSettings : INotifyPropertyChanged
+    public class UploadSettings : INotifyPropertyChanged
     {
+        /// <summary>
+        /// The API key
+        /// </summary>
         private string? _apiKey;
-        private string? _baseUrl;
+
+        /// <summary>
+        /// The machine number (dalog Id)
+        /// </summary>
         private string? _dalogId;
+
+        /// <summary>
+        /// Value determining whether to disable the SSL checks or not.
+        /// </summary>
         private bool _disableSslChecks;
+
+        /// <summary>
+        /// The folder path.
+        /// </summary>
         private string? _folder;
+
+        /// <summary>
+        /// The images type to process.
+        /// </summary>
         private ImageType _imageType;
+
+        /// <summary>
+        /// The machine DDP ID
+        /// </summary>
         private string? _machineId;
+
+        /// <summary>
+        /// The proxy address
+        /// </summary>
         private string? _proxyAddress;
+
+        /// <summary>
+        /// The proxy user password.
+        /// </summary>
         private string? _proxyCredentialsPassword;
+
+        /// <summary>
+        /// The proxy username
+        /// </summary>
         private string? _proxyCredentialsUsername;
+
+        /// <summary>
+        /// Value determining whether to use the default proxy credentials or not.
+        /// </summary>
         private bool _proxyUseDefaultCredentials;
+
+        /// <summary>
+        /// Sets the timeout in seconds.
+        /// </summary>
         private int _timeout;
+
+        /// <summary>
+        /// Value determining whether a proxy must be used or not.
+        /// </summary>
         private bool _useProxy;
 
+        /// <summary>
+        /// Event handler triggered when a property value has changed.
+        /// </summary>
         public event PropertyChangedEventHandler? PropertyChanged;
 
+        /// <summary>
+        /// Gets and sets the API key.
+        /// </summary>
         public string? ApiKey
         {
             get { return _apiKey; }
@@ -42,18 +94,9 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Schema
             }
         }
 
-        public string? BaseUrl
-        {
-            get { return _baseUrl; }
-            set
-            {
-                _baseUrl = value;
-                Forms.UserSettings.Default.BaseUrl = value;
-                Forms.UserSettings.Default.Save();
-                InvokePropertyChanged(new PropertyChangedEventArgs(nameof(BaseUrl)));
-            }
-        }
-
+        /// <summary>
+        /// Gets and sets the machine number (Dalog ID)
+        /// </summary>
         public string? DalogId
         {
             get { return _dalogId; }
@@ -66,6 +109,9 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Schema
             }
         }
 
+        /// <summary>
+        /// Gets and sets a value determining whether to disable the SSL checks or not.
+        /// </summary>
         public bool DisableSslChecks
         {
             get { return _disableSslChecks; }
@@ -78,6 +124,9 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Schema
             }
         }
 
+        /// <summary>
+        /// Gets and sets the folder path.
+        /// </summary>
         public string? Folder
         {
             get { return _folder; }
@@ -90,6 +139,9 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Schema
             }
         }
 
+        /// <summary>
+        /// Gets and sets the image type.
+        /// </summary>
         public ImageType ImageType
         {
             get { return _imageType; }
@@ -102,6 +154,9 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Schema
             }
         }
 
+        /// <summary>
+        /// Gets and sets the DDP machine Id
+        /// </summary>
         public string? MachineId
         {
             get { return _machineId; }
@@ -114,6 +169,9 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Schema
             }
         }
 
+        /// <summary>
+        /// Gets and sets the proxy address
+        /// </summary>
         public string? ProxyAddress
         {
             get { return _proxyAddress; }
@@ -126,6 +184,9 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Schema
             }
         }
 
+        /// <summary>
+        /// Gets and sets the proxy username
+        /// </summary>
         public string? ProxyCredentialsPassword
         {
             get { return _proxyCredentialsPassword; }
@@ -138,6 +199,9 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Schema
             }
         }
 
+        /// <summary>
+        /// Gets and sets the proxy user password
+        /// </summary>
         public string? ProxyCredentialsUsername
         {
             get { return _proxyCredentialsUsername; }
@@ -150,6 +214,9 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Schema
             }
         }
 
+        /// <summary>
+        /// Gets and sets a value determining whether to use the proxy default credentials or not.
+        /// </summary>
         public bool ProxyUseDefaultCredentials
         {
             get { return _proxyUseDefaultCredentials; }
@@ -162,6 +229,9 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Schema
             }
         }
 
+        /// <summary>
+        /// Gets and sets the timeout in seconds.
+        /// </summary>
         public int Timeout
         {
             get { return _timeout; }
@@ -174,6 +244,9 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Schema
             }
         }
 
+        /// <summary>
+        /// Gets or sets a value determining whether a proxy must be used or not.
+        /// </summary>
         public bool UseProxy
         {
             get { return _useProxy; }
@@ -186,9 +259,11 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Schema
             }
         }
 
+        /// <summary>
+        /// Initializes the settings.
+        /// </summary>
         public void Initialize()
         {
-            BaseUrl = Forms.UserSettings.Default.BaseUrl;
             ApiKey = Forms.UserSettings.Default.ApiKey;
             Folder = Forms.UserSettings.Default.Folder;
             MachineId = Forms.UserSettings.Default.MachineId;
@@ -203,9 +278,11 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Schema
             Timeout = Forms.UserSettings.Default.Timeout;
         }
 
+        /// <summary>
+        /// Resets the settings.
+        /// </summary>
         public void Reset()
         {
-            BaseUrl = "https://api.dalog.net";
             ApiKey = string.Empty;
             Folder = string.Empty;
             MachineId = string.Empty;
@@ -220,17 +297,63 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Schema
             Timeout = 30;
         }
 
-        internal static string GetPathFromImageType(ImageType type) => type switch
+        /// <summary>
+        /// Gets a value determining whether the network settings values are valid or not.
+        /// </summary>
+        /// <param name="errors">The possible errors string if the network settings are not valid.</param>
+        /// <returns>True if the settings are valid. Otherwise false</returns>
+        internal bool NetworkSettingsAreValid(out string errors)
         {
-            ImageType.Default => "/files/v1/images",
-            ImageType.BusyBee => "/files/v1/images/busybee",
-            ImageType.FLS => "/files/v1/images/fls",
-            ImageType.GZip => "/files/v1/images/gzip",
-            ImageType.Wireless => "/files/v1/images/wireless",
-            ImageType.Zip => "/files/v1/images/zip",
-            _ => throw new NotImplementedException(),
-        };
+            errors = string.Empty;
+            if (!this.UseProxy)
+            {
+                return true;
+            }
 
+            var builder = new StringBuilder();
+            if (string.IsNullOrWhiteSpace(this.ProxyAddress))
+            {
+                builder.AppendLine("The proxy address is required.");
+            }
+
+            if (!this.ProxyUseDefaultCredentials)
+            {
+                if (string.IsNullOrWhiteSpace(this.ProxyCredentialsUsername) || string.IsNullOrWhiteSpace(this.ProxyCredentialsPassword))
+                {
+                    builder.AppendLine("The proxy Username and password are required.");
+                }
+            }
+
+            errors = builder.ToString();
+            return string.IsNullOrEmpty(errors);
+        }
+
+        /// <summary>
+        /// Gets a value determining whether the settings values are valid or not.
+        /// </summary>
+        /// <param name="errors">The possible errors string if the settings are not valid.</param>
+        /// <returns>True if the settings are valid. Otherwise false.</returns>
+        internal bool SettingsAreValid(out string errors)
+        {
+            var builder = new StringBuilder();
+            if (!this.NetworkSettingsAreValid(out var networkSettingsErrors))
+            {
+                builder.Append(networkSettingsErrors);
+            }
+
+            if (!Directory.Exists(this.Folder))
+            {
+                builder.AppendLine("The folder path is not valid.");
+            }
+
+            errors = builder.ToString();
+            return string.IsNullOrEmpty(errors);
+        }
+
+        /// <summary>
+        /// Method called when a property value has changed.
+        /// </summary>
+        /// <param name="e">The property changed event args.</param>
         protected void InvokePropertyChanged(PropertyChangedEventArgs e)
         {
             if (PropertyChanged is not null) PropertyChanged(this, e);

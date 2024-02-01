@@ -1,4 +1,9 @@
-﻿using Dalog.DataPlatform.Client.ImageUploader.ExtensionMethods;
+﻿// -----------------------------------------------------------------------
+// <copyright file="MainController.cs" company="DALOG Diagnosesysteme GmbH">
+//  Copyright (c) DALOG(r) Diagnosesysteme GmbH. All rights reserved.
+// </copyright>
+// -----------------------------------------------------------------------
+using Dalog.DataPlatform.Client.ImageUploader.ExtensionMethods;
 using Dalog.DataPlatform.Client.ImageUploader.Forms;
 using Dalog.DataPlatform.Client.ImageUploader.Repositories;
 using Dalog.DataPlatform.Client.ImageUploader.Schema;
@@ -18,7 +23,7 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Controllers
         /// <summary>
         /// The uplaod settings.
         /// </summary>
-        private readonly HttpSettings _httpSettings;
+        private readonly UploadSettings _uploadSettings;
 
         /// <summary>
         /// The view.
@@ -33,10 +38,10 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Controllers
             ArgumentNullException.ThrowIfNull(repository, nameof(repository));
             this._httpRepository = repository;
             this._view = new MainForm();
-            this._httpSettings = new HttpSettings();
+            this._uploadSettings = new UploadSettings();
             this.SubscribeEvents();
             this.SetSettingsDataBindings();
-            this._httpSettings.Initialize();
+            this._uploadSettings.Initialize();
         }
 
         /// <summary>
@@ -88,7 +93,7 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Controllers
         {
             this._view.HideFormWhile(() =>
             {
-                using var ctrl = new NetworkSettingsController(this._httpSettings);
+                using var ctrl = new NetworkSettingsController(this._uploadSettings);
                 ctrl.View.ShowDialog(this._view);
             });
         }
@@ -106,7 +111,7 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Controllers
                 return;
             }
 
-            this._httpSettings.Reset();
+            this._uploadSettings.Reset();
         }
 
         /// <summary>
@@ -120,7 +125,7 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Controllers
             using var progressPanel = new ProgressPanel(cts);
             progressPanel.Show(this._view);
 
-            var response = await this._httpRepository.TestConnectionAsync(this._httpSettings, cts.Token);
+            var response = await this._httpRepository.TestConnectionAsync(this._uploadSettings, cts.Token);
             if (response.IsSuccessStatusCode)
             {
                 MessageBox.Show(this._view, "Connection successful", this._view.Text, MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -145,7 +150,7 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Controllers
                 return;
             }
 
-            this._httpSettings.Folder = dialog.SelectedPath;
+            this._uploadSettings.Folder = dialog.SelectedPath;
         }
 
         /// <summary>
@@ -153,11 +158,11 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Controllers
         /// </summary>
         private void SetSettingsDataBindings()
         {
-            this._view.SectionDdpInformation.MachineId.AddDataBinding(this._httpSettings, nameof(this._httpSettings.MachineId));
-            this._view.SectionDdpInformation.MachineNumber.AddDataBinding(this._httpSettings, nameof(this._httpSettings.DalogId));
-            this._view.SectionLocalInformation.ImagesFolder.AddDataBinding(this._httpSettings, nameof(this._httpSettings.Folder));
+            this._view.SectionDdpInformation.MachineId.AddDataBinding(this._uploadSettings, nameof(this._uploadSettings.MachineId));
+            this._view.SectionDdpInformation.MachineNumber.AddDataBinding(this._uploadSettings, nameof(this._uploadSettings.DalogId));
+            this._view.SectionLocalInformation.ImagesFolder.AddDataBinding(this._uploadSettings, nameof(this._uploadSettings.Folder));
             this._view.SectionLocalInformation.ImagesType.DataSource = Enum.GetValues(typeof(ImageType));
-            this._view.SectionLocalInformation.ImagesType.AddDataBinding(this._httpSettings, nameof(this._httpSettings.ImageType));
+            this._view.SectionLocalInformation.ImagesType.AddDataBinding(this._uploadSettings, nameof(this._uploadSettings.ImageType));
         }
 
         /// <summary>
@@ -165,58 +170,19 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Controllers
         /// </summary>
         /// <param name="sender">The sender object</param>
         /// <param name="e">The event args</param>
-        private void UploadButton_Click(object? sender, EventArgs e)
+        private async void UploadButton_Click(object? sender, EventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(this._httpSettings.BaseUrl))
+            if (!this._uploadSettings.SettingsAreValid(out var errors))
             {
-                MessageBox.Show(this._view, "Base URL is required", this._view.Text, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(this._view, errors, this._view.Text, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
-            if (!Uri.TryCreate(this._httpSettings.BaseUrl, UriKind.Absolute, out var _))
-            {
-                MessageBox.Show(this._view, "Base URL is not a valid URL", this._view.Text, MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-
-            if (string.IsNullOrWhiteSpace(this._httpSettings.ApiKey))
-            {
-                MessageBox.Show(this._view, "API Key is required", this._view.Text, MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-
-            if (string.IsNullOrWhiteSpace(this._httpSettings.Folder))
-            {
-                MessageBox.Show(this._view, "Folder is required", this._view.Text, MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-
-            if (!Directory.Exists(this._httpSettings.Folder))
-            {
-                MessageBox.Show(this._view, "Folder does not exist", this._view.Text, MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-
-            if (this._httpSettings.UseProxy)
-            {
-                if (string.IsNullOrWhiteSpace(this._httpSettings.ProxyAddress))
-                {
-                    MessageBox.Show(this._view, "Proxy Adress is required", this._view.Text, MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
-                }
-
-                if (!this._httpSettings.ProxyUseDefaultCredentials)
-                {
-                    if (string.IsNullOrWhiteSpace(this._httpSettings.ProxyCredentialsUsername))
-                    {
-                        MessageBox.Show(this._view, "Proxy Username is required", this._view.Text, MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        return;
-                    }
-                }
-            }
-
-            using var copyForm = new CopyForm(this._httpRepository, this._httpSettings);
-            copyForm.ShowDialog(this._view);
+            this._view.Visible = false;
+            using var ctrl = new UploadController(this._httpRepository, this._uploadSettings);
+            ctrl.View.Show(this._view);
+            await ctrl.UploadAllFiles();
+            this._view.Visible = true;
         }
 
         /// <summary>
