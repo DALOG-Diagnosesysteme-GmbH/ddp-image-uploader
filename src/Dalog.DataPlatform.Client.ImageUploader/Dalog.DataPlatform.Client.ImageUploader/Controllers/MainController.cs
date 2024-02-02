@@ -133,7 +133,7 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Controllers
             else
             {
                 var body = await response.Content.ReadAsStringAsync().ConfigureAwait(true);
-                MessageDialog.Show(this._view, MessageBoxIcon.Error, $"Connection error ({response.StatusCode}):{Environment.NewLine}{body}");
+                MessageDialog.Show(this._view, MessageBoxIcon.Warning, $"Connection error ({response.StatusCode}):{Environment.NewLine}{body}");
             }
         }
 

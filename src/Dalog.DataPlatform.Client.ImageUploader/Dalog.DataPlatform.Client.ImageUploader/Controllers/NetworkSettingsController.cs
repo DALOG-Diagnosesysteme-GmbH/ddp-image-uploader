@@ -88,7 +88,7 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Controllers
                 return;
             }
 
-            MessageBox.Show(this._view, errors, this._view.Text, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            MessageDialog.Show(this._view, MessageBoxIcon.Error, errors);
             e.Cancel = true;
         }
     }
