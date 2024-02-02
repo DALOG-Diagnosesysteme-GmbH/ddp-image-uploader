@@ -48,23 +48,23 @@ internal static class Program
                 .SetHandlerLifetime(TimeSpan.FromSeconds(1))
                 .ConfigurePrimaryHttpMessageHandler(provider =>
                 {
-                    var httpsettings = UserSettings.Default;
+                    var uploadSettings = UserSettings.Default;
                     var handler = new HttpClientHandler();
-                    if (httpsettings.DisableSslChecks)
+                    if (uploadSettings.DisableSslChecks)
                     {
                         handler.ClientCertificateOptions = ClientCertificateOption.Manual;
                         handler.ServerCertificateCustomValidationCallback = (_, _, _, _) => { return true; };
                     }
-                    if (httpsettings.UseProxy)
+                    if (uploadSettings.UseProxy)
                     {
-                        handler.UseProxy = httpsettings.UseProxy;
+                        handler.UseProxy = uploadSettings.UseProxy;
                         try
                         {
                             handler.Proxy = new WebProxy
                             {
-                                Address = new Uri(httpsettings.ProxyAddress ?? string.Empty),
-                                UseDefaultCredentials = httpsettings.ProxyUseDefaultCredentials,
-                                Credentials = new NetworkCredential(httpsettings.ProxyCredentialsUsername, httpsettings.ProxyCredentialsPassword)
+                                Address = new Uri(uploadSettings.ProxyAddress ?? string.Empty),
+                                UseDefaultCredentials = uploadSettings.ProxyUseDefaultCredentials,
+                                Credentials = new NetworkCredential(uploadSettings.ProxyCredentialsUsername, uploadSettings.ProxyCredentialsPassword)
                             };
                         }
                         catch (Exception ex)

@@ -103,12 +103,25 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Repositories
             return result;
         }
 
+        /// <summary>
+        /// Uploads an image asynchronously
+        /// </summary>
+        /// <param name="uploadSettings">The upload settings</param>
+        /// <param name="fileInfo">The image file info</param>
+        /// <param name="token">The cancellation token</param>
+        /// <returns>The HTTP response message</returns>
         public async Task<HttpResponseMessage> UploadImageAsync(UploadSettings uploadSettings, FileInfo fileInfo, CancellationToken token = default)
         {
             var result = new HttpResponseMessage()
             {
-                StatusCode = HttpStatusCode.Unused
+                StatusCode = HttpStatusCode.BadRequest
             };
+
+            if (!fileInfo.Exists)
+            {
+                this._logger.LogError("The file '{FullName}' does not exist or its access is restricted.", fileInfo.FullName);
+                return result;
+            }
 
             try
             {
@@ -139,12 +152,12 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Repositories
             }
             catch (HttpRequestException ex)
             {
-                result.StatusCode = ex.StatusCode ?? HttpStatusCode.BadRequest;
                 result.Content = new StringContent(ex.Message);
                 this._logger.LogError(ex, "Connection error ({StatusCode}): {Message}.", ex.StatusCode, ex.Message);
             }
             catch (Exception ex)
             {
+                result.Content = new StringContent(ex.Message);
                 this._logger.LogError(ex, "Exception '{Source}' thrown: {Message}.", ex.Source, ex.Message);
             }
 
