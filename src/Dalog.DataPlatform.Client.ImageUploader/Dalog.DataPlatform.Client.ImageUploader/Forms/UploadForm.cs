@@ -1,5 +1,5 @@
 ﻿// -----------------------------------------------------------------------
-// <copyright file="CopyForm.cs" company="DALOG Diagnosesysteme GmbH">
+// <copyright file="UploadForm.cs" company="DALOG Diagnosesysteme GmbH">
 //  Copyright (c) DALOG(r) Diagnosesysteme GmbH. All rights reserved.
 // </copyright>
 // -----------------------------------------------------------------------
@@ -45,6 +45,7 @@ public partial class UploadForm : Form
 
         this._dataTable.Rows.Add(uploadSuccessful, fileName, statusCode, statusText);
         this.progressBar.Value += 1;
+        this.UpdateIndicatorText();
     }
 
     /// <summary>
@@ -61,6 +62,7 @@ public partial class UploadForm : Form
 
         this.progressBar.Maximum = max;
         this.progressBar.Value = 0;
+        this.UpdateIndicatorText();
     }
 
     /// <summary>
@@ -91,5 +93,19 @@ public partial class UploadForm : Form
         this.dataGridView.DataSource = this._dataTable;
 
         this.dataGridView.Columns.GetLastColumn(DataGridViewElementStates.None, DataGridViewElementStates.None).AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+    }
+
+    /// <summary>
+    /// Updates the indicator text.
+    /// </summary>
+    private void UpdateIndicatorText()
+    {
+        if (this.labelBarIndicator.InvokeRequired)
+        {
+            this.labelBarIndicator.Invoke(new MethodInvoker(() => this.UpdateIndicatorText()));
+            return;
+        }
+
+        this.labelBarIndicator.Text = $"Processed ({this.progressBar.Value}/{this.progressBar.Maximum}):";
     }
 }

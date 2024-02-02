@@ -128,12 +128,12 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Controllers
             var response = await this._httpRepository.TestConnectionAsync(this._uploadSettings, cts.Token);
             if (response.IsSuccessStatusCode)
             {
-                MessageBox.Show(this._view, "Connection successful", this._view.Text, MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageDialog.Show(this._view, MessageBoxIcon.Information, "Connection successful!");
             }
             else
             {
                 var body = await response.Content.ReadAsStringAsync().ConfigureAwait(true);
-                MessageBox.Show(this._view, $"Connection error ({response.StatusCode}):{Environment.NewLine}{body}", this._view.Text, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageDialog.Show(this._view, MessageBoxIcon.Error, $"Connection error ({response.StatusCode}):{Environment.NewLine}{body}");
             }
         }
 
@@ -170,19 +170,19 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Controllers
         /// </summary>
         /// <param name="sender">The sender object</param>
         /// <param name="e">The event args</param>
-        private async void UploadButton_Click(object? sender, EventArgs e)
+        private void UploadButton_Click(object? sender, EventArgs e)
         {
             if (!this._uploadSettings.SettingsAreValid(out var errors))
             {
-                MessageBox.Show(this._view, errors, this._view.Text, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageDialog.Show(this._view, MessageBoxIcon.Error, errors);
                 return;
             }
 
-            this._view.Visible = false;
-            using var ctrl = new UploadController(this._httpRepository, this._uploadSettings);
-            ctrl.View.Show(this._view);
-            await ctrl.UploadAllFiles();
-            this._view.Visible = true;
+            this._view.HideFormWhile(() =>
+            {
+                using var ctrl = new UploadController(this._httpRepository, this._uploadSettings);
+                ctrl.View.ShowDialog(this._view);
+            });
         }
 
         /// <summary>

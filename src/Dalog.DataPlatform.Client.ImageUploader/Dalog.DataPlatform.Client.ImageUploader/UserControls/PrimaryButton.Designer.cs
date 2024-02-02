@@ -46,7 +46,7 @@
             buttonPrimary.Location = new Point(0, 0);
             buttonPrimary.Margin = new Padding(0);
             buttonPrimary.Name = "buttonPrimary";
-            buttonPrimary.Size = new Size(92, 32);
+            buttonPrimary.Size = new Size(82, 32);
             buttonPrimary.TabIndex = 0;
             buttonPrimary.Text = "button1";
             buttonPrimary.UseVisualStyleBackColor = false;
@@ -61,9 +61,9 @@
             BackColor = Color.Transparent;
             Controls.Add(buttonPrimary);
             Font = new Font("Segoe UI", 10F);
-            MinimumSize = new Size(92, 32);
+            MinimumSize = new Size(82, 32);
             Name = "PrimaryButton";
-            Size = new Size(92, 32);
+            Size = new Size(82, 32);
             ResumeLayout(false);
             PerformLayout();
         }

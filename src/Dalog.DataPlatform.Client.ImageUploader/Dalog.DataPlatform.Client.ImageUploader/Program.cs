@@ -1,3 +1,8 @@
+// -----------------------------------------------------------------------
+// <copyright file="Program.cs" company="DALOG Diagnosesysteme GmbH">
+//  Copyright (c) DALOG(r) Diagnosesysteme GmbH. All rights reserved.
+// </copyright>
+// -----------------------------------------------------------------------
 using System.Net;
 using Dalog.DataPlatform.Client.ImageUploader.Controllers;
 using Dalog.DataPlatform.Client.ImageUploader.Forms;
@@ -10,6 +15,9 @@ using Serilog;
 
 namespace Dalog.DataPlatform.Client.ImageUploader;
 
+/// <summary>
+/// The program class.
+/// </summary>
 internal static class Program
 {
     /// <summary>

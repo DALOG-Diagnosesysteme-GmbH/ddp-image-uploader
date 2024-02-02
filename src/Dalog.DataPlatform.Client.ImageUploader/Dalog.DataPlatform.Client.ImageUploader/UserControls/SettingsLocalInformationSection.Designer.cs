@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SettingsLocalInformationSection));
             labelImagesFolder = new Label();
             labelImagesType = new Label();
@@ -35,6 +36,7 @@
             comboBoxImagesType = new ComboBox();
             groupBoxContainer = new GroupBox();
             buttonSelectFolder = new Button();
+            toolTipButton = new ToolTip(components);
             groupBoxContainer.SuspendLayout();
             SuspendLayout();
             // 
@@ -119,6 +121,7 @@
             buttonSelectFolder.Name = "buttonSelectFolder";
             buttonSelectFolder.Size = new Size(25, 25);
             buttonSelectFolder.TabIndex = 4;
+            toolTipButton.SetToolTip(buttonSelectFolder, "Select folder");
             buttonSelectFolder.UseVisualStyleBackColor = false;
             buttonSelectFolder.Click += ButtonSelectFolder_Click;
             // 
@@ -146,5 +149,6 @@
         private ComboBox comboBoxImagesType;
         private GroupBox groupBoxContainer;
         private Button buttonSelectFolder;
+        private ToolTip toolTipButton;
     }
 }

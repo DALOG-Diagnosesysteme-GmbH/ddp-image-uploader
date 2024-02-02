@@ -71,7 +71,7 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Repositories
             {
                 this._logger.LogInformation("Starting connection test to DDP...");
                 this._logger.LogInformation("Validating settings...");
-                if (!uploadSettings.SettingsAreValid(out var errors))
+                if (!uploadSettings.NetworkSettingsAreValid(out var errors))
                 {
                     this._logger.LogError("Settings not valid: {errors}", errors);
                     result.Content = new StringContent(errors);

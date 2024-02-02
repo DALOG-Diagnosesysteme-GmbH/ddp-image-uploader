@@ -46,7 +46,7 @@
             buttonSecondary.Location = new Point(0, 0);
             buttonSecondary.Margin = new Padding(0);
             buttonSecondary.Name = "buttonSecondary";
-            buttonSecondary.Size = new Size(92, 32);
+            buttonSecondary.Size = new Size(82, 32);
             buttonSecondary.TabIndex = 1;
             buttonSecondary.Text = "button1";
             buttonSecondary.UseVisualStyleBackColor = false;
@@ -64,9 +64,9 @@
             BackColor = Color.Transparent;
             Controls.Add(buttonSecondary);
             Font = new Font("Segoe UI", 10F);
-            MinimumSize = new Size(92, 32);
+            MinimumSize = new Size(82, 32);
             Name = "SecondaryButton";
-            Size = new Size(92, 32);
+            Size = new Size(82, 32);
             ResumeLayout(false);
             PerformLayout();
         }

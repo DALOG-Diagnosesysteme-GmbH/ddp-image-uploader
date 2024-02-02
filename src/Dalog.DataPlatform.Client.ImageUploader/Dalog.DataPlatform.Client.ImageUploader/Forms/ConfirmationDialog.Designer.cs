@@ -37,6 +37,7 @@
             // labelText
             // 
             labelText.Dock = DockStyle.Top;
+            labelText.Font = new Font("Segoe UI", 9F);
             labelText.Location = new Point(0, 0);
             labelText.Name = "labelText";
             labelText.Padding = new Padding(10);
@@ -52,7 +53,7 @@
             buttonConfirm.BackColor = Color.Transparent;
             buttonConfirm.ButtonText = "Confirm";
             buttonConfirm.Font = new Font("Segoe UI", 10F);
-            buttonConfirm.Location = new Point(122, 60);
+            buttonConfirm.Location = new Point(132, 49);
             buttonConfirm.MinimumSize = new Size(92, 32);
             buttonConfirm.Name = "buttonConfirm";
             buttonConfirm.Size = new Size(92, 32);
@@ -66,11 +67,11 @@
             buttonReturn.BackColor = Color.Transparent;
             buttonReturn.ButtonText = "Return";
             buttonReturn.Font = new Font("Segoe UI", 10F);
-            buttonReturn.Location = new Point(220, 60);
-            buttonReturn.MinimumSize = new Size(92, 32);
+            buttonReturn.Location = new Point(230, 49);
+            buttonReturn.MinimumSize = new Size(82, 32);
             buttonReturn.Name = "buttonReturn";
-            buttonReturn.Size = new Size(92, 32);
-            buttonReturn.TabIndex = 1;
+            buttonReturn.Size = new Size(82, 32);
+            buttonReturn.TabIndex = 11;
             buttonReturn.OnButtonClick += ButtonReturn_OnButtonClick;
             // 
             // ConfirmationDialog
@@ -78,7 +79,7 @@
             AutoScaleDimensions = new SizeF(7F, 17F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.White;
-            ClientSize = new Size(324, 102);
+            ClientSize = new Size(324, 91);
             Controls.Add(buttonReturn);
             Controls.Add(buttonConfirm);
             Controls.Add(labelText);

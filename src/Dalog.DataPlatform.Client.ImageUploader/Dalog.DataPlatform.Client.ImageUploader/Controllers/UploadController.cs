@@ -44,7 +44,6 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Controllers
             this._httpRepository = httpRepository;
             this._uploadSettings = httpSettings;
             this._view = new UploadForm();
-
             this.SubscribeEvents();
         }
 
@@ -68,6 +67,7 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Controllers
         /// </summary>
         public void SubscribeEvents()
         {
+            this._view.Shown += FormShown;
             this._view.FormClosing += FormClosing;
         }
 
@@ -77,6 +77,7 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Controllers
         public void UnsubscribeEvents()
         {
             this._view.FormClosing -= FormClosing;
+            this._view.Shown -= FormShown;
         }
 
         /// <summary>
@@ -87,7 +88,7 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Controllers
         {
             if (!this._uploadSettings.SettingsAreValid(out var errors))
             {
-                MessageBox.Show(this._view, errors, this._view.Text, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageDialog.Show(this._view, MessageBoxIcon.Error, errors);
                 return;
             }
 
@@ -95,7 +96,7 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Controllers
             var files = folderInfo.EnumerateFiles("*", SearchOption.AllDirectories);
             if (!files.Any())
             {
-                MessageBox.Show(this._view, $"No images found in '{folderInfo.FullName}'.", this._view.Text, MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageDialog.Show(this._view, MessageBoxIcon.Information, $"No images found in '{folderInfo.FullName}'.");
                 return;
             }
 
@@ -115,7 +116,8 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Controllers
                 this._view.AppendResult(file.Name, response.IsSuccessStatusCode, response.StatusCode.ToString(), responseContentAsString);
             }
 
-            MessageBox.Show(this._view, "All images were successfully processed.", this._view.Text, MessageBoxButtons.OK, MessageBoxIcon.Information);
+            this._view.SetCurrentFileName(string.Empty);
+            MessageDialog.Show(this._view, MessageBoxIcon.Information, "All images were successfully processed.");
             this._cts.Dispose();
             this._cts = null;
         }
@@ -133,6 +135,18 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Controllers
             }
 
             this.Dispose();
+        }
+
+        /// <summary>
+        /// Method called when the form is shown the first time.
+        /// </summary>
+        /// <param name="sender">The sender object</param>
+        /// <param name="e">The event args.</param>
+        private async void FormShown(object? sender, EventArgs e)
+        {
+            this._view.UseWaitCursor = true;
+            await this.UploadAllFiles();
+            this._view.UseWaitCursor = false;
         }
     }
 }
