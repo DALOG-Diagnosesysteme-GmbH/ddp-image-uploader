@@ -42,6 +42,17 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Forms
         }
 
         /// <summary>
+        /// Gets the auto upload numerical up down.
+        /// </summary>
+        internal NumericUpDown AutoUploadHours
+        {
+            get
+            {
+                return this.numAutoUploadHours;
+            }
+        }
+
+        /// <summary>
         /// Gets the command bar
         /// </summary>
         internal SettingsCommandBar CommandBar

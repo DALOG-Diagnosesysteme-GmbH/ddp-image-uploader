@@ -12,6 +12,11 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Schema
     public sealed class AppSettings()
     {
         /// <summary>
+        /// Gets and sets the auto upload interval (hours)
+        /// </summary>
+        public int AutoUploadIntervalHours { get; set; } = 2;
+
+        /// <summary>
         /// Gets and sets the base URL
         /// </summary>
         public string BaseUrl { get; set; } = string.Empty;

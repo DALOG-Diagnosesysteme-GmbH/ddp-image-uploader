@@ -7,6 +7,7 @@ using Dalog.DataPlatform.Client.ImageUploader.ExtensionMethods;
 using Dalog.DataPlatform.Client.ImageUploader.Forms;
 using Dalog.DataPlatform.Client.ImageUploader.Repositories;
 using Dalog.DataPlatform.Client.ImageUploader.Schema;
+using Microsoft.Extensions.Options;
 
 namespace Dalog.DataPlatform.Client.ImageUploader.Controllers
 {
@@ -33,8 +34,9 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Controllers
         /// <summary>
         /// Initializes a new instance of the <see cref="MainController"/> class.
         /// </summary>
-        public MainController(HttpRepository repository)
+        public MainController(IOptions<AppSettings> appsettings, HttpRepository repository)
         {
+            ArgumentNullException.ThrowIfNull(appsettings, nameof(appsettings));        
             ArgumentNullException.ThrowIfNull(repository, nameof(repository));
             this._httpRepository = repository;
             this._view = new MainForm();
@@ -42,7 +44,19 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Controllers
             this.SubscribeEvents();
             this.SetSettingsDataBindings();
             this._uploadSettings.Initialize();
+            this._view.AutoUploadHours.Value = appsettings.Value?.AutoUploadIntervalHours ?? 2;
         }
+
+        /// <summary>
+        /// The auto upload interval hours event delegate
+        /// </summary>
+        /// <param name="hours">The new time interval in hours</param>
+        internal delegate void AutoUploadHoursEvent(int hours);
+
+        /// <summary>
+        /// Event triggered when the auto upload interval in hours has changed.
+        /// </summary>
+        internal event AutoUploadHoursEvent? OnAutoUploadHoursChanged;
 
         /// <summary>
         /// Gets the view.
@@ -64,6 +78,7 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Controllers
         public void SubscribeEvents()
         {
             this._view.FormClosing += View_FormClosing;
+            this._view.AutoUploadHours.ValueChanged += AutoUploadHours_ValueChanged;
             this._view.UploadButton.OnButtonClick += UploadButton_Click;
             this._view.SectionLocalInformation.OnSelectFolderButtonClick += OnSelectFolderButtonClick;
             this._view.CommandBar.OnButtonTestConnectionClick += OnButtonTestConnectionClick;
@@ -77,11 +92,22 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Controllers
         public void UnsubscribeEvents()
         {
             this._view.FormClosing -= View_FormClosing;
+            this._view.AutoUploadHours.ValueChanged -= AutoUploadHours_ValueChanged;
             this._view.UploadButton.OnButtonClick -= UploadButton_Click;
             this._view.SectionLocalInformation.OnSelectFolderButtonClick -= OnSelectFolderButtonClick;
             this._view.CommandBar.OnButtonTestConnectionClick -= OnButtonTestConnectionClick;
             this._view.CommandBar.OnButtonResetSettingsClick -= OnButtonResetSettingsClick;
             this._view.CommandBar.OnButtonNetworkSettingsClick -= OnButtonNetworkSettingsClick;
+        }
+
+        /// <summary>
+        /// Method called when the auto upload time interval in hours has changed
+        /// </summary>
+        /// <param name="sender">The sender object</param>
+        /// <param name="e">The event args.</param>
+        private void AutoUploadHours_ValueChanged(object? sender, EventArgs e)
+        {
+            this.OnAutoUploadHoursChanged?.Invoke((int)this._view.AutoUploadHours.Value);
         }
 
         /// <summary>
@@ -122,9 +148,8 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Controllers
         private async void OnButtonTestConnectionClick(object? sender, EventArgs e)
         {
             using var cts = new CancellationTokenSource();
-            using var progressPanel = new ProgressPanel(cts, "Testing connection to the Data Platform...");
-            progressPanel.Show(this._view);
-
+            using var panel = ProgressPanel.Instantiate(this._view, cts, "Testing connection to the Data Platform...");
+            panel?.Show();
             var response = await this._httpRepository.TestConnectionAsync(this._uploadSettings, cts.Token);
             if (response.IsSuccessStatusCode)
             {
@@ -132,7 +157,7 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Controllers
             }
             else
             {
-                var body = await response.Content.ReadAsStringAsync().ConfigureAwait(true);
+                var body = await response.Content.ReadAsStringAsync();
                 MessageDialog.Show(this._view, MessageBoxIcon.Warning, $"Connection error ({response.StatusCode}):{Environment.NewLine}{body}");
             }
         }

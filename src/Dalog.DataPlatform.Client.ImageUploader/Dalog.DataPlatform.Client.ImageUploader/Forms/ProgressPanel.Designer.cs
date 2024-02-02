@@ -46,9 +46,9 @@
             // 
             labelStatus.Dock = DockStyle.Bottom;
             labelStatus.Font = new Font("Segoe UI", 9F);
-            labelStatus.Location = new Point(0, 35);
+            labelStatus.Location = new Point(0, 29);
             labelStatus.Name = "labelStatus";
-            labelStatus.Size = new Size(316, 31);
+            labelStatus.Size = new Size(316, 37);
             labelStatus.TabIndex = 1;
             labelStatus.Text = "Loading...";
             labelStatus.TextAlign = ContentAlignment.MiddleCenter;
@@ -59,8 +59,8 @@
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.White;
             ClientSize = new Size(316, 66);
-            Controls.Add(labelStatus);
             Controls.Add(progressBar);
+            Controls.Add(labelStatus);
             Font = new Font("Segoe UI", 10F);
             ForeColor = Color.FromArgb(43, 42, 41);
             FormBorderStyle = FormBorderStyle.FixedSingle;

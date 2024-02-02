@@ -8,6 +8,7 @@ using Dalog.DataPlatform.Client.ImageUploader.Controllers;
 using Dalog.DataPlatform.Client.ImageUploader.Forms;
 using Dalog.DataPlatform.Client.ImageUploader.Repositories;
 using Dalog.DataPlatform.Client.ImageUploader.Schema;
+using Dalog.DataPlatform.Client.ImageUploader.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -78,6 +79,7 @@ internal static class Program
 
                 services.AddTransient<HttpRepository>();
                 services.AddSingleton<IController<MainForm>, MainController>();
+                services.AddHostedService<Worker>();
             })
             .UseSerilog();
 

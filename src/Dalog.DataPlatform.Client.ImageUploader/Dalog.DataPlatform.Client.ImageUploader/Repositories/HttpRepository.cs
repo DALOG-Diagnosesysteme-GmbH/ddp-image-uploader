@@ -112,6 +112,7 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Repositories
         /// <returns>The HTTP response message</returns>
         public async Task<HttpResponseMessage> UploadImageAsync(UploadSettings uploadSettings, FileInfo fileInfo, CancellationToken token = default)
         {
+            this._logger.LogInformation("Uploading file '{FullName}'...", fileInfo.FullName);
             var result = new HttpResponseMessage()
             {
                 StatusCode = HttpStatusCode.BadRequest
@@ -144,6 +145,7 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Repositories
                 using var httpClient = this.GetHttpClient(uploadSettings);
                 result = await httpClient.PostAsync(this.GetEndpoint(uploadSettings.ImageType), formData, token);
                 result.EnsureSuccessStatusCode();
+                this._logger.LogInformation("Image successfully uploaded.");
             }
             catch (TaskCanceledException)
             {

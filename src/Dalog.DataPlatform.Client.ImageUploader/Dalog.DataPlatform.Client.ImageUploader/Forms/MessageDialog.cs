@@ -32,8 +32,14 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Forms
         /// <param name="owner">The window owner</param>
         /// <param name="icon">The message box icon</param>
         /// <param name="message">The message</param>
-        internal static void Show(IWin32Window owner, MessageBoxIcon icon, string message)
+        internal static void Show(Form owner, MessageBoxIcon icon, string message)
         {
+            if (owner.InvokeRequired)
+            {
+                owner.Invoke(new MethodInvoker(() => Show(owner, icon, message)));
+                return;
+            }
+
             using var dialog = new MessageDialog(icon, message);
             dialog.ShowDialog(owner);
         }

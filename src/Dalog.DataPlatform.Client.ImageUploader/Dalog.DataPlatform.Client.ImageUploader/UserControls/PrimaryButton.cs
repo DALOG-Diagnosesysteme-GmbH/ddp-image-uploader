@@ -33,6 +33,20 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Views
         }
 
         /// <summary>
+        /// Performs a click.
+        /// </summary>
+        public void PerformClick()
+        {
+            if (this.buttonPrimary.InvokeRequired)
+            {
+                this.buttonPrimary.Invoke(new MethodInvoker(() => this.PerformClick()));
+                return;
+            }
+
+            this.buttonPrimary.PerformClick();
+        }
+
+        /// <summary>
         /// Method called when a key is up
         /// </summary>
         /// <param name="sender">the object sender</param>

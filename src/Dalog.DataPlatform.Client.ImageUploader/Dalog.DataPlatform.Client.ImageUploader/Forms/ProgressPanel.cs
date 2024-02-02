@@ -19,23 +19,47 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Forms
         /// Initializes a new instance of the <see cref="ProgressPanel"/> class.
         /// </summary>
         /// <param name="cts">The cancellation token source.</param>
-        /// <param name="labelText">The label text.</param>
-        public ProgressPanel(CancellationTokenSource? cts = null, string labelText = "Loading...")
+        public ProgressPanel(CancellationTokenSource? cts = null)
         {
             InitializeComponent();
             this.progressBar.Style = ProgressBarStyle.Marquee;
-            this.LabelText = labelText;
             this._cts = cts;
             this.FormClosing += ProgressPanel_FormClosing;
         }
 
         /// <summary>
-        /// The label text.
+        /// Instantiates a progress panel.
         /// </summary>
-        public string LabelText
+        /// <param name="parent">The form parent</param>
+        /// <param name="cts">The cancellation token source</param>
+        /// <param name="text">The message text</param>
+        /// <returns>The progress panel object</returns>
+        public static ProgressPanel? Instantiate(Form parent, CancellationTokenSource cts, string text)
         {
-            get { return this.labelStatus.Text; }
-            set { this.labelStatus.Text = value; }
+            if (parent.InvokeRequired)
+            {
+                parent.Invoke(new MethodInvoker(() => Instantiate(parent, cts, text)));
+                return null;
+            }
+
+            var panel = new ProgressPanel(cts);
+            panel.ChangeLabelText(text);
+            return panel;
+        }
+
+        /// <summary>
+        /// Changes the label text
+        /// </summary>
+        /// <param name="text">The new text</param>
+        public void ChangeLabelText(string text)
+        {
+            if (this.labelStatus.InvokeRequired)
+            {
+                this.labelStatus.Invoke(new MethodInvoker(() => this.ChangeLabelText(text)));
+                return;
+            }
+
+            this.labelStatus.Text = text;
         }
 
         /// <summary>
