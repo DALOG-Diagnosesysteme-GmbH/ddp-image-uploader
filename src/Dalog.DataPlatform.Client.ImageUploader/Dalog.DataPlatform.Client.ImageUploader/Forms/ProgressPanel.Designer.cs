@@ -44,11 +44,11 @@
             // 
             // labelStatus
             // 
-            labelStatus.Anchor = AnchorStyles.Bottom;
-            labelStatus.AutoSize = true;
-            labelStatus.Location = new Point(121, 41);
+            labelStatus.Dock = DockStyle.Bottom;
+            labelStatus.Font = new Font("Segoe UI", 9F);
+            labelStatus.Location = new Point(0, 35);
             labelStatus.Name = "labelStatus";
-            labelStatus.Size = new Size(67, 19);
+            labelStatus.Size = new Size(316, 31);
             labelStatus.TabIndex = 1;
             labelStatus.Text = "Loading...";
             labelStatus.TextAlign = ContentAlignment.MiddleCenter;
@@ -58,7 +58,7 @@
             AutoScaleDimensions = new SizeF(7F, 17F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.White;
-            ClientSize = new Size(316, 69);
+            ClientSize = new Size(316, 66);
             Controls.Add(labelStatus);
             Controls.Add(progressBar);
             Font = new Font("Segoe UI", 10F);
@@ -71,7 +71,6 @@
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Loading...";
             ResumeLayout(false);
-            PerformLayout();
         }
 
         #endregion

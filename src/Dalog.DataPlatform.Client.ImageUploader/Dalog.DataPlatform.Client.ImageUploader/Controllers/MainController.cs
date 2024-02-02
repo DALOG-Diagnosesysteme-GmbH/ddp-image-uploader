@@ -65,10 +65,10 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Controllers
         {
             this._view.FormClosing += View_FormClosing;
             this._view.UploadButton.OnButtonClick += UploadButton_Click;
-            this._view.SectionLocalInformation.OnSelectFolderButtonClick += SectionLocalInformation_OnSelectFolderButtonClick;
-            this._view.CommandBar.OnButtonTestConnectionClick += CommandBar_OnButtonTestConnectionClick;
-            this._view.CommandBar.OnButtonResetSettingsClick += CommandBar_OnButtonResetSettingsClick;
-            this._view.CommandBar.OnButtonNetworkSettingsClick += CommandBar_OnButtonNetworkSettingsClick;
+            this._view.SectionLocalInformation.OnSelectFolderButtonClick += OnSelectFolderButtonClick;
+            this._view.CommandBar.OnButtonTestConnectionClick += OnButtonTestConnectionClick;
+            this._view.CommandBar.OnButtonResetSettingsClick += OnButtonResetSettingsClick;
+            this._view.CommandBar.OnButtonNetworkSettingsClick += OnButtonNetworkSettingsClick;
         }
 
         /// <summary>
@@ -78,10 +78,10 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Controllers
         {
             this._view.FormClosing -= View_FormClosing;
             this._view.UploadButton.OnButtonClick -= UploadButton_Click;
-            this._view.SectionLocalInformation.OnSelectFolderButtonClick -= SectionLocalInformation_OnSelectFolderButtonClick;
-            this._view.CommandBar.OnButtonTestConnectionClick -= CommandBar_OnButtonTestConnectionClick;
-            this._view.CommandBar.OnButtonResetSettingsClick -= CommandBar_OnButtonResetSettingsClick;
-            this._view.CommandBar.OnButtonNetworkSettingsClick -= CommandBar_OnButtonNetworkSettingsClick;
+            this._view.SectionLocalInformation.OnSelectFolderButtonClick -= OnSelectFolderButtonClick;
+            this._view.CommandBar.OnButtonTestConnectionClick -= OnButtonTestConnectionClick;
+            this._view.CommandBar.OnButtonResetSettingsClick -= OnButtonResetSettingsClick;
+            this._view.CommandBar.OnButtonNetworkSettingsClick -= OnButtonNetworkSettingsClick;
         }
 
         /// <summary>
@@ -89,7 +89,7 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Controllers
         /// </summary>
         /// <param name="sender">The sender object</param>
         /// <param name="e">The event args</param>
-        private void CommandBar_OnButtonNetworkSettingsClick(object? sender, EventArgs e)
+        private void OnButtonNetworkSettingsClick(object? sender, EventArgs e)
         {
             this._view.HideFormWhile(() =>
             {
@@ -103,7 +103,7 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Controllers
         /// </summary>
         /// <param name="sender">The sender object</param>
         /// <param name="e">The event args</param>
-        private void CommandBar_OnButtonResetSettingsClick(object? sender, EventArgs e)
+        private void OnButtonResetSettingsClick(object? sender, EventArgs e)
         {
             using var dialog = new ConfirmationDialog("Do you really want to reset all settings to their default value?");
             if (dialog.ShowDialog(this._view) != DialogResult.Yes)
@@ -119,10 +119,10 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Controllers
         /// </summary>
         /// <param name="sender">The sender object</param>
         /// <param name="e">The event args</param>
-        private async void CommandBar_OnButtonTestConnectionClick(object? sender, EventArgs e)
+        private async void OnButtonTestConnectionClick(object? sender, EventArgs e)
         {
             using var cts = new CancellationTokenSource();
-            using var progressPanel = new ProgressPanel(cts);
+            using var progressPanel = new ProgressPanel(cts, "Testing connection to the Data Platform...");
             progressPanel.Show(this._view);
 
             var response = await this._httpRepository.TestConnectionAsync(this._uploadSettings, cts.Token);
@@ -142,7 +142,7 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Controllers
         /// </summary>
         /// <param name="sender">The sender object</param>
         /// <param name="e">The event args.</param>
-        private void SectionLocalInformation_OnSelectFolderButtonClick(object? sender, EventArgs e)
+        private void OnSelectFolderButtonClick(object? sender, EventArgs e)
         {
             using var dialog = new FolderBrowserDialog();
             if (dialog.ShowDialog(this._view) != DialogResult.OK || string.IsNullOrEmpty(dialog.SelectedPath))
