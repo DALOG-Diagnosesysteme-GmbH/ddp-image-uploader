@@ -1,5 +1,5 @@
 ﻿// -----------------------------------------------------------------------
-// <copyright file="SettingsLocalInformationView.cs" company="DALOG Diagnosesysteme GmbH">
+// <copyright file="SettingsLocalInformationSection.cs" company="DALOG Diagnosesysteme GmbH">
 //  Copyright (c) DALOG(r) Diagnosesysteme GmbH. All rights reserved.
 // </copyright>
 // -----------------------------------------------------------------------

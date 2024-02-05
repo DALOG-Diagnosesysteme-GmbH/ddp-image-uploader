@@ -1,5 +1,5 @@
 ﻿// -----------------------------------------------------------------------
-// <copyright file="SettingsDdpInformationView.cs" company="DALOG Diagnosesysteme GmbH">
+// <copyright file="SettingsDdpInformationSection.cs" company="DALOG Diagnosesysteme GmbH">
 //  Copyright (c) DALOG(r) Diagnosesysteme GmbH. All rights reserved.
 // </copyright>
 // -----------------------------------------------------------------------

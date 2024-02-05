@@ -61,6 +61,7 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Services
             this._httpRepository = httpRepository;
             this._mainController = (MainController)mainController;
             this._mainController.OnAutoUploadHoursChanged += MainController_OnAutoUploadHoursChanged;
+            //this._taskInterval = TimeSpan.FromSeconds(10);
             this._taskInterval = TimeSpan.FromHours(appsettings.Value?.AutoUploadIntervalHours ?? 1);
             this._nextDue = DateTime.Now + this._taskInterval;
         }
@@ -87,8 +88,10 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Services
                 {
                     if (DateTime.Now > this._nextDue)
                     {
+                        ToastNotificationController.Show(this._mainController.View, $"The upload task is running now in background.");
                         await this.UploadImagesAsync(stoppingToken);
                         this._nextDue = DateTime.Now + this._taskInterval;
+                        ToastNotificationController.Show(this._mainController.View, $"All images were successfully processed. Next automatic upload on {this._nextDue.ToLocalTime()}");
                         this._logger.LogInformation("Next automatic upload due on {time}", this._nextDue);
                     }
 
@@ -116,6 +119,7 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Services
 
             this._taskInterval = TimeSpan.FromHours(hours);
             this._nextDue = DateTime.Now + this._taskInterval;
+            ToastNotificationController.Show(this._mainController.View, $"The next upload task will be performed at {this._nextDue.ToLocalTime()}");
         }
 
         /// <summary>

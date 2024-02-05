@@ -44,7 +44,7 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Controllers
             this.SubscribeEvents();
             this.SetSettingsDataBindings();
             this._uploadSettings.Initialize();
-            this._view.AutoUploadHours.Value = appsettings.Value?.AutoUploadIntervalHours ?? 2;
+            this._view.AutoUploadHours.Value = appsettings.Value?.AutoUploadIntervalHours ?? 1;
         }
 
         /// <summary>
