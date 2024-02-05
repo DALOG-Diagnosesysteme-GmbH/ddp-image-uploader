@@ -25,8 +25,13 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Tests
         {
             var host = Host.CreateDefaultBuilder(args)
                 .ConfigureDefaults(args)
+                .ConfigureAppConfiguration(builder =>
+                {
+                    builder.AddUserSecrets<AuthSettings>(false, true);
+                })
                 .ConfigureServices((context, services) =>
                 {
+                    services.Configure<AuthSettings>(context.Configuration.GetSection(nameof(AuthSettings)));
                     services.Configure<AppSettings>(context.Configuration.GetSection(nameof(AppSettings)));
                     services.Configure<ImagesUploadEndpoints>(context.Configuration.GetSection(nameof(ImagesUploadEndpoints)));
                     services.AddHttpClient("DdpClient", options =>
@@ -35,6 +40,8 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Tests
                         options.BaseAddress = new Uri(appsettings!.BaseUrl);
                     })
                     .SetHandlerLifetime(TimeSpan.FromSeconds(1));
+
+                    services.AddSingleton<AuthRepository>();
                     services.AddTransient<HttpRepository>();
                 });
 

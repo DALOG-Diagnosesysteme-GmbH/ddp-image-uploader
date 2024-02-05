@@ -4,6 +4,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 using System.Net;
+using System.Security.Principal;
 using Dalog.DataPlatform.Client.ImageUploader.Repositories;
 using Dalog.DataPlatform.Client.ImageUploader.Schema;
 using Microsoft.Extensions.DependencyInjection;

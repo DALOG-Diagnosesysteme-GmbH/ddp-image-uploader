@@ -5,6 +5,7 @@
 // -----------------------------------------------------------------------
 
 using System.Net;
+using System.Net.Http.Headers;
 using Dalog.DataPlatform.Client.ImageUploader.Schema;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -20,6 +21,11 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Repositories
         /// The application settings.
         /// </summary>
         private readonly AppSettings _appSettings;
+
+        /// <summary>
+        /// The authentication repository.
+        /// </summary>
+        private readonly AuthRepository _authRepository;
 
         /// <summary>
         /// The images upload endpoints.
@@ -42,16 +48,18 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Repositories
         /// <param name="logger">The logger</param>
         /// <param name="appSettings">The application settings</param>
         /// <param name="httpClientFactory">The HTTP client factory</param>
-        public HttpRepository(ILogger<HttpRepository> logger, IOptions<AppSettings> appSettings, IOptions<ImagesUploadEndpoints> endpoints, IHttpClientFactory httpClientFactory)
+        public HttpRepository(ILogger<HttpRepository> logger, IOptions<AppSettings> appSettings, IOptions<ImagesUploadEndpoints> endpoints, IHttpClientFactory httpClientFactory, AuthRepository authRepository)
         {
             ArgumentNullException.ThrowIfNull(logger, nameof(logger));
             ArgumentNullException.ThrowIfNull(appSettings, nameof(appSettings));
             ArgumentNullException.ThrowIfNull(endpoints, nameof(endpoints));
             ArgumentNullException.ThrowIfNull(httpClientFactory, nameof(httpClientFactory));
+            ArgumentNullException.ThrowIfNull(authRepository, nameof(authRepository));
             this._logger = logger;
             this._appSettings = appSettings.Value;
             this._endpoints = endpoints.Value;
             this._httpClientFactory = httpClientFactory;
+            this._authRepository = authRepository;
         }
 
         /// <summary>
@@ -192,7 +200,12 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Repositories
         {
             this._logger.LogInformation("Instantiating HTTP client from factory...");
             var result = this._httpClientFactory.CreateClient("DdpClient");
-            if (!string.IsNullOrEmpty(settings.ApiKey))
+
+            if (!string.IsNullOrEmpty(this._authRepository.AccessToken))
+            {
+                result.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", this._authRepository.AccessToken);
+            }
+            else if (!string.IsNullOrEmpty(settings.ApiKey))
             {
                 result.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", settings.ApiKey);
             }

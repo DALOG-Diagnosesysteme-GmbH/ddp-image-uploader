@@ -84,18 +84,21 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Services
         {
             try
             {
+                this._logger.LogInformation("{name} service successfully started.", nameof(Worker));
                 while (!stoppingToken.IsCancellationRequested)
                 {
+                    // Uploads the images.
                     if (DateTime.Now > this._nextDue)
                     {
                         ToastNotificationController.Show(this._mainController.View, $"The upload task is running now in background.");
+
                         await this.UploadImagesAsync(stoppingToken);
                         this._nextDue = DateTime.Now + this._taskInterval;
-                        ToastNotificationController.Show(this._mainController.View, $"All images were successfully processed. Next automatic upload on {this._nextDue.ToLocalTime()}");
                         this._logger.LogInformation("Next automatic upload due on {time}", this._nextDue);
+
+                        ToastNotificationController.Show(this._mainController.View, $"All images were successfully processed. Next automatic upload on {this._nextDue.ToLocalTime()}");
                     }
 
-                    this._logger.LogInformation("Service running at {time}", DateTime.Now);
                     await Task.Delay(1000, stoppingToken);
                 }
             }

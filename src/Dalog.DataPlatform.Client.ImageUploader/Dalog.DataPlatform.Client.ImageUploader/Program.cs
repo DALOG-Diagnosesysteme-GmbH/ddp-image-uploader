@@ -36,8 +36,13 @@ internal static class Program
         var host = Host.CreateDefaultBuilder(args)
             .ConfigureDefaults(args)
             .UseEnvironment(env)
+            .ConfigureAppConfiguration((context, builder) =>
+            {
+                builder.AddUserSecrets<AuthSettings>(false, true);
+            })
             .ConfigureServices((context, services) =>
             {
+                services.Configure<AuthSettings>(context.Configuration.GetSection(nameof(AuthSettings)));
                 services.Configure<AppSettings>(context.Configuration.GetSection(nameof(AppSettings)));
                 services.Configure<ImagesUploadEndpoints>(context.Configuration.GetSection(nameof(ImagesUploadEndpoints)));
                 services.AddHttpClient("DdpClient", options =>
@@ -78,6 +83,7 @@ internal static class Program
                 });
 
                 services.AddTransient<HttpRepository>();
+                services.AddSingleton<AuthRepository>();
                 services.AddSingleton<IController<MainForm>, MainController>();
                 services.AddHostedService<Worker>();
             })
@@ -102,7 +108,17 @@ internal static class Program
 
         using var host = CreateHostBuilder([]).Build();
         host.RunAsync();
+
         var mainController = host.Services.GetRequiredService<IController<MainForm>>();
-        Application.Run(mainController.View);
+        var authRepository = host.Services.GetRequiredService<AuthRepository>();
+        var loginSuccess = authRepository.Login([]);
+        if (!loginSuccess)
+        {
+            MessageDialog.Show(mainController.View, MessageBoxIcon.Error, "Authentication failure. This application will be closed.");
+        }
+        else
+        {
+            Application.Run(mainController.View);
+        }
     }
 }
