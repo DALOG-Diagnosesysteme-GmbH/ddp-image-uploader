@@ -10,19 +10,9 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Schema
     /// </summary>
     public class AuthSettings
     {
-        /// <summary>
-        /// Gets and sets the client Id.
-        /// </summary>
         public string ClientId { get; set; } = string.Empty;
-
-        /// <summary>
-        /// Gets and sets the redirect URL
-        /// </summary>
         public string RedirectUrl { get; set; } = string.Empty;
-
-        /// <summary>
-        /// Gets and sets the tenant Id.
-        /// </summary>
-        public string TenantId { get; set; } = string.Empty;
+        public string B2CTenantName { get; set; } = string.Empty;
+        public string B2CPolicyName { get; set; } = string.Empty;
     }
 }

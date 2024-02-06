@@ -81,9 +81,9 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Repositories
             {
                 this._logger.LogInformation("Initializing bearer token authentication...");
                 result = PublicClientApplicationBuilder.Create(this._settings.ClientId)
-                .WithRedirectUri(this._settings.RedirectUrl)
-                .WithAuthority(AzureCloudInstance.AzurePublic, this._settings.TenantId)
-                .Build();
+                    .WithB2CAuthority($"https://{this._settings.B2CTenantName}.b2clogin.com/tfp/{this._settings.B2CTenantName}.onmicrosoft.com/{this._settings.B2CPolicyName}")
+                    .WithRedirectUri(this._settings.RedirectUrl)
+                    .Build();
                 TokenCacheHelper.EnableSerialization(result.UserTokenCache);
             }
             catch (Exception ex)
