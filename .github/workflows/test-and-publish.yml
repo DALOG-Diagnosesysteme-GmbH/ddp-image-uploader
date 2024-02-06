@@ -21,14 +21,14 @@ jobs:
       with:
         dotnet-version: 8.0.x
     - name: Install dependencies
-          run: dotnet restore "./src/Dalog.DataPlatform.Client.ImageUploader/Dalog.DataPlatform.Client.ImageUploader/Dalog.DataPlatform.Client.ImageUploader.csproj"   
+      run: dotnet restore "./src/Dalog.DataPlatform.Client.ImageUploader/Dalog.DataPlatform.Client.ImageUploader/Dalog.DataPlatform.Client.ImageUploader.csproj"   
     - name: Test with dotnet
-          run: dotnet test "./tests/Dalog.DataPlatform.Client.ImageUploader/Dalog.DataPlatform.Client.ImageUploader.Tests/Dalog.DataPlatform.Client.ImageUploader.Tests.csproj" --logger trx --results-directory "TestResults-${{ matrix.dotnet-version }}"  
+      run: dotnet test "./tests/Dalog.DataPlatform.Client.ImageUploader/Dalog.DataPlatform.Client.ImageUploader.Tests/Dalog.DataPlatform.Client.ImageUploader.Tests.csproj" --logger trx --results-directory "TestResults-${{ matrix.dotnet-version }}"  
     - name: Upload dotnet test results
-          uses: actions/upload-artifact@v4
-          with:
-            name: dotnet-results-${{ matrix.dotnet-version }}
-            path: TestResults-${{ matrix.dotnet-version }}
-          if: ${{ always() }}
+      uses: actions/upload-artifact@v4
+      with:
+         name: dotnet-results-${{ matrix.dotnet-version }}
+         path: TestResults-${{ matrix.dotnet-version }}
+      if: ${{ always() }}
     - name: Publish dotnet
       run: dotnet publish "./src/Dalog.DataPlatform.Client.ImageUploader/Dalog.DataPlatform.Client.ImageUploader/Dalog.DataPlatform.Client.ImageUploader.csproj" -c Release -r win-x64 --self-contained -o "./output"
