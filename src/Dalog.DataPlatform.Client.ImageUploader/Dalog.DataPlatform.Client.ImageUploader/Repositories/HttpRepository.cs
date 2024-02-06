@@ -154,7 +154,10 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Repositories
         private HttpClient GetHttpClient(UploadSettings settings)
         {
             this._logger.LogInformation("Instantiating HTTP client from factory...");
-            var result = this._httpClientFactory.CreateClient("DdpClient");
+            HttpClient result = this._httpClientFactory.CreateClient();
+            result.BaseAddress = new Uri(this._appSettings.BaseUrl);
+            result.Timeout = TimeSpan.FromSeconds(settings.Timeout);
+
             if (!string.IsNullOrEmpty(this._authRepository.AccessToken))
             {
                 result.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", this._authRepository.AccessToken);
@@ -162,6 +165,30 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Repositories
             else if (!string.IsNullOrEmpty(settings.ApiKey))
             {
                 result.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", settings.ApiKey);
+            }
+
+            var handler = new HttpClientHandler();
+            if (settings.DisableSslChecks)
+            {
+                handler.ClientCertificateOptions = ClientCertificateOption.Manual;
+                handler.ServerCertificateCustomValidationCallback = (_, _, _, _) => { return true; };
+            }
+            if (settings.UseProxy)
+            {
+                handler.UseProxy = settings.UseProxy;
+                try
+                {
+                    handler.Proxy = new WebProxy
+                    {
+                        Address = new Uri(settings.ProxyAddress ?? string.Empty),
+                        UseDefaultCredentials = settings.ProxyUseDefaultCredentials,
+                        Credentials = new NetworkCredential(settings.ProxyCredentialsUsername, settings.ProxyCredentialsPassword)
+                    };
+                }
+                catch (Exception ex)
+                {
+                    this._logger.LogError(ex, "Exception '{Source}' thrown: {Message}.", ex.Source, ex.Message);
+                }
             }
 
             return result;

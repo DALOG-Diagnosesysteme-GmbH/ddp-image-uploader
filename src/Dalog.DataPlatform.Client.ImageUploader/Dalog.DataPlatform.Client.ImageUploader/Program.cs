@@ -4,6 +4,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 using System.Net;
+using System.Net.Http.Headers;
 using Dalog.DataPlatform.Client.ImageUploader.Controllers;
 using Dalog.DataPlatform.Client.ImageUploader.Forms;
 using Dalog.DataPlatform.Client.ImageUploader.Repositories;
@@ -34,43 +35,7 @@ internal static class Program
                 services.Configure<AuthSettings>(context.Configuration.GetSection(nameof(AuthSettings)));
                 services.Configure<AppSettings>(context.Configuration.GetSection(nameof(AppSettings)));
                 services.Configure<ImagesUploadEndpoints>(context.Configuration.GetSection(nameof(ImagesUploadEndpoints)));
-                services.AddHttpClient("DdpClient", options =>
-                {
-                    var appsettings = context.Configuration.GetSection(nameof(AppSettings)).Get<AppSettings>();
-                    options.BaseAddress = new Uri(appsettings!.BaseUrl);
-                    options.Timeout = TimeSpan.FromSeconds(UserSettings.Default.Timeout);
-                })
-                .SetHandlerLifetime(TimeSpan.FromSeconds(1))
-                .ConfigurePrimaryHttpMessageHandler(provider =>
-                {
-                    var uploadSettings = UserSettings.Default;
-                    var handler = new HttpClientHandler();
-                    if (uploadSettings.DisableSslChecks)
-                    {
-                        handler.ClientCertificateOptions = ClientCertificateOption.Manual;
-                        handler.ServerCertificateCustomValidationCallback = (_, _, _, _) => { return true; };
-                    }
-                    if (uploadSettings.UseProxy)
-                    {
-                        handler.UseProxy = uploadSettings.UseProxy;
-                        try
-                        {
-                            handler.Proxy = new WebProxy
-                            {
-                                Address = new Uri(uploadSettings.ProxyAddress ?? string.Empty),
-                                UseDefaultCredentials = uploadSettings.ProxyUseDefaultCredentials,
-                                Credentials = new NetworkCredential(uploadSettings.ProxyCredentialsUsername, uploadSettings.ProxyCredentialsPassword)
-                            };
-                        }
-                        catch (Exception ex)
-                        {
-                            Log.Error(ex, "Exception '{Source}' thrown: {Message}.", ex.Source, ex.Message);
-                        }
-                    }
-
-                    return handler;
-                });
-
+                services.AddHttpClient();
                 services.AddTransient<HttpRepository>();
                 services.AddSingleton<AuthRepository>();
                 services.AddSingleton<IController<MainForm>, MainController>();
