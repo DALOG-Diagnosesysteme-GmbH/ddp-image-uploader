@@ -13,6 +13,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Serilog;
+using Serilog.Templates;
 
 namespace Dalog.DataPlatform.Client.ImageUploader;
 
@@ -21,21 +22,13 @@ namespace Dalog.DataPlatform.Client.ImageUploader;
 /// </summary>
 internal static class Program
 {
-    /// <summary>
-    /// The environment name
-    /// </summary>
-    private static readonly string env = Environments.Development;
+    private static readonly string s_env = Environments.Development;
 
-    /// <summary>
-    /// Creates a host builder
-    /// </summary>
-    /// <param name="args">The args.</param>
-    /// <returns>The host builder.</returns>
     private static IHostBuilder CreateHostBuilder(string[] args)
     {
         var host = Host.CreateDefaultBuilder(args)
             .ConfigureDefaults(args)
-            .UseEnvironment(env)
+            .UseEnvironment(s_env)
             .ConfigureServices((context, services) =>
             {
                 services.Configure<AuthSettings>(context.Configuration.GetSection(nameof(AuthSettings)));
@@ -88,26 +81,46 @@ internal static class Program
         return host;
     }
 
+    private static ILogger GetLoggerConfiguration()
+    {
+        string userFolderPath = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+        var outputTemplate = new ExpressionTemplate("[{@t:yyyy.MM.dd HH:mm:ss} {@l:u3} {#if SourceContext is not null}({Substring(SourceContext, LastIndexOf(SourceContext, '.') + 1)}){#end}] {@m}\n{@x}");
+        LoggerConfiguration result = new LoggerConfiguration().ReadFrom.Configuration(new ConfigurationBuilder()
+            .AddJsonFile("appsettings.json", false, true)
+            .Build());
+
+        if (s_env == Environments.Development)
+        {
+            result.WriteTo.Debug(outputTemplate);
+        }
+        else
+        {
+            result.WriteTo.File(outputTemplate,
+                Path.Combine(userFolderPath, "DALOG Diagnosesysteme GmbH", "Images Uploader", "log.txt"),
+                rollingInterval: RollingInterval.Day,
+                retainedFileCountLimit: 10
+            );
+        }
+
+        return result.CreateLogger();
+    }
+
     /// <summary>
     /// The main method.
     /// </summary>
     [STAThread]
     private static void Main()
     {
-        Log.Logger = new LoggerConfiguration().ReadFrom.Configuration(new ConfigurationBuilder()
-            .AddJsonFile(env == Environments.Development ? "appsettings.Development.json" : "appsettings.json", false, true)
-            .Build())
-            .CreateLogger();
-
+        Log.Logger = GetLoggerConfiguration();
         ApplicationConfiguration.Initialize();
         Application.EnableVisualStyles();
 
-        using var host = CreateHostBuilder([]).Build();
+        using IHost host = CreateHostBuilder([]).Build();
         host.RunAsync();
 
-        var mainController = host.Services.GetRequiredService<IController<MainForm>>();
-        var authRepository = host.Services.GetRequiredService<AuthRepository>();
-        var loginSuccess = authRepository.Login([]);
+        IController<MainForm> mainController = host.Services.GetRequiredService<IController<MainForm>>();
+        AuthRepository authRepository = host.Services.GetRequiredService<AuthRepository>();
+        bool loginSuccess = authRepository.Login([]);
         if (!loginSuccess)
         {
             MessageDialog.Show(mainController.View, MessageBoxIcon.Error, "Authentication failure. This application will be closed.");
