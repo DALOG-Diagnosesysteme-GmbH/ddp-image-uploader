@@ -12,9 +12,6 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Controllers
     /// <typeparam name="T">The form type</typeparam>
     public interface IController<T> : IDisposable where T : Form
     {
-        /// <summary>
-        /// The controller's view.
-        /// </summary>
         public T View
         {
             get;

@@ -12,11 +12,6 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Forms
     /// </summary>
     public partial class MessageDialog : Form
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="MessageDialog"/> class.
-        /// </summary>
-        /// <param name="icon">The message box icon</param>
-        /// <param name="message">The message string.</param>
         public MessageDialog(MessageBoxIcon icon, string message)
         {
             InitializeComponent();
@@ -26,12 +21,6 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Forms
             SystemSounds.Exclamation.Play();
         }
 
-        /// <summary>
-        /// Shows this dialog
-        /// </summary>
-        /// <param name="owner">The window owner</param>
-        /// <param name="icon">The message box icon</param>
-        /// <param name="message">The message</param>
         internal static void Show(Form owner, MessageBoxIcon icon, string message)
         {
             if (owner.InvokeRequired)
@@ -44,11 +33,6 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Forms
             dialog.ShowDialog(owner);
         }
 
-        /// <summary>
-        /// Gets an image from the selected message box icon
-        /// </summary>
-        /// <param name="icon">The message box icon.</param>
-        /// <returns>The image.</returns>
         private static Image? GetImage(MessageBoxIcon icon) => icon switch
         {
             MessageBoxIcon.Information => Properties.Resources.info,
@@ -57,21 +41,11 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Forms
             _ => null,
         };
 
-        /// <summary>
-        /// Method called when the
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private void ButtonOk_OnButtonClick(object sender, EventArgs e)
         {
             this.Close();
         }
 
-        /// <summary>
-        /// Gets the dialog's title.
-        /// </summary>
-        /// <param name="icon">The message box icon</param>
-        /// <returns>The title string.</returns>
         private string GetTitle(MessageBoxIcon icon) => icon switch
         {
             MessageBoxIcon.Information => "Information",

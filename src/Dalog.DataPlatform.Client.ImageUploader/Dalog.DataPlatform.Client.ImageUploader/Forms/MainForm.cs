@@ -14,14 +14,8 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Forms
     /// </summary>
     public partial class MainForm : Form
     {
-        /// <summary>
-        /// The command bar view
-        /// </summary>
         private readonly SettingsCommandBar _commandBar;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="MainForm"/> class.
-        /// </summary>
         public MainForm()
         {
             InitializeComponent();
@@ -41,9 +35,6 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Forms
             this.CheckBoxMode_CheckedChanged(this, EventArgs.Empty);
         }
 
-        /// <summary>
-        /// Gets the auto upload numerical up down.
-        /// </summary>
         internal NumericUpDown AutoUploadHours
         {
             get
@@ -52,9 +43,6 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Forms
             }
         }
 
-        /// <summary>
-        /// Gets the command bar
-        /// </summary>
         internal SettingsCommandBar CommandBar
         {
             get
@@ -63,19 +51,10 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Forms
             }
         }
 
-        /// <summary>
-        /// The DDP Information section view
-        /// </summary>
         internal SettingsDdpInformationSection SectionDdpInformation { get; init; }
 
-        /// <summary>
-        /// The local information section view.
-        /// </summary>
         internal SettingsLocalInformationSection SectionLocalInformation { get; init; }
 
-        /// <summary>
-        /// Gets the upload button.
-        /// </summary>
         internal PrimaryButton UploadButton
         {
             get
@@ -84,10 +63,6 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Forms
             }
         }
 
-        /// <summary>
-        /// Appends a control to this form.
-        /// </summary>
-        /// <param name="control">The user control to append.</param>
         private void AppendSection(UserControl control)
         {
             if (this.Controls.Contains(control))
@@ -102,21 +77,11 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Forms
             this.Height += control.Height;
         }
 
-        /// <summary>
-        /// Method called when the Expert Mode checked state has changed
-        /// </summary>
-        /// <param name="sender">The sender object</param>
-        /// <param name="e">The event args.</param>
         private void CheckBoxMode_CheckedChanged(object sender, EventArgs e)
         {
             this.UpdateView(this.checkBoxMode.Checked);
         }
 
-        /// <summary>
-        /// Method called when a key is up when the expert mode check box is focused.
-        /// </summary>
-        /// <param name="sender">The sender object</param>
-        /// <param name="e">The key event args</param>
         private void CheckBoxMode_KeyUp(object sender, KeyEventArgs e)
         {
             if (e.KeyCode != Keys.Enter)
@@ -127,20 +92,11 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Forms
             this.checkBoxMode.Checked = !this.checkBoxMode.Checked;
         }
 
-        /// <summary>
-        /// Method called when the help button is clicked.
-        /// </summary>
-        /// <param name="sender">The sender object</param>
-        /// <param name="e">The event args</param>
         private void MainForm_HelpButtonClicked(object sender, System.ComponentModel.CancelEventArgs e)
         {
             Process.Start("CMD.exe", $"/C start msedge \"https://github.com/DALOG-Diagnosesysteme-GmbH/ddp-image-uploader\"");
         }
 
-        /// <summary>
-        /// Removes a control from this form
-        /// </summary>
-        /// <param name="control">The control to remove.</param>
         private void RemoveSection(UserControl control)
         {
             if (!this.Controls.Contains(control))
@@ -152,10 +108,6 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Forms
             this.Height -= control.Height;
         }
 
-        /// <summary>
-        /// Updates the form's view.
-        /// </summary>
-        /// <param name="expertMode">Value determining whether the mode is expert or not</param>
         private void UpdateView(bool expertMode)
         {
             this.SuspendLayout();

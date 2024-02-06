@@ -36,10 +36,6 @@ internal static class Program
         var host = Host.CreateDefaultBuilder(args)
             .ConfigureDefaults(args)
             .UseEnvironment(env)
-            .ConfigureAppConfiguration((context, builder) =>
-            {
-                builder.AddUserSecrets<AuthSettings>(false, true);
-            })
             .ConfigureServices((context, services) =>
             {
                 services.Configure<AuthSettings>(context.Configuration.GetSection(nameof(AuthSettings)));

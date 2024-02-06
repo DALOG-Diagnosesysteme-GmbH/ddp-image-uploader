@@ -14,29 +14,14 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Controllers
     /// </summary>
     internal class UploadController : IController<UploadForm>
     {
-        /// <summary>
-        /// The Http repository
-        /// </summary>
         private readonly HttpRepository _httpRepository;
 
-        /// <summary>
-        /// The HTTP settings.
-        /// </summary>
         private readonly UploadSettings _uploadSettings;
 
-        /// <summary>
-        /// The upload form view.
-        /// </summary>
         private readonly UploadForm _view;
 
-        /// <summary>
-        /// The cancellation token source.
-        /// </summary>
         private CancellationTokenSource? _cts;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="UploadController"/> class.
-        /// </summary>
         public UploadController(HttpRepository httpRepository, UploadSettings httpSettings)
         {
             ArgumentNullException.ThrowIfNull(httpRepository, nameof(httpRepository));
@@ -47,14 +32,8 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Controllers
             this.SubscribeEvents();
         }
 
-        /// <summary>
-        /// Gets the view.
-        /// </summary>
         public UploadForm View => this._view;
 
-        /// <summary>
-        /// Disposes all resources.
-        /// </summary>
         public void Dispose()
         {
             this.UnsubscribeEvents();
@@ -62,28 +41,18 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Controllers
             this._view?.Dispose();
         }
 
-        /// <summary>
-        /// Subscribes to the view's events.
-        /// </summary>
         public void SubscribeEvents()
         {
             this._view.Shown += FormShown;
             this._view.FormClosing += FormClosing;
         }
 
-        /// <summary>
-        /// Unsubscribes from all view's events.
-        /// </summary>
         public void UnsubscribeEvents()
         {
             this._view.FormClosing -= FormClosing;
             this._view.Shown -= FormShown;
         }
 
-        /// <summary>
-        /// Uploads all files.
-        /// </summary>
-        /// <returns>The task.</returns>
         public async Task UploadAllFiles()
         {
             if (!this._uploadSettings.SettingsAreValid(out var errors))
@@ -122,11 +91,6 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Controllers
             this._cts = null;
         }
 
-        /// <summary>
-        /// Method called when the view is closing.
-        /// </summary>
-        /// <param name="sender">the sender object</param>
-        /// <param name="e">The form closing event args.</param>
         private void FormClosing(object? sender, FormClosingEventArgs e)
         {
             if (this._cts != null && !this._cts.IsCancellationRequested)
@@ -137,11 +101,6 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Controllers
             this.Dispose();
         }
 
-        /// <summary>
-        /// Method called when the form is shown the first time.
-        /// </summary>
-        /// <param name="sender">The sender object</param>
-        /// <param name="e">The event args.</param>
         private async void FormShown(object? sender, EventArgs e)
         {
             this._view.UseWaitCursor = true;

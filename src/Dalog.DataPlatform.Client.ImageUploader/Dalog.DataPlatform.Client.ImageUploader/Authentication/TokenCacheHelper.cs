@@ -15,20 +15,10 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Authentication
     /// </summary>
     internal static class TokenCacheHelper
     {
-        /// <summary>
-        /// Path to the token cache
-        /// </summary>
         public static readonly string CacheFilePath = Assembly.GetExecutingAssembly().Location + ".msalcache.bin3";
 
-        /// <summary>
-        /// The file lock object.
-        /// </summary>
         private static readonly object FileLock = new();
 
-        /// <summary>
-        /// Method called after access notification.
-        /// </summary>
-        /// <param name="args">The token cache notification args.</param>
         public static void AfterAccessNotification(TokenCacheNotificationArgs args)
         {
             // if the access operation resulted in a cache update
@@ -46,10 +36,6 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Authentication
             }
         }
 
-        /// <summary>
-        /// Method called before access notification.
-        /// </summary>
-        /// <param name="args">The token cache notification args.</param>
         public static void BeforeAccessNotification(TokenCacheNotificationArgs args)
         {
             lock (FileLock)
@@ -62,10 +48,6 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Authentication
             }
         }
 
-        /// <summary>
-        /// Enables the serialization
-        /// </summary>
-        /// <param name="tokenCache">The token cache</param>
         internal static void EnableSerialization(ITokenCache tokenCache)
         {
             tokenCache.SetBeforeAccess(BeforeAccessNotification);

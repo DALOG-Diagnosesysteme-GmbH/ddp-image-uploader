@@ -16,19 +16,10 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Tests
     /// </summary>
     internal static class Utils
     {
-        /// <summary>
-        /// Creates a host builder
-        /// </summary>
-        /// <param name="args">The args.</param>
-        /// <returns>The host builder.</returns>
         internal static IHostBuilder CreateHostBuilder(string[] args)
         {
-            var host = Host.CreateDefaultBuilder(args)
+            IHostBuilder host = Host.CreateDefaultBuilder(args)
                 .ConfigureDefaults(args)
-                .ConfigureAppConfiguration(builder =>
-                {
-                    builder.AddUserSecrets<AuthSettings>(false, true);
-                })
                 .ConfigureServices((context, services) =>
                 {
                     services.Configure<AuthSettings>(context.Configuration.GetSection(nameof(AuthSettings)));
@@ -38,8 +29,7 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Tests
                     {
                         var appsettings = context.Configuration.GetSection(nameof(AppSettings)).Get<AppSettings>();
                         options.BaseAddress = new Uri(appsettings!.BaseUrl);
-                    })
-                    .SetHandlerLifetime(TimeSpan.FromSeconds(1));
+                    });
 
                     services.AddSingleton<AuthRepository>();
                     services.AddTransient<HttpRepository>();

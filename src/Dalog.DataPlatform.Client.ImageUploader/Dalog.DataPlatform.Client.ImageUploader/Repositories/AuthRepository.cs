@@ -17,27 +17,12 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Repositories
     /// </summary>
     public sealed class AuthRepository
     {
-        /// <summary>
-        /// The public client application
-        /// </summary>
         private readonly IPublicClientApplication _clientApp;
 
-        /// <summary>
-        /// The logger
-        /// </summary>
         private readonly ILogger<AuthRepository> _logger;
 
-        /// <summary>
-        /// The authentication settings.
-        /// </summary>
         private readonly AuthSettings _settings;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="AuthRepository"/> class.
-        /// </summary>
-        /// <param name="logger">The logger</param>
-        /// <param name="settings">The authentication settings</param>
-        /// <exception cref="ArgumentNullException"></exception>
         public AuthRepository(ILogger<AuthRepository> logger, IOptions<AuthSettings> settings)
         {
             ArgumentNullException.ThrowIfNull(logger, nameof(logger));
@@ -47,19 +32,11 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Repositories
             this._clientApp = this.GetClientApp() ?? throw new ArgumentNullException("Error initializing authentication.");
         }
 
-        /// <summary>
-        /// Gets and sets the access token
-        /// </summary>
         public string AccessToken { get; private set; } = string.Empty;
 
-        /// <summary>
-        /// Logs into the DDP
-        /// </summary>
-        /// <param name="scopes">The scopes string list.</param>
-        /// <returns>A value determining whether the user was successfully logged in or not.</returns>
         public bool Login(string[] scopes)
         {
-            var response = Task.Run(() => this.LoginAsync(scopes)).Result;
+            AuthenticationResult? response = Task.Run(() => this.LoginAsync(scopes)).Result;
             if (response == null)
             {
                 return false;
@@ -69,10 +46,6 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Repositories
             return !string.IsNullOrEmpty(this.AccessToken);
         }
 
-        /// <summary>
-        /// Gets the public client application object.
-        /// </summary>
-        /// <returns>The public client application.</returns>
         private IPublicClientApplication? GetClientApp()
         {
             IPublicClientApplication? result = null;
@@ -94,12 +67,6 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Repositories
             return result;
         }
 
-        /// <summary>
-        /// Logs into the DDP asynchronously
-        /// </summary>
-        /// <param name="scopes">the scopes string list</param>
-        /// <param name="token">The cancellation token</param>
-        /// <returns>The authentication result task.</returns>
         private async Task<AuthenticationResult?> LoginAsync(string[] scopes, CancellationToken token = default)
         {
             AuthenticationResult? authResult = null;

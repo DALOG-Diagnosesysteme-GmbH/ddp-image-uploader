@@ -10,17 +10,11 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Views
     /// </summary>
     public partial class SettingsDdpInformationSection : UserControl
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SettingsDdpInformationSection"/> class.
-        /// </summary>
         public SettingsDdpInformationSection()
         {
             InitializeComponent();
         }
 
-        /// <summary>
-        /// Gets the machine Id text box
-        /// </summary>
         public TextBox MachineId
         {
             get
@@ -29,9 +23,6 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Views
             }
         }
 
-        /// <summary>
-        /// Gets the machine number text box
-        /// </summary>
         public TextBox MachineNumber
         {
             get

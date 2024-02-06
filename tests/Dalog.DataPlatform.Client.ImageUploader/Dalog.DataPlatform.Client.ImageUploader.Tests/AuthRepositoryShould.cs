@@ -15,14 +15,8 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Tests
     /// </summary>
     public sealed class AuthRepositoryShould
     {
-        /// <summary>
-        /// The host
-        /// </summary>
         private readonly IHost _host;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="AuthRepositoryShould"/> class.
-        /// </summary>
         public AuthRepositoryShould()
         {
             this._host = Utils.CreateHostBuilder([]).Build();

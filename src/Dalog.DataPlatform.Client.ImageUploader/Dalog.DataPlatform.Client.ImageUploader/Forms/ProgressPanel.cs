@@ -10,15 +10,8 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Forms
     /// </summary>
     public partial class ProgressPanel : Form
     {
-        /// <summary>
-        /// The cancellation token
-        /// </summary>
         private readonly CancellationTokenSource? _cts;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ProgressPanel"/> class.
-        /// </summary>
-        /// <param name="cts">The cancellation token source.</param>
         public ProgressPanel(CancellationTokenSource? cts = null)
         {
             InitializeComponent();
@@ -27,13 +20,6 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Forms
             this.FormClosing += ProgressPanel_FormClosing;
         }
 
-        /// <summary>
-        /// Instantiates a progress panel.
-        /// </summary>
-        /// <param name="parent">The form parent</param>
-        /// <param name="cts">The cancellation token source</param>
-        /// <param name="text">The message text</param>
-        /// <returns>The progress panel object</returns>
         public static ProgressPanel? Instantiate(Form parent, CancellationTokenSource cts, string text)
         {
             if (parent.InvokeRequired)
@@ -47,10 +33,6 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Forms
             return panel;
         }
 
-        /// <summary>
-        /// Changes the label text
-        /// </summary>
-        /// <param name="text">The new text</param>
         public void ChangeLabelText(string text)
         {
             if (this.labelStatus.InvokeRequired)
@@ -62,11 +44,6 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Forms
             this.labelStatus.Text = text;
         }
 
-        /// <summary>
-        /// Method called when the form is closing.
-        /// </summary>
-        /// <param name="sender">The sender object</param>
-        /// <param name="e">The form closing event args.</param>
         private void ProgressPanel_FormClosing(object? sender, FormClosingEventArgs e)
         {
             this.FormClosing -= ProgressPanel_FormClosing;

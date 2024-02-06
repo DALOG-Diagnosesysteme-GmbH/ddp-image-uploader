@@ -4,7 +4,6 @@
 // </copyright>
 // -----------------------------------------------------------------------
 using System.Net;
-using System.Security.Principal;
 using Dalog.DataPlatform.Client.ImageUploader.Repositories;
 using Dalog.DataPlatform.Client.ImageUploader.Schema;
 using Microsoft.Extensions.DependencyInjection;
@@ -17,19 +16,10 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Tests
     /// </summary>
     public class HttpRepositoryShould
     {
-        /// <summary>
-        /// The test API key
-        /// </summary>
         private const string ApiKey = "86388ed5fa7d426baa5176befd610b8a";
 
-        /// <summary>
-        /// The host
-        /// </summary>
         private readonly IHost _host;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="HttpRepositoryShould"/> class
-        /// </summary>
         public HttpRepositoryShould()
         {
             this._host = Utils.CreateHostBuilder([]).Build();

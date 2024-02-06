@@ -19,38 +19,16 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Services
     /// </summary>
     internal sealed class Worker : BackgroundService
     {
-        /// <summary>
-        /// The HTTP repository
-        /// </summary>
         private readonly HttpRepository _httpRepository;
 
-        /// <summary>
-        /// The logger
-        /// </summary>
         private readonly ILogger<Worker> _logger;
 
-        /// <summary>
-        /// The main controller.
-        /// </summary>
         private readonly MainController _mainController;
 
-        /// <summary>
-        /// The next tasks due datetime.
-        /// </summary>
         private DateTime _nextDue;
 
-        /// <summary>
-        /// The tasks time interval.
-        /// </summary>
         private TimeSpan _taskInterval;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Worker"/> class.
-        /// </summary>
-        /// <param name="logger">The logger</param>
-        /// <param name="appsettings">The application settings</param>
-        /// <param name="mainController">The main controller</param>
-        /// <param name="httpRepository">The HTTP repository</param>
         public Worker(ILogger<Worker> logger, IOptions<AppSettings> appsettings, IController<MainForm> mainController, HttpRepository httpRepository)
         {
             ArgumentNullException.ThrowIfNull(logger, nameof(logger));
@@ -66,20 +44,12 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Services
             this._nextDue = DateTime.Now + this._taskInterval;
         }
 
-        /// <summary>
-        /// Disposes all resources
-        /// </summary>
         public override void Dispose()
         {
             this._mainController.OnAutoUploadHoursChanged -= MainController_OnAutoUploadHoursChanged;
             base.Dispose();
         }
 
-        /// <summary>
-        /// Executes the service asynchronously.
-        /// </summary>
-        /// <param name="stoppingToken">The stopping token</param>
-        /// <returns>The task.</returns>
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
             try
@@ -109,10 +79,6 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Services
             }
         }
 
-        /// <summary>
-        /// Method called when the auto upload interval value changes.
-        /// </summary>
-        /// <param name="hours">The new interval in hours</param>
         private void MainController_OnAutoUploadHoursChanged(int hours)
         {
             if (hours <= 0)
@@ -125,11 +91,6 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Services
             ToastNotificationController.Show(this._mainController.View, $"The next upload task will be performed at {this._nextDue.ToLocalTime()}");
         }
 
-        /// <summary>
-        /// Uploads images asynchronously
-        /// </summary>
-        /// <param name="token">The cancellation token.</param>
-        /// <returns>The task.</returns>
         private async Task UploadImagesAsync(CancellationToken token)
         {
             var settings = new UploadSettings();

@@ -17,37 +17,16 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Repositories
     /// </summary>
     public sealed class HttpRepository
     {
-        /// <summary>
-        /// The application settings.
-        /// </summary>
         private readonly AppSettings _appSettings;
 
-        /// <summary>
-        /// The authentication repository.
-        /// </summary>
         private readonly AuthRepository _authRepository;
 
-        /// <summary>
-        /// The images upload endpoints.
-        /// </summary>
         private readonly ImagesUploadEndpoints _endpoints;
 
-        /// <summary>
-        /// The HTTP client factory.
-        /// </summary>
         private readonly IHttpClientFactory _httpClientFactory;
 
-        /// <summary>
-        /// The logger
-        /// </summary>
         private readonly ILogger<HttpRepository> _logger;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="HttpRepository"/> class.
-        /// </summary>
-        /// <param name="logger">The logger</param>
-        /// <param name="appSettings">The application settings</param>
-        /// <param name="httpClientFactory">The HTTP client factory</param>
         public HttpRepository(ILogger<HttpRepository> logger, IOptions<AppSettings> appSettings, IOptions<ImagesUploadEndpoints> endpoints, IHttpClientFactory httpClientFactory, AuthRepository authRepository)
         {
             ArgumentNullException.ThrowIfNull(logger, nameof(logger));
@@ -62,12 +41,6 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Repositories
             this._authRepository = authRepository;
         }
 
-        /// <summary>
-        /// Tests the connection to the DDP async.
-        /// </summary>
-        /// <param name="uploadSettings">The HTTP settings</param>
-        /// <param name="token">The cancellation token</param>
-        /// <returns>The task</returns>
         public async Task<HttpResponseMessage> TestConnectionAsync(UploadSettings uploadSettings, CancellationToken token = default)
         {
             var result = new HttpResponseMessage()
@@ -111,13 +84,6 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Repositories
             return result;
         }
 
-        /// <summary>
-        /// Uploads an image asynchronously
-        /// </summary>
-        /// <param name="uploadSettings">The upload settings</param>
-        /// <param name="fileInfo">The image file info</param>
-        /// <param name="token">The cancellation token</param>
-        /// <returns>The HTTP response message</returns>
         public async Task<HttpResponseMessage> UploadImageAsync(UploadSettings uploadSettings, FileInfo fileInfo, CancellationToken token = default)
         {
             this._logger.LogInformation("Uploading file '{FullName}'...", fileInfo.FullName);
@@ -174,12 +140,6 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Repositories
             return result;
         }
 
-        /// <summary>
-        /// Gets the image upload endpoint.
-        /// </summary>
-        /// <param name="type">The image type to upload</param>
-        /// <returns>The endpoint relative Url string.</returns>
-        /// <exception cref="NotImplementedException">When the image type is unknown</exception>
         private string GetEndpoint(ImageType type) => type switch
         {
             ImageType.Default => this._endpoints.Default,
@@ -191,16 +151,10 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Repositories
             _ => throw new NotImplementedException(),
         };
 
-        /// <summary>
-        /// Gets an HTTP client
-        /// </summary>
-        /// <param name="settings">The HTTP settings</param>
-        /// <returns>The HTTP client.</returns>
         private HttpClient GetHttpClient(UploadSettings settings)
         {
             this._logger.LogInformation("Instantiating HTTP client from factory...");
             var result = this._httpClientFactory.CreateClient("DdpClient");
-
             if (!string.IsNullOrEmpty(this._authRepository.AccessToken))
             {
                 result.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", this._authRepository.AccessToken);

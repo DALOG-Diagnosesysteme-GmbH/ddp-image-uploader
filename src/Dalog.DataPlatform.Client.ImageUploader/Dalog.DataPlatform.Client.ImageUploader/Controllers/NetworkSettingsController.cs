@@ -15,20 +15,10 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Controllers
     /// </summary>
     internal sealed class NetworkSettingsController : IController<NetworkForm>
     {
-        /// <summary>
-        /// The HTTP settings.
-        /// </summary>
         private readonly UploadSettings _uploadSettings;
 
-        /// <summary>
-        /// The network form view.
-        /// </summary>
         private readonly NetworkForm _view;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="NetworkSettingsController"/> class.
-        /// </summary>
-        /// <param name="settings">The settings</param>
         public NetworkSettingsController(UploadSettings settings)
         {
             this._view = new NetworkForm();
@@ -45,41 +35,24 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Controllers
             this._uploadSettings = settings;
         }
 
-        /// <summary>
-        /// Gets the form view.
-        /// </summary>
         public NetworkForm View => this._view;
 
-        /// <summary>
-        /// Disposes all resources
-        /// </summary>
         public void Dispose()
         {
             this.UnsubscribeEvents();
             this._view?.Dispose();
         }
 
-        /// <summary>
-        /// Subscribes to all necessary view's events.
-        /// </summary>
         public void SubscribeEvents()
         {
             this._view.FormClosing += FormClosing;
         }
 
-        /// <summary>
-        /// Unsubscribes from all view's events.
-        /// </summary>
         public void UnsubscribeEvents()
         {
             this._view.FormClosing -= FormClosing;
         }
 
-        /// <summary>
-        /// Method called when the view is being closed.
-        /// </summary>
-        /// <param name="sender">The sender object.</param>
-        /// <param name="e">The form closing event args</param>
         private void FormClosing(object? sender, FormClosingEventArgs e)
         {
             if (this._uploadSettings.NetworkSettingsAreValid(out var errors))

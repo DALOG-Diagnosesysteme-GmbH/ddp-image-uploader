@@ -13,14 +13,8 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Forms;
 /// </summary>
 public partial class UploadForm : Form
 {
-    /// <summary>
-    /// The data table.
-    /// </summary>
     private readonly DataTable _dataTable;
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="UploadForm"/> class.
-    /// </summary>
     public UploadForm()
     {
         InitializeComponent();
@@ -28,13 +22,6 @@ public partial class UploadForm : Form
         InitializeDataTable();
     }
 
-    /// <summary>
-    /// Appends a result to the data table
-    /// </summary>
-    /// <param name="fileName">The file name</param>
-    /// <param name="uploadSuccessful">Value determining whether the upload was successful</param>
-    /// <param name="statusCode">The status code</param>
-    /// <param name="statusText">The status text</param>
     internal void AppendResult(string fileName, bool uploadSuccessful, string statusCode, string statusText)
     {
         if (this.InvokeRequired)
@@ -48,10 +35,6 @@ public partial class UploadForm : Form
         this.UpdateIndicatorText();
     }
 
-    /// <summary>
-    /// Initializes the progress bar
-    /// </summary>
-    /// <param name="max">The maximum progress bar value</param>
     internal void InitializeProgressBar(int max)
     {
         if (this.progressBar.InvokeRequired)
@@ -65,10 +48,6 @@ public partial class UploadForm : Form
         this.UpdateIndicatorText();
     }
 
-    /// <summary>
-    /// Sets the current file name
-    /// </summary>
-    /// <param name="fileName">The file name</param>
     internal void SetCurrentFileName(string fileName)
     {
         if (this.textBoxCurrentFile.InvokeRequired)
@@ -80,9 +59,6 @@ public partial class UploadForm : Form
         this.textBoxCurrentFile.Text = fileName;
     }
 
-    /// <summary>
-    /// Initializes the data table.
-    /// </summary>
     private void InitializeDataTable()
     {
         this._dataTable.Columns.Add("Success", typeof(bool));
@@ -95,9 +71,6 @@ public partial class UploadForm : Form
         this.dataGridView.Columns.GetLastColumn(DataGridViewElementStates.None, DataGridViewElementStates.None).AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
     }
 
-    /// <summary>
-    /// Updates the indicator text.
-    /// </summary>
     private void UpdateIndicatorText()
     {
         if (this.labelBarIndicator.InvokeRequired)

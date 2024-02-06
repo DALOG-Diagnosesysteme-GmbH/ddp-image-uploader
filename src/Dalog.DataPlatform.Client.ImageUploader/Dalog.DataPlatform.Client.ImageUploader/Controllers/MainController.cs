@@ -16,27 +16,15 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Controllers
     /// </summary>
     internal sealed class MainController : IController<MainForm>
     {
-        /// <summary>
-        /// The HTTP repository
-        /// </summary>
         private readonly HttpRepository _httpRepository;
 
-        /// <summary>
-        /// The uplaod settings.
-        /// </summary>
         private readonly UploadSettings _uploadSettings;
 
-        /// <summary>
-        /// The view.
-        /// </summary>
         private readonly MainForm _view;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="MainController"/> class.
-        /// </summary>
         public MainController(IOptions<AppSettings> appsettings, HttpRepository repository)
         {
-            ArgumentNullException.ThrowIfNull(appsettings, nameof(appsettings));        
+            ArgumentNullException.ThrowIfNull(appsettings, nameof(appsettings));
             ArgumentNullException.ThrowIfNull(repository, nameof(repository));
             this._httpRepository = repository;
             this._view = new MainForm();
@@ -47,10 +35,6 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Controllers
             this._view.AutoUploadHours.Value = appsettings.Value?.AutoUploadIntervalHours ?? 1;
         }
 
-        /// <summary>
-        /// The auto upload interval hours event delegate
-        /// </summary>
-        /// <param name="hours">The new time interval in hours</param>
         internal delegate void AutoUploadHoursEvent(int hours);
 
         /// <summary>
@@ -58,23 +42,14 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Controllers
         /// </summary>
         internal event AutoUploadHoursEvent? OnAutoUploadHoursChanged;
 
-        /// <summary>
-        /// Gets the view.
-        /// </summary>
         public MainForm View => this._view;
 
-        /// <summary>
-        /// Disposes all resources
-        /// </summary>
         public void Dispose()
         {
             this.UnsubscribeEvents();
             this._view?.Dispose();
         }
 
-        /// <summary>
-        /// Subscribes to all view's events.
-        /// </summary>
         public void SubscribeEvents()
         {
             this._view.FormClosing += View_FormClosing;
@@ -86,9 +61,6 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Controllers
             this._view.CommandBar.OnButtonNetworkSettingsClick += OnButtonNetworkSettingsClick;
         }
 
-        /// <summary>
-        /// Unsubscribes from all view's events.
-        /// </summary>
         public void UnsubscribeEvents()
         {
             this._view.FormClosing -= View_FormClosing;
@@ -100,21 +72,11 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Controllers
             this._view.CommandBar.OnButtonNetworkSettingsClick -= OnButtonNetworkSettingsClick;
         }
 
-        /// <summary>
-        /// Method called when the auto upload time interval in hours has changed
-        /// </summary>
-        /// <param name="sender">The sender object</param>
-        /// <param name="e">The event args.</param>
         private void AutoUploadHours_ValueChanged(object? sender, EventArgs e)
         {
             this.OnAutoUploadHoursChanged?.Invoke((int)this._view.AutoUploadHours.Value);
         }
 
-        /// <summary>
-        /// Method called when the network settings button is clicked
-        /// </summary>
-        /// <param name="sender">The sender object</param>
-        /// <param name="e">The event args</param>
         private void OnButtonNetworkSettingsClick(object? sender, EventArgs e)
         {
             this._view.HideFormWhile(() =>
@@ -124,11 +86,6 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Controllers
             });
         }
 
-        /// <summary>
-        /// Method called when the reset settings button is clicked
-        /// </summary>
-        /// <param name="sender">The sender object</param>
-        /// <param name="e">The event args</param>
         private void OnButtonResetSettingsClick(object? sender, EventArgs e)
         {
             using var dialog = new ConfirmationDialog("Do you really want to reset all settings to their default value?");
@@ -140,11 +97,6 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Controllers
             this._uploadSettings.Reset();
         }
 
-        /// <summary>
-        /// Method called when the test connection settings button is clicked
-        /// </summary>
-        /// <param name="sender">The sender object</param>
-        /// <param name="e">The event args</param>
         private async void OnButtonTestConnectionClick(object? sender, EventArgs e)
         {
             using var cts = new CancellationTokenSource();
@@ -162,11 +114,6 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Controllers
             }
         }
 
-        /// <summary>
-        /// Method called when the select folder button is clicked.
-        /// </summary>
-        /// <param name="sender">The sender object</param>
-        /// <param name="e">The event args.</param>
         private void OnSelectFolderButtonClick(object? sender, EventArgs e)
         {
             using var dialog = new FolderBrowserDialog();
@@ -178,9 +125,6 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Controllers
             this._uploadSettings.Folder = dialog.SelectedPath;
         }
 
-        /// <summary>
-        /// Sets the upload settings object data bindings.
-        /// </summary>
         private void SetSettingsDataBindings()
         {
             this._view.SectionDdpInformation.MachineId.AddDataBinding(this._uploadSettings, nameof(this._uploadSettings.MachineId));
@@ -190,11 +134,6 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Controllers
             this._view.SectionLocalInformation.ImagesType.AddDataBinding(this._uploadSettings, nameof(this._uploadSettings.ImageType));
         }
 
-        /// <summary>
-        /// Method called when the upload button is clicked
-        /// </summary>
-        /// <param name="sender">The sender object</param>
-        /// <param name="e">The event args</param>
         private void UploadButton_Click(object? sender, EventArgs e)
         {
             if (!this._uploadSettings.SettingsAreValid(out var errors))
@@ -210,11 +149,6 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Controllers
             });
         }
 
-        /// <summary>
-        /// Method called when the form is closing.
-        /// </summary>
-        /// <param name="sender">The sender object</param>
-        /// <param name="e">The form closing event args.</param>
         private void View_FormClosing(object? sender, FormClosingEventArgs e)
         {
             this.Dispose();
