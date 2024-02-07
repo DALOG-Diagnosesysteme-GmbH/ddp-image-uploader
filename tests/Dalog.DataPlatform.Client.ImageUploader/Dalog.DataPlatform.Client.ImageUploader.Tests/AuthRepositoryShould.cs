@@ -23,7 +23,7 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Tests
         }
 
         [Trait("Category", "Unit Tests")]
-        [Fact]
+        [Fact(Skip = "Requires user authentication")]
         public void Login_ReturnToken()
         {
             var sut = this._host.Services.GetRequiredService<AuthRepository>();
