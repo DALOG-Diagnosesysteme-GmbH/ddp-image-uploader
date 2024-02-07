@@ -29,7 +29,7 @@ DALOG Image Uploader will allow users which have a DALOG Data Platform account, 
     <img src="./readme/authentication_failure.png" alt="Authentication failure dialog" />
     </div>
 
--   ## Basic Mode
+## Basic Mode
 
 Before starting the DALOG Data images uploading process, the folder path where the images are stored, as well as the type of these images must be selected on the main window.
 
