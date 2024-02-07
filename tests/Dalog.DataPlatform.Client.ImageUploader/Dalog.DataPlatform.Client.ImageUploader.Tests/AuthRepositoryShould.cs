@@ -23,12 +23,12 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Tests
         }
 
         [Trait("Category", "Unit Tests")]
-        [Fact(Skip = "Requires user authentication")]
+        [Fact]
         public void Login_ReturnToken()
         {
             var sut = this._host.Services.GetRequiredService<AuthRepository>();
             Assert.NotNull(sut);
-            var loginSuccess = sut.Login([]);
+            var loginSuccess = sut.Login(["https://dalogddpb2cprd.onmicrosoft.com/61c2523e-05a5-4f17-ab7e-9b463279e3bf/access_as_user"]);
             Assert.True(loginSuccess, "The logging process was not successful.");
         }
     }

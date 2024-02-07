@@ -1,0 +1,33 @@
+name: Build and Test
+
+on:
+  push:
+    branches:
+      - 'main'
+      - 'features/**'
+      - 'bugs/**'
+
+jobs:
+  Build-and-test:
+    name: Test and Publish
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v4
+      name: "Checkout repository"
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 8.0.x
+    - name: Install dependencies
+      run: dotnet restore "./src/Dalog.DataPlatform.Client.ImageUploader/Dalog.DataPlatform.Client.ImageUploader/Dalog.DataPlatform.Client.ImageUploader.csproj"
+    - name: Build dotnet
+      run: dotnet build "./src/Dalog.DataPlatform.Client.ImageUploader/Dalog.DataPlatform.Client.ImageUploader/Dalog.DataPlatform.Client.ImageUploader.csproj"      
+    - name: Test with dotnet
+      run: dotnet test "./tests/Dalog.DataPlatform.Client.ImageUploader/Dalog.DataPlatform.Client.ImageUploader.Tests/Dalog.DataPlatform.Client.ImageUploader.Tests.csproj" --logger trx --results-directory "TestResults-8.0.x"  
+    - name: Upload dotnet test results
+      uses: actions/upload-artifact@v4
+      with:
+         name: dotnet-results-8.0.x
+         path: TestResults-8.0.x
+      if: ${{ always() }}
+    

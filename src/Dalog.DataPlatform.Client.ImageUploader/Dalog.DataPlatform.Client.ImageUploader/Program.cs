@@ -84,7 +84,7 @@ internal static class Program
 
         IController<MainForm> mainController = host.Services.GetRequiredService<IController<MainForm>>();
         AuthRepository authRepository = host.Services.GetRequiredService<AuthRepository>();
-        bool loginSuccess = authRepository.Login([]);
+        bool loginSuccess = authRepository.Login(["https://dalogddpb2cprd.onmicrosoft.com/61c2523e-05a5-4f17-ab7e-9b463279e3bf/access_as_user"]);
         if (!loginSuccess)
         {
             MessageDialog.Show(mainController.View, MessageBoxIcon.Error, "Authentication failure. This application will be closed.");
