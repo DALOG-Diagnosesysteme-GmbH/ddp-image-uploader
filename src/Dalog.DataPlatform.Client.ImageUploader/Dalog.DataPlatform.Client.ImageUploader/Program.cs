@@ -35,7 +35,6 @@ internal static class Program
                 services.Configure<AuthSettings>(context.Configuration.GetSection(nameof(AuthSettings)));
                 services.Configure<AppSettings>(context.Configuration.GetSection(nameof(AppSettings)));
                 services.Configure<ImagesUploadEndpoints>(context.Configuration.GetSection(nameof(ImagesUploadEndpoints)));
-                services.AddHttpClient();
                 services.AddTransient<HttpRepository>();
                 services.AddSingleton<AuthRepository>();
                 services.AddSingleton<IController<MainForm>, MainController>();

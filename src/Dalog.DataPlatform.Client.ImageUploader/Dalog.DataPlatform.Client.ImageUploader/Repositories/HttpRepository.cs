@@ -23,21 +23,17 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Repositories
 
         private readonly ImagesUploadEndpoints _endpoints;
 
-        private readonly IHttpClientFactory _httpClientFactory;
-
         private readonly ILogger<HttpRepository> _logger;
 
-        public HttpRepository(ILogger<HttpRepository> logger, IOptions<AppSettings> appSettings, IOptions<ImagesUploadEndpoints> endpoints, IHttpClientFactory httpClientFactory, AuthRepository authRepository)
+        public HttpRepository(ILogger<HttpRepository> logger, IOptions<AppSettings> appSettings, IOptions<ImagesUploadEndpoints> endpoints, AuthRepository authRepository)
         {
             ArgumentNullException.ThrowIfNull(logger, nameof(logger));
             ArgumentNullException.ThrowIfNull(appSettings, nameof(appSettings));
             ArgumentNullException.ThrowIfNull(endpoints, nameof(endpoints));
-            ArgumentNullException.ThrowIfNull(httpClientFactory, nameof(httpClientFactory));
             ArgumentNullException.ThrowIfNull(authRepository, nameof(authRepository));
             this._logger = logger;
             this._appSettings = appSettings.Value;
             this._endpoints = endpoints.Value;
-            this._httpClientFactory = httpClientFactory;
             this._authRepository = authRepository;
         }
 
@@ -153,20 +149,8 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Repositories
 
         private HttpClient GetHttpClient(UploadSettings settings)
         {
-            this._logger.LogInformation("Instantiating HTTP client from factory...");
-            HttpClient result = this._httpClientFactory.CreateClient();
-            result.BaseAddress = new Uri(this._appSettings.BaseUrl);
-            result.Timeout = TimeSpan.FromSeconds(settings.Timeout);
 
-            if (!string.IsNullOrEmpty(this._authRepository.AccessToken))
-            {
-                result.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", this._authRepository.AccessToken);
-            }
-            else if (!string.IsNullOrEmpty(settings.ApiKey))
-            {
-                result.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", settings.ApiKey);
-            }
-
+            this._logger.LogInformation("Instantiating HTTP Client handler...");
             var handler = new HttpClientHandler();
             if (settings.DisableSslChecks)
             {
@@ -189,6 +173,22 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Repositories
                 {
                     this._logger.LogError(ex, "Exception '{Source}' thrown: {Message}.", ex.Source, ex.Message);
                 }
+            }
+
+            this._logger.LogInformation("Instantiating HTTP client from factory...");
+            HttpClient result = new(handler)
+            {
+                BaseAddress = new Uri(this._appSettings.BaseUrl),
+                Timeout = TimeSpan.FromSeconds(settings.Timeout)
+            };
+
+            if (!string.IsNullOrEmpty(this._authRepository.AccessToken))
+            {
+                result.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", this._authRepository.AccessToken);
+            }
+            else if (!string.IsNullOrEmpty(settings.ApiKey))
+            {
+                result.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", settings.ApiKey);
             }
 
             return result;
