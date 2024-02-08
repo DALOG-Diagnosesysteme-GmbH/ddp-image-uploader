@@ -12,9 +12,9 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Schema
     public sealed class AppSettings()
     {
         public int AutoUploadIntervalHours { get; set; } = 2;
-
         public string BaseUrl { get; set; } = string.Empty;
-
         public string PingUrl { get; set; } = string.Empty;
+        public string SharedSubscriptionKeyValue { get; set; } = string.Empty;
+        public string SharedSubscriptionKeyName {  get; set; } = string.Empty;
     }
 }

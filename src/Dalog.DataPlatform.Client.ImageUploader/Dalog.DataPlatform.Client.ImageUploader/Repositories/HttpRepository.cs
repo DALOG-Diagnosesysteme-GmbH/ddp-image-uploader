@@ -182,13 +182,17 @@ namespace Dalog.DataPlatform.Client.ImageUploader.Repositories
                 Timeout = TimeSpan.FromSeconds(settings.Timeout)
             };
 
+            
             if (!string.IsNullOrEmpty(this._authRepository.AccessToken))
             {
                 result.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", this._authRepository.AccessToken);
+
+                // Authorization with bearer token still requires a default shared subscription key present
+                result.DefaultRequestHeaders.Add(_appSettings.SharedSubscriptionKeyName, _appSettings.SharedSubscriptionKeyValue);
             }
             else if (!string.IsNullOrEmpty(settings.ApiKey))
             {
-                result.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", settings.ApiKey);
+                result.DefaultRequestHeaders.Add(_appSettings.SharedSubscriptionKeyName, settings.ApiKey);
             }
 
             return result;
