@@ -13,7 +13,7 @@ A graphical client to upload DALOG Data Images of any kind from a local folder t
 
 # Download and Installation
 
-The latest version can be downloaded from the repository's <a href="https://github.com/DALOG-Diagnosesysteme-GmbH/ddp-image-uploader/releases">GitHub releases section</a>. The instructions for its installation are described below:
+The latest version can be downloaded from the repository's <a href="https://github.com/DALOG-Diagnosesysteme-GmbH/ddp-image-uploader/releases" target="_blank">GitHub releases section</a>. The instructions for its installation are described below:
 
 1. Download the latest _Dalog.DataPlatform.Client.ImageUploader_Setup.exe_ installation file in your machine and double click on it. You will need Administrator rights to execute it. The installation wizard will start.
 2. Select the installation path and click on _Next_.
@@ -34,13 +34,13 @@ The latest version can be downloaded from the repository's <a href="https://gith
     <img src="./readme/installation3.png" alt="Ready for installation dialog"/>
       </div>
 
-5. When the installation process has finished. The following dialog will be displayed:
+5. When the installation process is done, the following dialog will be displayed:
 
 <div align="center">
     <img src="./readme/installation4.png" alt="Installation finished window"/>
       </div>
 
-Finally, click on _Finish_ to close the installation wizard. Depending on your selection in the _Launch DALOG Image Uploader_ dialog, the DALOG Image Uploader will start. 
+Finally, click on _Finish_ to close the installation wizard. Depending on your selection in the _Launch DALOG Image Uploader_ dialog, the DALOG Image Uploader will start.
 
 # Usage
 
