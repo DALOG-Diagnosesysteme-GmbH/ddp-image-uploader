@@ -4,11 +4,43 @@ A graphical client to upload DALOG Data Images of any kind from a local folder t
 
 ## Table of Contents
 
+-   [Download and Installation](#Download-and-Installation)
 -   [Usage](#Usage)
     -   [Login](#Login)
     -   [Basic Mode](#Basic-Mode)
     -   [Expert Mode](#Expert-Mode)
 -   [License](#MIT-License)
+
+# Download and Installation
+
+The latest version can be downloaded from the repository's <a href="https://github.com/DALOG-Diagnosesysteme-GmbH/ddp-image-uploader/releases">GitHub releases section</a>. The instructions for its installation are described below:
+
+1. Download the latest _Dalog.DataPlatform.Client.ImageUploader_Setup.exe_ installation file in your machine and double click on it. You will need Administrator rights to execute it. The installation wizard will start.
+2. Select the installation path and click on _Next_.
+
+<div align="center">
+    <img src="./readme/installation1.png" alt="Application folder selection dialog"/>
+      </div>
+
+3. Select the application's shortcuts folder and click on _Next_.
+
+<div align="center">
+    <img src="./readme/installation2.png" alt="Application's shortcuts folder selection dialog"/>
+      </div>
+
+4. Click on _Install_. The executable will start installing the application and all its dependencies.
+
+<div align="center">
+    <img src="./readme/installation3.png" alt="Ready for installation dialog"/>
+      </div>
+
+5. When the installation process has finished. The following dialog will be displayed:
+
+<div align="center">
+    <img src="./readme/installation4.png" alt="Installation finished window"/>
+      </div>
+
+Finally, click on _Finish_ to close the installation wizard. Depending on your selection in the _Launch DALOG Image Uploader_ dialog, the DALOG Image Uploader will start. 
 
 # Usage
 
@@ -37,13 +69,13 @@ Before starting the DALOG Data images uploading process, the folder path where t
     <img src="./readme/main_window.png" alt="Main window" />
       </div>
 
-Then, click on the _Upload Images_ button. The Upload window will be shown and the results of each DALOG Data Image upload process will be seen on the table shown below. The **Success** table column indicates whether a determined image was accepted or not.:
+Then, click on the _Upload Images_ button. The Upload window will be shown and the results of each DALOG Data Image upload process will be seen on the table shown below. The values under the **Success** table column indicate whether a determined image was successfully uploaded or not:
 
 <div align="center">
     <img src="./readme/upload_progress_window.png" alt="Upload window" />
       </div>
 
-When the process is done, the following window will be displayed:
+If there was an error uploading a certain image, the error message will be displayed on the **Response Message** column. When the process is done, the following window will be displayed:
 
 <div align="center">
     <img src="./readme/upload_done_dialog.png" alt="Upload done dialog" />
@@ -55,13 +87,13 @@ The DALOG Images Upload app starts the upload process automatically every two (2
     <img src="./readme/auto_upload_setting.png" alt="auto upload setting within the main window" />
       </div>
       
-After changing the value and pressing enter, you will receive a notification with the next upload task due time.
+After changing the value and pressing enter, you will receive a notification with information about the next date time an automatic upload process will occur.
 
 <div align="center">
     <img src="./readme/auto_upload_setting_notification.png" alt="auto upload setting notification" />
       </div>
 
-When an automatic process has begun, the following notification will be displayed:
+When an automatic upload process has begun, the following notification will be displayed:
 
 <div align="center">
     <img src="./readme/auto_upload_start.png" alt="auto upload start process notification" />
@@ -81,7 +113,7 @@ By clicking on the _Expert Mode_ checkbox in the upper right side of the main wi
     <img src="./readme/expert_mode_window.png" alt="Expert mode main window" />
       </div>
 
-For advance network settings (SSL checkings. Proxy connection details) click on the _Network settings_ button. You will be redirected to the window shown below, where you can select whether to disable the SSL check, and the use and proxy and its login access details.
+For advance network settings (SSL checks. Proxy connection details) click on the _Network settings_ button. You will be redirected to the window shown below, where you can select whether to disable the SSL check, and the use and proxy and its login access details.
 
 <div align="center">
     <img src="./readme/network_settings_window.png" alt="Network settings window" />
